@@ -68,6 +68,7 @@ def test_rate_limit_enforced(monkeypatch):
     for _ in range(2):
         r = client.post(f"/switch/{name}", headers={"x-token": "rtok", "x-client-id": "tester"})
         assert r.status_code == 200
+    assert "X-RateLimit-Limit" in r.headers
     # third should 429
     r3 = client.post(f"/switch/{name}", headers={"x-token": "rtok", "x-client-id": "tester"})
     assert r3.status_code == 429

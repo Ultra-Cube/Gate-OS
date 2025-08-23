@@ -4,7 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from pydantic import BaseModel
 import uuid
 import yaml
@@ -13,9 +13,14 @@ from gateos_manager.manifest.loader import load_manifest, ManifestValidationErro
 from gateos_manager.api.auth import verify_token
 from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
 from gateos_manager.logging.structured import info, warn
-from gateos_manager.api.rate_limit import allow as rate_allow
+from gateos_manager.api.rate_limit import consume as rate_consume
 
-app = FastAPI(title="Gate-OS Control API", version="0.0.1")
+app = FastAPI(
+    title="Gate-OS Control API",
+    version="0.0.1",
+    description="Control API for Gate-OS (experimental). Token auth with optional rate limits.",
+    contact={"name": "Ultra Cube Tech"},
+)
 
 
 class EnvironmentSummary(BaseModel):
@@ -56,11 +61,17 @@ def get_environment(name: str) -> dict[str, Any]:  # pragma: no cover
 
 
 @app.post("/switch/{name}", response_model=SwitchResponse)
-def switch_environment(name: str, request: Request, x_token: str | None = None, x_client_id: str | None = None) -> SwitchResponse:  # pragma: no cover - thin wrapper
+def switch_environment(name: str, request: Request, response: Response, x_token: str | None = None, x_client_id: str | None = None) -> SwitchResponse:  # pragma: no cover - thin wrapper
     if not verify_token(x_token):
         raise HTTPException(status_code=401, detail="Unauthorized")
     client_key = x_client_id or "anon"
-    if not rate_allow(f"switch:{client_key}"):
+    allowed, limit, remaining, reset_at = rate_consume(f"switch:{client_key}")
+    if limit is not None:
+        response.headers["X-RateLimit-Limit"] = str(limit)
+        response.headers["X-RateLimit-Remaining"] = str(remaining)
+        if reset_at is not None:
+            response.headers["X-RateLimit-Reset"] = str(int(reset_at))
+    if not allowed:
         raise HTTPException(status_code=429, detail="Rate limit exceeded")
     if name not in _ENV_CACHE:
         raise HTTPException(status_code=404, detail="Environment not found")
@@ -70,17 +81,24 @@ def switch_environment(name: str, request: Request, x_token: str | None = None, 
     return SwitchResponse(status=result["status"], environment=name, correlation_id=correlation_id)
 
 
+@app.on_event("shutdown")
+def _shutdown_cleanup():  # pragma: no cover - placeholder
+    info("api.shutdown")
+
+
 def run_server(host: str, port: int, schema_path: Path) -> None:  # pragma: no cover
     _load_all(schema_path)
-    # Optional hot reload
-    from gateos_manager.watch.reloader import start_watch
-    env_dir = Path("examples/environments")
-    if env_dir.exists():
-        def _reload():  # pragma: no cover - watcher side-effect
-            _ENV_CACHE.clear()
-            _load_all(schema_path)
-            info("env.cache.reloaded", count=len(_ENV_CACHE))
-        start_watch(env_dir, _reload)
+    # Optional hot reload controlled via env flag
+    import os
+    if os.getenv("GATEOS_WATCH_ENABLED") == "1":
+        from gateos_manager.watch.reloader import start_watch
+        env_dir = Path("examples/environments")
+        if env_dir.exists():
+            def _reload():  # pragma: no cover - watcher side-effect
+                _ENV_CACHE.clear()
+                _load_all(schema_path)
+                info("env.cache.reloaded", count=len(_ENV_CACHE))
+            start_watch(env_dir, _reload)
     import uvicorn  # local import so optional dep
 
     uvicorn.run(app, host=host, port=port, log_level="info")

@@ -31,16 +31,23 @@ def _config() -> tuple[int | None, int]:  # pragma: no cover - trivial
     return limit, window
 
 
-def allow(key: str) -> bool:
+def consume(key: str) -> tuple[bool, int | None, int | None, float | None]:
+    """Consume one request from bucket.
+
+    Returns (allowed, limit, remaining, reset_at_epoch)
+    If limit is None, unlimited and remaining None.
+    """
     limit, window = _config()
     if limit is None:
-        return True
+        return True, None, None, None
     now = time.time()
     bucket = _buckets.get(key)
     if not bucket or now >= bucket.reset_at:
         _buckets[key] = _Bucket(count=1, reset_at=now + window)
-        return True
+        remaining = limit - 1
+        return True, limit, remaining, _buckets[key].reset_at
     if bucket.count < limit:
         bucket.count += 1
-        return True
-    return False
+        remaining = limit - bucket.count
+        return True, limit, remaining, bucket.reset_at
+    return False, limit, 0, bucket.reset_at
