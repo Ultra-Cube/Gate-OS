@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+gateos_manager/__init__.py
+gateos_manager/cli.py
+gateos_manager.egg-info/PKG-INFO
+gateos_manager.egg-info/SOURCES.txt
+gateos_manager.egg-info/dependency_links.txt
+gateos_manager.egg-info/top_level.txt
+gateos_manager/manifest/__init__.py
+gateos_manager/manifest/loader.py
