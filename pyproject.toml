@@ -22,11 +22,13 @@ dev = [
   "ruff>=0.1.0",
   # Include API stack for testing endpoints in CI
   "fastapi>=0.111.0",
-  "uvicorn>=0.30.0"
+  "uvicorn>=0.30.0",
+  "pydantic>=2.7.0"
 ]
 api = [
   "fastapi>=0.111.0",
-  "uvicorn>=0.30.0"
+  "uvicorn>=0.30.0",
+  "pydantic>=2.7.0"
 ]
 
 [project.scripts]

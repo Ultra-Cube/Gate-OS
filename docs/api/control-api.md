@@ -10,6 +10,11 @@ The control API offers local programmatic access for listing environments and tr
 | GET | /environments/{name} | Get manifest details |
 | POST | /switch/{name} | Request environment switch (stub) |
 
+### Response Models
+
+- `GET /environments`: `[ { name, category } ]`
+- `POST /switch/{name}`: `{ status, environment, correlation_id }`
+
 ## Security (Planned)
 
 - Localhost binding by default.
@@ -27,6 +32,15 @@ The control API offers local programmatic access for listing environments and tr
 ### Telemetry
 
 - When `GATEOS_TELEMETRY_ENABLED=1`, switch events emit JSON lines with fields: `ts`, `event`, `environment`, `status`.
+
+### Token Generation
+
+Generate a token:
+
+```bash
+gateos gen-token --length 40 > api.token
+export GATEOS_API_TOKEN_FILE=api.token
+```
 
 ## Mobile App Concept
 

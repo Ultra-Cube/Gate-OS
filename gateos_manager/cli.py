@@ -23,6 +23,8 @@ def _build_parser() -> argparse.ArgumentParser:
     a.add_argument("--host", default="127.0.0.1", help="Bind host")
     a.add_argument("--port", type=int, default=8088, help="Bind port")
     a.add_argument("--schema", default="docs/architecture/schemas/environment-manifest.schema.yaml", help="Schema for environment listing")
+    t = sub.add_parser("gen-token", help="Generate and print a random API token")
+    t.add_argument("--length", type=int, default=32, help="Token length")
     return p
 
 
@@ -47,6 +49,12 @@ def main(argv: list[str] | None = None) -> int:
             print("FastAPI not installed. Install with 'pip install .[api]'", file=sys.stderr)
             return 1
         run_server(host=args.host, port=args.port, schema_path=Path(args.schema))
+        return 0
+    if args.cmd == "gen-token":
+        import secrets, string
+        alphabet = string.ascii_letters + string.digits
+        token = ''.join(secrets.choice(alphabet) for _ in range(args.length))
+        print(token)
         return 0
     return 0
 
