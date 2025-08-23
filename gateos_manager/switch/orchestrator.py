@@ -15,23 +15,31 @@ from typing import Any, Dict
 
 from gateos_manager.manifest.loader import load_manifest, ManifestValidationError
 from gateos_manager.telemetry.emitter import emit
+from gateos_manager.logging.structured import info, error
+from gateos_manager.plugins.registry import invoke
 
 
 class SwitchError(Exception):
     """Raised when a switch operation fails."""
 
 
-def switch_environment(name: str, schema_path: Path, manifests_dir: Path = Path("examples/environments")) -> Dict[str, Any]:
-    emit("switch.start", environment=name)
+def switch_environment(name: str, schema_path: Path, manifests_dir: Path = Path("examples/environments"), correlation_id: str | None = None) -> Dict[str, Any]:
+    emit("switch.start", environment=name, correlation_id=correlation_id)
+    info("switch.start", environment=name, correlation_id=correlation_id)
     try:
-        manifest_path = manifests_dir / f"{name}.yaml"
-        manifest = load_manifest(manifest_path, schema_path)
-        # TODO: container/service orchestration
-        emit("switch.end", environment=name, status="success")
-        return {"status": "success", "environment": name}
+    manifest_path = manifests_dir / f"{name}.yaml"
+    manifest = load_manifest(manifest_path, schema_path)
+    invoke("pre_switch", environment=name, manifest=manifest)
+    # TODO: container/service orchestration
+    invoke("post_switch", environment=name, manifest=manifest)
+    emit("switch.end", environment=name, status="success", correlation_id=correlation_id)
+    info("switch.end", environment=name, status="success", correlation_id=correlation_id)
+    return {"status": "success", "environment": name}
     except ManifestValidationError as e:  # pragma: no cover - simple path
-        emit("switch.end", environment=name, status="error", error=str(e))
+        emit("switch.end", environment=name, status="error", error=str(e), correlation_id=correlation_id)
+        error("switch.error", environment=name, error=str(e), correlation_id=correlation_id)
         raise SwitchError(str(e)) from e
     except Exception as e:  # pragma: no cover - future expansion
-        emit("switch.end", environment=name, status="error", error=str(e))
+        emit("switch.end", environment=name, status="error", error=str(e), correlation_id=correlation_id)
+        error("switch.error", environment=name, error=str(e), correlation_id=correlation_id)
         raise SwitchError(str(e)) from e

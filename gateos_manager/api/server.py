@@ -12,6 +12,7 @@ import yaml
 from gateos_manager.manifest.loader import load_manifest, ManifestValidationError
 from gateos_manager.api.auth import verify_token
 from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
+from gateos_manager.logging.structured import info, warn
 from gateos_manager.api.rate_limit import allow as rate_allow
 
 app = FastAPI(title="Gate-OS Control API", version="0.0.1")
@@ -64,12 +65,22 @@ def switch_environment(name: str, request: Request, x_token: str | None = None, 
     if name not in _ENV_CACHE:
         raise HTTPException(status_code=404, detail="Environment not found")
     correlation_id = request.headers.get("x-correlation-id", str(uuid.uuid4()))
-    result = orchestrate_switch(name, Path("docs/architecture/schemas/environment-manifest.schema.yaml"))
+    info("switch.request", environment=name, client=client_key, correlation_id=correlation_id)
+    result = orchestrate_switch(name, Path("docs/architecture/schemas/environment-manifest.schema.yaml"), correlation_id=correlation_id)
     return SwitchResponse(status=result["status"], environment=name, correlation_id=correlation_id)
 
 
 def run_server(host: str, port: int, schema_path: Path) -> None:  # pragma: no cover
     _load_all(schema_path)
+    # Optional hot reload
+    from gateos_manager.watch.reloader import start_watch
+    env_dir = Path("examples/environments")
+    if env_dir.exists():
+        def _reload():  # pragma: no cover - watcher side-effect
+            _ENV_CACHE.clear()
+            _load_all(schema_path)
+            info("env.cache.reloaded", count=len(_ENV_CACHE))
+        start_watch(env_dir, _reload)
     import uvicorn  # local import so optional dep
 
     uvicorn.run(app, host=host, port=port, log_level="info")
