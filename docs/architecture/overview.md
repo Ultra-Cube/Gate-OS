@@ -50,6 +50,7 @@ last-updated: 2025-08-23
 
 - Declarative manifests per environment (YAML)
 - Versioned schema with migration hooks
+- Schema: see `docs/architecture/schemas/environment-manifest.schema.yaml`
 
 ## Security Considerations (Draft)
 
@@ -65,3 +66,7 @@ last-updated: 2025-08-23
 ## Notes
 
 Iterate as components solidify.
+
+---
+**Date:** July 2025 | **By:** Fadhel.SH  
+**Company:** [Ultra-Cube Tech](https://ucubetech.com) | [GitHub](https://github.com/Ultra-Cube/) | [LinkedIn](https://www.linkedin.com/company/ultra-cube)

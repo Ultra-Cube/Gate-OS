@@ -12,8 +12,9 @@ last-updated: 2025-08-23
 
 ## License
 
-- GPLv3 and other relevant licenses
-- Dual licensing considerations (Pro/Enterprise modules)
+- Core: GPLv3 (see root `LICENSE`)
+- Possible dual licensing for proprietary enterprise extensions (clearly separated repos / packages)
+- Documentation, logos, trademarks NOT automatically covered for reuse
 
 ## Compliance
 
@@ -36,3 +37,7 @@ last-updated: 2025-08-23
 ## Notes
 
 Pending legal counsel review.
+
+---
+**Date:** July 2025 | **By:** Fadhel.SH  
+**Company:** [Ultra-Cube Tech](https://ucubetech.com) | [GitHub](https://github.com/Ultra-Cube/) | [LinkedIn](https://www.linkedin.com/company/ultra-cube)

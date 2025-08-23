@@ -66,3 +66,7 @@ last-updated: 2025-08-23
 ## Notes
 
 Data placeholders to be replaced with validated research.
+
+---
+**Date:** July 2025 | **By:** Fadhel.SH  
+**Company:** [Ultra-Cube Tech](https://ucubetech.com) | [GitHub](https://github.com/Ultra-Cube/) | [LinkedIn](https://www.linkedin.com/company/ultra-cube)

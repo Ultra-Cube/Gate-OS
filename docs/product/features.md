@@ -22,7 +22,7 @@ last-updated: 2025-08-23
 ## Environment Specs
 
 - Gaming, Dev, Design, Media
-- Each environment manifest (schema draft TBD)
+- Each environment manifest (see schema: `docs/architecture/schemas/environment-manifest.schema.yaml`)
 
 ## Feature Prioritization (MoSCoW Draft)
 
@@ -46,3 +46,7 @@ last-updated: 2025-08-23
 ## Notes
 
 Refine as specs are authored.
+
+---
+**Date:** July 2025 | **By:** Fadhel.SH  
+**Company:** [Ultra-Cube Tech](https://ucubetech.com) | [GitHub](https://github.com/Ultra-Cube/) | [LinkedIn](https://www.linkedin.com/company/ultra-cube)

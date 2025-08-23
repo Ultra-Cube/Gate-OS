@@ -30,7 +30,7 @@ last-updated: 2025-08-23
 ## Proposal Process (RFC)
 
 1. Open issue with `[RFC]` prefix.
-2. Draft in `/rfcs/` (future folder) using template.
+2. Draft in `/rfcs/` using `TEMPLATE.md`.
 3. Community review window (7–14 days).
 4. Steering decision + merge / revise.
 
@@ -48,3 +48,7 @@ last-updated: 2025-08-23
 ## Notes
 
 Living document; evolve with community scale.
+
+---
+**Date:** July 2025 | **By:** Fadhel.SH  
+**Company:** [Ultra-Cube Tech](https://ucubetech.com) | [GitHub](https://github.com/Ultra-Cube/) | [LinkedIn](https://www.linkedin.com/company/ultra-cube)

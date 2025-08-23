@@ -52,3 +52,7 @@ Summarize the mission statement and core values.
 ## Notes
 
 Draft – expand collaboratively.
+
+---
+**Date:** July 2025 | **By:** Fadhel.SH  
+**Company:** [Ultra-Cube Tech](https://ucubetech.com) | [GitHub](https://github.com/Ultra-Cube/) | [LinkedIn](https://www.linkedin.com/company/ultra-cube)
