@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import jsonschema
+from gateos_manager.security import validate_security_manifest
 import yaml
 
 
@@ -37,6 +38,11 @@ def load_manifest(path: Path, schema_path: Path) -> dict[str, Any]:
         schema_docs = list(yaml.safe_load_all(schema_path.read_text()))
         schema = (schema_docs[0] if schema_docs else {}) or {}
         jsonschema.validate(data, schema)
+        # Security policy pass
+        try:
+            validate_security_manifest(data)
+        except Exception as e:  # pragma: no cover - ensures error path caught upstream
+            raise ManifestValidationError(str(e)) from e
         return data
     except jsonschema.ValidationError as e:  # pragma: no cover - formatting
         raise ManifestValidationError(f"schema validation error: {e.message}") from e
