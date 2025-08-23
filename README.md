@@ -9,6 +9,7 @@
 *Seamlessly switch between gaming, development, design, and media environments*
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![CI](https://github.com/Ultra-Cube/Gate-OS/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-index-brightgreen.svg)](docs/README.md)
 [![Roadmap](https://img.shields.io/badge/status-Phase%202%20In%20Progress-orange.svg)](docs/roadmap/milestones.md)
 [![Ultra Cube Tech](https://img.shields.io/badge/by-Ultra%20Cube%20Tech-blue.svg)](https://www.ucubetech.com)
@@ -34,9 +35,13 @@
 
 ## 🎯 Overview
 
-Gate-OS is a universal Linux distribution that unifies multiple specialized environments—gaming, development, design, and media—into a single, modular operating system. Users can seamlessly switch between these environments, each optimized for its purpose, without the need for multiple OS installations.
+Gate-OS is a universal Linux distribution that unifies multiple specialized
+environments—gaming, development, design, and media—into a single, modular
+operating system. Users can seamlessly switch between these environments,
+each optimized for its purpose, without needing multiple OS installs.
 
 ### Core Value
+
 - One install, many roles
 - Deterministic environment switching
 - Modular, enterprise-aligned architecture
@@ -44,6 +49,7 @@ Gate-OS is a universal Linux distribution that unifies multiple specialized envi
 ---
 
 ## 🌟 Vision & Mission (Summary)
+
 See full: `docs/business/vision-mission.md`
 
 | Pillar | Summary |
@@ -56,9 +62,10 @@ See full: `docs/business/vision-mission.md`
 ---
 
 ## 🏗️ Architecture Snapshot
+
 Detailed design: `docs/architecture/overview.md`
 
-```
+```text
 Core Kernel / Base
   ├─ Core Services (env registry, policy)
   ├─ Environment Manager (switch orchestration)
@@ -70,6 +77,7 @@ Core Kernel / Base
 ---
 
 ## 🚀 Current Status
+
 Phase 2: Core System Development (≈40%)  
 Refer to: `docs/roadmap/milestones.md`
 
@@ -82,6 +90,7 @@ Refer to: `docs/roadmap/milestones.md`
 ---
 
 ## 🛠️ Stack
+
 | Layer | Tech |
 |-------|------|
 | Base | Ubuntu 22.04 LTS (patched) |
@@ -93,6 +102,7 @@ Refer to: `docs/roadmap/milestones.md`
 ---
 
 ## 🧩 Environments (Planned v1)
+
 | Env | Focus | Key Tools |
 |-----|-------|-----------|
 | Gaming | Performance | Steam, Lutris, Proton |
@@ -105,6 +115,7 @@ More detail: `docs/product/features.md`
 ---
 
 ## 🔄 Switching Concept (High-Level)
+
 1. Validate target environment manifest
 2. Quiesce conflicting services
 3. Activate container bundle + apply profile
@@ -114,6 +125,7 @@ More detail: `docs/product/features.md`
 ---
 
 ## 🧪 Early KPIs (Draft)
+
 | Metric | Target (v1) |
 |--------|-------------|
 | Switch Latency | < 3s |
@@ -124,12 +136,16 @@ More detail: `docs/product/features.md`
 ---
 
 ## 🤝 Contributing
+
 Read: `docs/contribution/governance.md`
 
 ```bash
 git clone https://github.com/Ultra-Cube/Gate-OS.git
 cd Gate-OS
 ./scripts/setup-dev-env.sh
+pip install .[dev]  # install manager & dev tooling
+gateos validate examples/environments/*.yaml --schema docs/architecture/schemas/environment-manifest.schema.yaml
+pytest -q
 ```
 
 Focus Areas: Core Manager, Environment Manifests, UI Shell, Security Isolation.
@@ -137,25 +153,29 @@ Focus Areas: Core Manager, Environment Manifests, UI Shell, Security Isolation.
 ---
 
 ## 📄 License
-Core licensed under **GPLv3**. See `LICENSE`.  
+
+Core licensed under **GPLv3**. See `LICENSE`.
+
 Commercial extensions (future) governed separately.
 
 ---
 
 ## 🛡️ Trademark & Branding
-“Gate-OS” & “Ultra Cube” are trademarks of Ultra Cube Tech. Proper usage guidance: `docs/legal/licensing.md`.
+
+“Gate-OS” & “Ultra Cube” are trademarks of Ultra Cube Tech. Usage guidance: `docs/legal/licensing.md`.
 
 ---
 
 ## 📞 Contact
-Website: https://www.ucubetech.com  
-Email: info@ucubetech.com  
-GitHub: https://github.com/Ultra-Cube
+
+Website: <https://www.ucubetech.com>  
+Email: <info@ucubetech.com>  
+GitHub: <https://github.com/Ultra-Cube>
 
 ---
 
 
 
-**✨ One OS to Rule Them All – Gate-OS ✨**
+### ✨ One OS to Rule Them All – Gate-OS ✨
 
 
