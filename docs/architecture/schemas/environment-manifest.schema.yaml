@@ -1,0 +1,185 @@
+# Gate-OS Environment Manifest Schema (Draft)
+# Version: 0.1.0
+# Purpose: Declarative definition of an environment (gaming, dev, etc.)
+# Status: Draft – subject to change
+
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: GateOSEnvironmentManifest
+version: "0.1.0"
+type: object
+required:
+  - apiVersion
+  - kind
+  - metadata
+  - spec
+properties:
+  apiVersion:
+    type: string
+    pattern: '^gateos\.ultracube\.v1alpha1$'
+  kind:
+    type: string
+    enum: [Environment]
+  metadata:
+    type: object
+    required: [name]
+    properties:
+      name:
+        type: string
+        pattern: "^[a-z0-9-]{3,32}$"
+      description:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+  spec:
+    type: object
+    required: [profile, containers]
+    properties:
+      profile:
+        type: object
+        required: [category]
+        properties:
+          category:
+            type: string
+            enum: [gaming, dev, design, media, custom]
+          performance:
+            type: object
+            properties:
+              cpuGovernor: { type: string }
+              gpuMode: { type: string }
+              nicPriority: { type: string }
+      containers:
+        type: array
+        minItems: 1
+        items:
+          type: object
+          required: [name, image]
+          properties:
+            name:
+              type: string
+              pattern: "^[a-z0-9-]{3,32}$"
+            image:
+              type: string
+            resources:
+              type: object
+              properties:
+                cpu: { type: string }
+                memory: { type: string }
+            capabilities:
+              type: array
+              items: { type: string }
+      services:
+        type: array
+        items:
+          type: object
+          required: [name]
+          properties:
+            name: { type: string }
+            description: { type: string }
+            required: { type: boolean }
+      mounts:
+        type: array
+        items:
+          type: object
+          required: [source, target]
+          properties:
+            source: { type: string }
+            target: { type: string }
+            readOnly: { type: boolean }
+      env:
+        type: array
+        items:
+          type: object
+          required: [name, value]
+          properties:
+            name: { type: string }
+            value: { type: string }
+      security:
+        type: object
+        properties:
+          isolationLevel:
+            type: string
+            enum: [strict, balanced, permissive]
+          appArmorProfile: { type: string }
+          seccompProfile: { type: string }
+      hooks:
+        type: object
+        properties:
+          preActivate:
+            type: array
+            items: { type: string }
+          postActivate:
+            type: array
+            items: { type: string }
+          preDeactivate:
+            type: array
+            items: { type: string }
+          postDeactivate:
+            type: array
+            items: { type: string }
+  status:
+    type: object
+    readOnly: true
+    properties:
+      lastValidated: { type: string, format: date-time }
+      warnings:
+        type: array
+        items: { type: string }
+
+---
+# Example (Minimal)
+# apiVersion: gateos.ultracube.v1alpha1
+# kind: Environment
+# metadata:
+#   name: gaming
+# spec:
+#   profile:
+#     category: gaming
+#   containers:
+#     - name: proton-runtime
+#       image: ghcr.io/ultra-cube/proton:latest
+---
+# Example (Full)
+# apiVersion: gateos.ultracube.v1alpha1
+# kind: Environment
+# metadata:
+#   name: dev
+#   description: Development toolchain environment
+#   tags: [primary, engineering]
+# spec:
+#   profile:
+#     category: dev
+#     performance:
+#       cpuGovernor: performance
+#       gpuMode: compute
+#   containers:
+#     - name: toolchain
+#       image: ghcr.io/ultra-cube/dev-suite:1.0.0
+#       resources:
+#         cpu: "2"
+#         memory: 4Gi
+#       capabilities: [docker, kvm]
+#   services:
+#     - name: ssh-agent
+#       description: SSH key forwarding
+#       required: true
+#   mounts:
+#     - source: /home/user/work
+#       target: /workspace
+#       readOnly: false
+#   env:
+#     - name: NODE_ENV
+#       value: development
+#   security:
+#     isolationLevel: balanced
+#     appArmorProfile: gateos-default
+#   hooks:
+#     preActivate: ["scripts/check-disk.sh"]
+#     postActivate: ["scripts/warm-cache.sh"]
+#     preDeactivate: ["scripts/flush-buffers.sh"]
+#     postDeactivate: ["scripts/cleanup.sh"]
+
+# ---
+# **Date:** July 2025 | **By:** Fadhel.SH
+# **Company:** Ultra-Cube Tech | https://ucubetech.com | https://github.com/Ultra-Cube/

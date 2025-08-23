@@ -1,0 +1,26 @@
+apiVersion: gateos.ultracube.v1alpha1
+kind: Environment
+metadata:
+  name: dev
+  description: Development toolchain environment
+spec:
+  profile:
+    category: dev
+    performance:
+      cpuGovernor: performance
+  containers:
+    - name: toolchain
+      image: ghcr.io/ultra-cube/dev-suite:1.0.0
+      resources:
+        cpu: "2"
+        memory: 4Gi
+      capabilities: [docker]
+  mounts:
+    - source: /home/user/work
+      target: /workspace
+      readOnly: false
+  env:
+    - name: GATEOS_ENV
+      value: dev
+  security:
+    isolationLevel: balanced

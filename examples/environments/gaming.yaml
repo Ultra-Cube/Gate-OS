@@ -1,0 +1,20 @@
+apiVersion: gateos.ultracube.v1alpha1
+kind: Environment
+metadata:
+  name: gaming
+  description: Gaming focused environment
+spec:
+  profile:
+    category: gaming
+  containers:
+    - name: proton-runtime
+      image: ghcr.io/ultra-cube/proton:latest
+      resources:
+        cpu: "2"
+        memory: 2Gi
+      capabilities: [vulkan]
+  env:
+    - name: GATEOS_ENV
+      value: gaming
+  security:
+    isolationLevel: balanced
