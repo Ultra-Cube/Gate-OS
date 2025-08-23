@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "[Gate-OS] Dev environment setup" >&2
+
+PYTHON_BIN="${PYTHON_BIN:-python3}"
+if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+  echo "Python not found. Install Python 3.10+ first." >&2
+  exit 1
+fi
+
+VENV_DIR=".venv"
+if [[ ! -d "$VENV_DIR" ]]; then
+  "$PYTHON_BIN" -m venv "$VENV_DIR"
+fi
+source "$VENV_DIR/bin/activate"
+python -m pip install --upgrade pip
+pip install -e '.[dev]'
+echo "Done. Activate with: source $VENV_DIR/bin/activate" >&2
+#!/usr/bin/env bash
+set -euo pipefail
+
 # Gate-OS Dev Environment Bootstrap (Draft)
 # Usage: ./scripts/setup-dev-env.sh
 

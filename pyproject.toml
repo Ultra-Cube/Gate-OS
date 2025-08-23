@@ -19,7 +19,14 @@ dependencies = [
 dev = [
   "pytest>=8.0.0",
   "pytest-cov>=5.0.0",
-  "ruff>=0.1.0"
+  "ruff>=0.1.0",
+  # Include API stack for testing endpoints in CI
+  "fastapi>=0.111.0",
+  "uvicorn>=0.30.0"
+]
+api = [
+  "fastapi>=0.111.0",
+  "uvicorn>=0.30.0"
 ]
 
 [project.scripts]
