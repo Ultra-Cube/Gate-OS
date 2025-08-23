@@ -1,0 +1,9 @@
+default: true
+MD010: false        # Allow hard tabs (some legacy license content)
+MD013:
+  line_length: 120  # Relax line length
+MD033: false        # Allow inline HTML (badges, center blocks)
+MD041: false        # Front matter / no required first heading
+MD046:
+  style: fenced
+MD025: false        # Multiple top-level headings allowed in some composite docs
