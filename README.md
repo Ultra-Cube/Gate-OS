@@ -110,6 +110,7 @@ Refer to: `docs/roadmap/milestones.md`
 | Dev | Toolchains | VS Code, Docker, K8s |
 | Design | Creative | GIMP, Blender, Krita |
 | Media | Production | Kodi, OBS, Resolve |
+| Security | Pentest & Diagnostics | Kali toolset, Burp, nmap |
 
 More detail: `docs/product/features.md`
 

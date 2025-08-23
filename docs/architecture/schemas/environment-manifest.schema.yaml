@@ -42,7 +42,7 @@ properties:
         properties:
           category:
             type: string
-            enum: [gaming, dev, design, media, custom]
+            enum: [gaming, dev, design, media, security, custom]
           performance:
             type: object
             properties:

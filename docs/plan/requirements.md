@@ -22,6 +22,9 @@ Each requirement: REQ-<Area>-<Number>. Priority: (M)ust, (S)hould, (C)ould, (W)o
 | REQ-CI-001 | Lint Enforcement | CI fails on lint errors | M | Lint job non-zero on violations |
 | REQ-CI-002 | Test Coverage | 80% line coverage gate | S | Coverage report >= threshold |
 | REQ-PKG-001 | Package Build Script | Build distributable artifact | S | Script outputs tar/installer |
+| REQ-SEC-TOOLS-001 | Security Tool Env | Provide curated security environment | S | security manifest validates & runs |
+| REQ-UI-003 | Alternative Desktop (DDE) | Support Deepin Desktop Environment option | S | Session starts under DDE |
+| REQ-MOB-001 | Mobile Companion API | Expose local API for Android app | S | Authenticated switch & status endpoints |
 
 ## Non-Functional Requirements
 

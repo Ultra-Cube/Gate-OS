@@ -2,12 +2,18 @@
 # Gate-OS Project Plan
 
 ## Purpose
-Single source of truth for scope, prioritized requirements, milestones, and progress tracking ("tracker").
+
+Single source of truth for scope, prioritized requirements, milestones, and
+progress tracking ("tracker").
 
 ## Vision (Summary)
-Deliver a universal Linux distribution enabling deterministic, low‑latency switching across specialized environments (gaming, dev, design, media) backed by a declarative manifest model and open governance.
+
+Deliver a universal Linux distribution enabling deterministic, low‑latency
+switching across specialized environments (gaming, dev, design, media) backed
+by a declarative manifest model and open governance.
 
 ## Success Criteria (v1 Launch)
+
 | KPI | Target | Measurement Method |
 |-----|--------|--------------------|
 | Switch latency | < 3s median | Instrumented telemetry event pair (start/ready) |
@@ -17,6 +23,7 @@ Deliver a universal Linux distribution enabling deterministic, low‑latency swi
 | Onboarding time (contributor) | < 30m | Developer survey |
 
 ## Scope (v1 Included)
+
 - Environment manifest schema + validator (Python)
 - Environment Manager (activation lifecycle, basic hooks)
 - Two reference environments (dev, gaming)
@@ -26,6 +33,7 @@ Deliver a universal Linux distribution enabling deterministic, low‑latency swi
 - CI: lint, tests, coverage, SBOM, vuln scan
 
 ## Out of Scope (v1)
+
 - Full UI theming & design system
 - Advanced GPU scheduling
 - Full SELinux/AppArmor policy sets (placeholders only)
@@ -33,6 +41,7 @@ Deliver a universal Linux distribution enabling deterministic, low‑latency swi
 - Packaging for multiple distros (Ubuntu base only)
 
 ## Milestones & Tracker
+
 | ID | Milestone | Description | Target | Status | Owner |
 |----|-----------|-------------|--------|--------|-------|
 | M1 | Schema Foundation | Finalize JSON Schema & examples | 2025-09 | Done | Arch |
@@ -42,10 +51,14 @@ Deliver a universal Linux distribution enabling deterministic, low‑latency swi
 | M5 | Security Baseline | isolationLevel enforcement hooks | 2025-12 | Planned | Sec |
 | M6 | Coverage 80% | Unit tests for manager & schema helpers | 2025-12 | Planned | QA |
 | M7 | Packaging Alpha | Image build + install script | 2026-01 | Planned | DevOps |
+| M8 | Security Env | Add security (Kali tools) environment manifest & hardening | 2026-01 | Planned | Sec |
+| M9 | DDE Integration | Optional Deepin Desktop session support | 2026-02 | Planned | UI |
+| M10 | Mobile Companion Alpha | Android app API + prototype client | 2026-03 | Planned | Mobile |
 
 Status Legend: Done / In Progress / Planned / At Risk / Blocked.
 
 ## Risk Register (Top)
+
 | Risk | Impact | Likelihood | Mitigation | Owner | Status |
 |------|--------|------------|-----------|-------|--------|
 | Scope creep UI | Delay core | M | Strict v1 scope doc | PM | Open |
@@ -54,12 +67,15 @@ Status Legend: Done / In Progress / Planned / At Risk / Blocked.
 | Limited contributors | Slow velocity | H | Improve onboarding docs | PM | Open |
 
 ## Requirement Set
+
 See `requirements.md` for full details. Traceability matrix links each requirement to artifacts & tests.
 
 ## Change Control
+
 Material scope changes require RFC (see `rfcs/`). Update this plan via PR referencing impacted requirement IDs.
 
 ## Reporting Cadence
+
 Bi-weekly progress update referencing milestones table & risk changes.
 
 ---

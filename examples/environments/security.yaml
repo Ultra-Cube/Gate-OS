@@ -1,0 +1,27 @@
+apiVersion: gateos.ultracube.v1alpha1
+kind: Environment
+metadata:
+  name: security
+  description: Offensive security & diagnostics toolset
+spec:
+  profile:
+    category: security
+    performance:
+      cpuGovernor: performance
+  containers:
+    - name: kali-tools
+      image: kalilinux/kali-rolling:latest
+      resources:
+        cpu: "2"
+        memory: 4Gi
+      capabilities: [netraw]
+    - name: burp-suite
+      image: ghcr.io/example/burp-suite:latest
+      resources:
+        cpu: "1"
+        memory: 2Gi
+  env:
+    - name: GATEOS_ENV
+      value: security
+  security:
+    isolationLevel: strict
