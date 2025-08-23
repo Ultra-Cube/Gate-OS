@@ -1,173 +1,161 @@
----
-# Ultra Cube Info Hub 🚀
-
-**Version:** 1.0.0 | **Status:** Main Information & Template | **Documentation:** Comprehensive | **Quality Score:** 100% | **Date:** 2025-08-23
+<!-- Gate-OS Root README -->
+# Gate-OS 🐧
 
 <div align="center">
-  <img src="assets/logos/ultra-cube-logo.svg" alt="Ultra Cube Logo" width="200" height="200" />
   
-  **The Central Information & Template Repository for Ultra Cube Tech**  
-  *Professional, unified, and scalable documentation and project structure for all Ultra Cube projects.*
+![Gate-OS Logo](https://via.placeholder.com/200x200.png?text=Gate-OS) <!-- Replace with actual logo -->
+
+**The Universal Linux Distribution - One OS for All Environments**  
+*Seamlessly switch between gaming, development, design, and media environments*
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-index-brightgreen.svg)](docs/README.md)
+[![Roadmap](https://img.shields.io/badge/status-Phase%202%20In%20Progress-orange.svg)](docs/roadmap/milestones.md)
+[![Ultra Cube Tech](https://img.shields.io/badge/by-Ultra%20Cube%20Tech-blue.svg)](https://www.ucubetech.com)
+
 </div>
 
-[![GitHub Org](https://img.shields.io/badge/GitHub-Ultra--Cube-181717?logo=github)](https://github.com/Ultra-Cube)
-[![Sponsors](https://img.shields.io/badge/Sponsor-⭐-ff69b4)](https://github.com/sponsors/Ultra-Cube/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Docs](https://img.shields.io/badge/docs-comprehensive-brightgreen.svg)](./docs/README.md)
-[![Ultra Cube Tech](https://img.shields.io/badge/by-Ultra%20Cube%20Tech-blue.svg)](https://ucubetech.com)
+---
+
+## Quick Links
+
+| Area | Link |
+|------|------|
+| Documentation Index | docs/README.md |
+| Vision & Mission | docs/business/vision-mission.md |
+| Architecture Overview | docs/architecture/overview.md |
+| Roadmap & Milestones | docs/roadmap/milestones.md |
+| Product Features | docs/product/features.md |
+| Governance | docs/contribution/governance.md |
+| UI/UX Guidelines | docs/ui-ux/branding.md |
+| Legal & Licensing | docs/legal/licensing.md |
 
 ---
 
-## Table of Contents
+## 🎯 Overview
 
-- [Overview](#overview)
-- [About Ultra Cube Tech](#about-ultra-cube-tech)
-- [New Projects](#new-projects)
-- [Core Platforms](#core-platforms)
-- [Open-Source Ecosystem](#open-source-ecosystem)
-- [Sponsors](#sponsors)
-- [Repository Template](#repository-template)
-- [Documentation Center](#documentation-center)
-- [Get Involved](#get-involved)
-- [Links & Resources](#links--resources)
-- [Contact Us](#contact-us)
-- [Contributing](#contributing)
-- [License](#license)
+Gate-OS is a universal Linux distribution that unifies multiple specialized environments—gaming, development, design, and media—into a single, modular operating system. Users can seamlessly switch between these environments, each optimized for its purpose, without the need for multiple OS installations.
 
----
-## Documentation Center
-
-Ultra Cube provides comprehensive documentation for all audiences. Use the links below to quickly access the most relevant resources:
-
-| Audience      | Start Here                                 | Key Documents & Links                                  |
-|--------------|--------------------------------------------|--------------------------------------------------------|
-| Developers   | [Developer Guide](docs/README.md)           | [API Reference](docs/api.md), [Component Docs](docs/components/), [Setup](docs/setup.md) |
-| Investors    | [Executive Summary](docs/business/EXECUTIVE_SUMMARY.md) | [Financial Analysis](docs/business/FINANCIAL_ANALYSIS.md), [Roadmap](docs/roadmap.md) |
-| Stakeholders | [Project Overview](docs/PROJECT-INDEX.md)   | [Roadmap](docs/roadmap.md), [Changelog](docs/CHANGELOG.md) |
-
-For a full list of documentation, see the [Documentation Center](docs/README.md).
+### Core Value
+- One install, many roles
+- Deterministic environment switching
+- Modular, enterprise-aligned architecture
 
 ---
 
-## 🌟 Overview
+## 🌟 Vision & Mission (Summary)
+See full: `docs/business/vision-mission.md`
 
-This repository is the main information hub for Ultra Cube Tech, providing:
-- Unified documentation and project structure for all company projects
-- Professional templates for new repositories
-- Centralized links for sponsors, contributors, and stakeholders
-- Highlights of all major and new Ultra Cube projects
-
----
-
-## 🏢 About Ultra Cube Tech
-
-Ultra Cube Tech is a forward-thinking technology company specializing in blockchain, open-source platforms, and digital innovation. This repository powers:
-- **🔗 Cross-Platform Integration**
-- **⚡ Unified Token Economy**
-- **🛡️ Enterprise Security**
-- **📈 Scalable Architecture**
+| Pillar | Summary |
+|--------|---------|
+| Unified Experience | Seamless cross-domain workflows |
+| Performance | Low-overhead switching & tuned profiles |
+| Security & Trust | Isolation + auditable manifests |
+| Community | Open governance, extensibility |
 
 ---
 
+## 🏗️ Architecture Snapshot
+Detailed design: `docs/architecture/overview.md`
 
-## 🚀 New Projects
-
-We are excited to announce several new open-source initiatives:
-
-- **Gate-OS**: Linux open-source project for multi-environment compatibility and flexibility.
-- **Learn-Library**: Open educational resource library for accessible, high-quality learning.
-- **Open-Source Tools**: Utilities and applications to empower developers and organizations.
-
-Stay tuned for more updates and contributions to these projects!
-
----
-
-## 🏆 Core Platforms
-
-- **Re-Eco Hub**: Circular-economy backbone linking recyclers, logistics partners, buyers, auditors, and contributors. Transparent flows and fair rewards enable trustworthy collaboration across the materials lifecycle.
-- **Dev Zone Platform**: Collaborative environment for developers and clients to prototype, test, and deploy sustainability-focused solutions. Includes SDKs, APIs, sandboxes, and verified integrations for faster delivery and seamless interoperability.
+```
+Core Kernel / Base
+  ├─ Core Services (env registry, policy)
+  ├─ Environment Manager (switch orchestration)
+  ├─ Container Layer (Docker/Podman)
+  ├─ UI Shell (GTK4 / Libadwaita)
+  └─ Telemetry & Security (planned)
+```
 
 ---
 
-## 🌐 Open-Source Ecosystem
+## 🚀 Current Status
+Phase 2: Core System Development (≈40%)  
+Refer to: `docs/roadmap/milestones.md`
 
-We’re expanding a suite of open-source tools and applications designed to simplify integration, standardize data, and accelerate development:
-- SDKs (JavaScript/Python) for authentication, data submissions, and queries
-- Open data schemas for materials, routes, audits, and incentives
-- Webhook & API gateway templates for plug-and-play logistics and compliance integrations
-- Dashboard starter kits for recyclers, buyers, and auditors
-- Mobile app (open core) for collection submissions, drop-off verifications, and reward tracking
-- CLI utilities for bulk import/export, reconciliation, and audit workflows
-- Reference applications showcasing reward issuance and dispute resolution flows
-
----
-
-## 🏅 Sponsors
-
-We are grateful for the support of our sponsors, who help us accelerate impact and grow our open-source ecosystem. Interested in sponsoring? [Become a Sponsor](https://github.com/sponsors/Ultra-Cube/)
+| Phase | Status | Notes |
+|-------|--------|-------|
+| P1 Planning | ✅ | Complete |
+| P2 Core Dev | 🔄 | Manager + UI work |
+| P3 Environments | ⏳ | Spec refinement |
 
 ---
 
-## 🧩 Repository Template
-
-All Ultra Cube repositories should follow our [main template](project-template/README_TEMPLATE.md) for structure, documentation, and contribution guidelines. This ensures consistency and quality across our projects.
-
----
-- **Inclusive Access:** Open-source tools that small organizations can deploy and maintain  
-- **Ecosystem Growth:** Grants, bounties, and streamlined onboarding for new contributors  
-
----
-
-## 🤝 Get Involved
-
-Sponsor Ultra Cube on GitHub to help us ship open-source infrastructure that communities can run, audit, and improve. Together, we’ll turn sustainability vision into practical, working systems.
-
-[Become a Sponsor](https://github.com/sponsors/Ultra-Cube/)
-[Explore Our Repositories](https://github.com/Ultra-Cube/)
+## 🛠️ Stack
+| Layer | Tech |
+|-------|------|
+| Base | Ubuntu 22.04 LTS (patched) |
+| Manager | Python + GTK4 |
+| Containers | Docker / Podman |
+| UI | GTK4 + Libadwaita |
+| Display | Wayland (X11 compat) |
 
 ---
 
-## 🔗 Links & Resources
+## 🧩 Environments (Planned v1)
+| Env | Focus | Key Tools |
+|-----|-------|-----------|
+| Gaming | Performance | Steam, Lutris, Proton |
+| Dev | Toolchains | VS Code, Docker, K8s |
+| Design | Creative | GIMP, Blender, Krita |
+| Media | Production | Kodi, OBS, Resolve |
 
-- [Website](https://ucubetech.com)
-- [Documentation](https://docs.ucubetech.com)
-- [LinkedIn](https://www.linkedin.com/company/ultra-cube)
-
----
-
-## 📬 Contact Us
-
-For general inquiries, partnership opportunities, or press:
-
-Email: support@ucubetech.com
-
-Follow us on LinkedIn for the latest updates and announcements.
+More detail: `docs/product/features.md`
 
 ---
 
-## 🛠️ Contributing
-
-We welcome contributions from developers, designers, auditors, recyclers, and anyone passionate about sustainability. To get started:
-
-1. Fork the repository you want to improve.
-2. Review existing issues or open a new one to discuss your idea.
-3. Submit a pull request with clear descriptions and tests.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+## 🔄 Switching Concept (High-Level)
+1. Validate target environment manifest
+2. Quiesce conflicting services
+3. Activate container bundle + apply profile
+4. Refresh UI shell context
+5. Emit telemetry event
 
 ---
 
+## 🧪 Early KPIs (Draft)
+| Metric | Target (v1) |
+|--------|-------------|
+| Switch Latency | < 3s |
+| Crash-Free Activation | > 99% |
+| Memory Overhead | < 8% over base |
+| Cold Boot to Ready | < 35s |
+
+---
+
+## 🤝 Contributing
+Read: `docs/contribution/governance.md`
+
+```bash
+git clone https://github.com/Ultra-Cube/Gate-OS.git
+cd Gate-OS
+./scripts/setup-dev-env.sh
+```
+
+Focus Areas: Core Manager, Environment Manifests, UI Shell, Security Isolation.
+
+---
 
 ## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+Core licensed under **GPLv3**. See `LICENSE`.  
+Commercial extensions (future) governed separately.
 
 ---
 
-<div align="center">
+## 🛡️ Trademark & Branding
+“Gate-OS” & “Ultra Cube” are trademarks of Ultra Cube Tech. Proper usage guidance: `docs/legal/licensing.md`.
 
-**Built with ❤️ by the Ultra Cube Team**
+---
 
-[Website](https://ucubetech.com) • [Documentation](./docs/README.md) • [GitHub](https://github.com/Ultra-Cube)
+## 📞 Contact
+Website: https://www.ucubetech.com  
+Email: info@ucubetech.com  
+GitHub: https://github.com/Ultra-Cube
 
-</div>
+---
+
+
+
+**✨ One OS to Rule Them All – Gate-OS ✨**
+
+
