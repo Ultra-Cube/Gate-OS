@@ -10,6 +10,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![CI](https://github.com/Ultra-Cube/Gate-OS/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/coverage-report-lightgrey.svg)](coverage.xml)
 [![Docs](https://img.shields.io/badge/docs-index-brightgreen.svg)](docs/README.md)
 [![Roadmap](https://img.shields.io/badge/status-Phase%202%20In%20Progress-orange.svg)](docs/roadmap/milestones.md)
 [![Ultra Cube Tech](https://img.shields.io/badge/by-Ultra%20Cube%20Tech-blue.svg)](https://www.ucubetech.com)
