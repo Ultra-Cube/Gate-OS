@@ -19,6 +19,10 @@ def _build_parser() -> argparse.ArgumentParser:
         default="docs/architecture/schemas/environment-manifest.schema.yaml",
         help="Schema path (YAML)",
     )
+    a = sub.add_parser("api", help="Run local control API server (experimental)")
+    a.add_argument("--host", default="127.0.0.1", help="Bind host")
+    a.add_argument("--port", type=int, default=8088, help="Bind port")
+    a.add_argument("--schema", default="docs/architecture/schemas/environment-manifest.schema.yaml", help="Schema for environment listing")
     return p
 
 
@@ -36,6 +40,14 @@ def main(argv: list[str] | None = None) -> int:
                 errors += 1
                 print(f"FAIL: {path}: {e}", file=sys.stderr)
         return 1 if errors else 0
+    if args.cmd == "api":
+        try:
+            from .api.server import run_server
+        except ImportError as e:  # pragma: no cover
+            print("FastAPI not installed. Install with 'pip install .[api]'", file=sys.stderr)
+            return 1
+        run_server(host=args.host, port=args.port, schema_path=Path(args.schema))
+        return 0
     return 0
 
 

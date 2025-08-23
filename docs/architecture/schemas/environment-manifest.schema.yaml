@@ -68,6 +68,7 @@ properties:
                 memory: { type: string }
             capabilities:
               type: array
+              description: "Container runtime capability labels (policy-enforced; security category validated against allowlist)."
               items: { type: string }
       services:
         type: array
@@ -103,6 +104,13 @@ properties:
             enum: [strict, balanced, permissive]
           appArmorProfile: { type: string }
           seccompProfile: { type: string }
+          capabilityPolicy:
+            type: object
+            description: "Optional explicit capability policy reference (future expansion)."
+            properties:
+              allowlistRef:
+                type: string
+                description: "Reference name of predefined capability allowlist (e.g., security-default)."
       hooks:
         type: object
         properties:

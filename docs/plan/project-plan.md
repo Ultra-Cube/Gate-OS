@@ -54,6 +54,7 @@ by a declarative manifest model and open governance.
 | M8 | Security Env | Add security (Kali tools) environment manifest & hardening | 2026-01 | Planned | Sec |
 | M9 | DDE Integration | Optional Deepin Desktop session support | 2026-02 | Planned | UI |
 | M10 | Mobile Companion Alpha | Android app API + prototype client | 2026-03 | Planned | Mobile |
+| M11 | Security Policy v1 | Capability allowlist + validation errors | 2026-03 | Planned | Sec |
 
 Status Legend: Done / In Progress / Planned / At Risk / Blocked.
 

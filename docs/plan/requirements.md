@@ -25,6 +25,8 @@ Each requirement: REQ-<Area>-<Number>. Priority: (M)ust, (S)hould, (C)ould, (W)o
 | REQ-SEC-TOOLS-001 | Security Tool Env | Provide curated security environment | S | security manifest validates & runs |
 | REQ-UI-003 | Alternative Desktop (DDE) | Support Deepin Desktop Environment option | S | Session starts under DDE |
 | REQ-MOB-001 | Mobile Companion API | Expose local API for Android app | S | Authenticated switch & status endpoints |
+| REQ-SEC-CAPS-001 | Capability Allowlist | Enforce allowlist for security env capabilities | M | Invalid capability rejected |
+| REQ-API-001 | Control API Endpoints | Provide REST list/get/switch endpoints | M | Endpoints return 2xx & schema |
 
 ## Non-Functional Requirements
 

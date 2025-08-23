@@ -112,6 +112,8 @@ Refer to: `docs/roadmap/milestones.md`
 | Media | Production | Kodi, OBS, Resolve |
 | Security | Pentest & Diagnostics | Kali toolset, Burp, nmap |
 
+Companion & future: Mobile control app (local network) + optional Deepin Desktop integration.
+
 More detail: `docs/product/features.md`
 
 ---

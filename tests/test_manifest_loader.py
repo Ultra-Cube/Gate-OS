@@ -60,3 +60,44 @@ spec:
         )
         with pytest.raises(ManifestValidationError):
                 load_manifest(bad, SCHEMA)
+def test_security_capability_allowlist_invalid(tmp_path: Path):
+        manifest = tmp_path / "sec.yaml"
+        manifest.write_text(
+                """
+apiVersion: gateos.ultracube.v1alpha1
+kind: Environment
+metadata:
+    name: secbad
+spec:
+    profile:
+        category: security
+    containers:
+        - name: tool
+            image: example/security:latest
+            capabilities: [haxxor]
+"""
+        )
+        with pytest.raises(ManifestValidationError):
+                load_manifest(manifest, SCHEMA)
+
+
+def test_security_capability_allowlist_valid(tmp_path: Path):
+        manifest = tmp_path / "sec-ok.yaml"
+        manifest.write_text(
+                """
+apiVersion: gateos.ultracube.v1alpha1
+kind: Environment
+metadata:
+    name: secok
+spec:
+    profile:
+        category: security
+    containers:
+        - name: tool
+            image: example/security:latest
+            capabilities: [netraw]
+"""
+        )
+        data = load_manifest(manifest, SCHEMA)
+        assert data["metadata"]["name"] == "secok"
+
