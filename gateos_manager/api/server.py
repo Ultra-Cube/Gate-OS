@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request, Response, Security
+from contextlib import asynccontextmanager
 from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
 import uuid
@@ -19,11 +20,22 @@ from gateos_manager.api.rate_limit import consume as rate_consume
 
 api_key_scheme = APIKeyHeader(name="x-token", auto_error=False)
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):  # pragma: no cover - minimal setup
+    # Startup logic: discover plugins & load environments
+    discover_entrypoint_plugins()
+    _load_all(Path("docs/architecture/schemas/environment-manifest.schema.yaml"))
+    yield
+    # Shutdown logic
+    info("api.shutdown")
+
+
 app = FastAPI(
     title="Gate-OS Control API",
     version="0.0.3",
     description="Control API for Gate-OS (experimental). Token auth with optional rate limits.",
     contact={"name": "Ultra Cube Tech"},
+    lifespan=lifespan,
 )
 
 
@@ -94,9 +106,7 @@ def switch_environment(
     return SwitchResponse(status=result["status"], environment=name, correlation_id=correlation_id)
 
 
-@app.on_event("shutdown")
-def _shutdown_cleanup():  # pragma: no cover - placeholder
-    info("api.shutdown")
+# (Deprecated on_event handler replaced by lifespan context)
 
 
 def run_server(host: str, port: int, schema_path: Path) -> None:  # pragma: no cover

@@ -44,7 +44,7 @@ jobs:
         run: yamllint .
 
       - name: Run tests with coverage
-        run: pytest -q --cov=gateos_manager --cov-report=xml --cov-report=term --cov-fail-under=65
+        run: pytest -q --cov=gateos_manager --cov-report=xml --cov-report=term --cov-fail-under=70
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
@@ -93,7 +93,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install .[dev]
       - name: Run API subset tests
-        run: pytest -q tests/test_api_server.py --cov=gateos_manager --cov-append --cov-report=xml --cov-report=term --cov-fail-under=65
+        run: pytest -q tests/test_api_server.py --cov=gateos_manager --cov-append --cov-report=xml --cov-report=term --cov-fail-under=70
+      - name: Refresh coverage badge (post-API subset)
+        if: success()
+        run: |
+          pip install coverage-badge
+          coverage-badge -o coverage.svg -f
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          if [[ -n $(git status --porcelain coverage.svg) ]]; then
+            git add coverage.svg
+            git commit -m "chore: update coverage badge (ci api-tests)"
+            git push || true
+          fi
       - name: Upload API coverage
         uses: actions/upload-artifact@v4
         with:
