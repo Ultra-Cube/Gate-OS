@@ -31,6 +31,9 @@
 | Governance | docs/contribution/governance.md |
 | UI/UX Guidelines | docs/ui-ux/branding.md |
 | Legal & Licensing | docs/legal/licensing.md |
+| Security Policy | SECURITY.md |
+| Changelog | CHANGELOG.md |
+| Examples Index | examples/README.md |
 
 ---
 
@@ -74,6 +77,55 @@ Core Kernel / Base
   ├─ UI Shell (GTK4 / Libadwaita)
   └─ Telemetry & Security (planned)
 ```
+
+---
+
+## 📚 Documentation Map
+
+High-level index for faster navigation across all knowledge domains.
+
+### Product & Strategy
+
+- Vision & Mission: `docs/business/vision-mission.md`
+- Market Analysis: `docs/business/market-analysis.md`
+- Product Features: `docs/product/features.md`
+- Roadmap & Milestones: `docs/roadmap/milestones.md`
+
+### Architecture & Engineering
+
+- Overview: `docs/architecture/overview.md`
+- Schemas: `docs/architecture/schemas/`
+- Control API: `docs/api/control-api.md`
+- Environment Manifests: `docs/environments/`
+- Security Policy & Capability Allowlist: `docs/security/`
+- Diagrams: `docs/diagrams/` (planned)
+
+### Operations & Processes
+
+- Governance: `docs/contribution/governance.md`
+- Contribution Guide: `CONTRIBUTING.md`
+- Code of Conduct: `CODE_OF_CONDUCT.md`
+- Security Disclosure: `SECURITY.md`
+- Changelog: `CHANGELOG.md`
+
+### UI / UX
+
+- Branding & Guidelines: `docs/ui-ux/branding.md`
+- Desktop Integration (Draft): `docs/ui-ux/desktop-integration.md`
+
+### Examples & Extensions
+
+- Examples Overview: `examples/README.md`
+- Environment Manifests: `examples/environments/*.yaml`
+- Sample Plugin: `examples/plugins/sample_plugin.py`
+
+### Future / Planned
+
+- RFCs: `rfcs/` (scaffold; add proposal template)
+- Telemetry Exporter Guide
+- Container Isolation Profiles
+
+---
 
 ---
 
