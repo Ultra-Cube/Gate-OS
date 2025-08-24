@@ -24,17 +24,17 @@
 
 | Area | Link |
 |------|------|
-| Documentation Index | docs/README.md |
-| Vision & Mission | docs/business/vision-mission.md |
-| Architecture Overview | docs/architecture/overview.md |
-| Roadmap & Milestones | docs/roadmap/milestones.md |
-| Product Features | docs/product/features.md |
-| Governance | docs/contribution/governance.md |
-| UI/UX Guidelines | docs/ui-ux/branding.md |
-| Legal & Licensing | docs/legal/licensing.md |
-| Security Policy | SECURITY.md |
-| Changelog | CHANGELOG.md |
-| Examples Index | examples/README.md |
+| Documentation Index | [docs/README.md](docs/README.md) |
+| Vision & Mission | [docs/business/vision-mission.md](docs/business/vision-mission.md) |
+| Architecture Overview | [docs/architecture/overview.md](docs/architecture/overview.md) |
+| Roadmap & Milestones | [docs/roadmap/milestones.md](docs/roadmap/milestones.md) |
+| Product Features | [docs/product/features.md](docs/product/features.md) |
+| Governance | [docs/contribution/governance.md](docs/contribution/governance.md) |
+| UI/UX Guidelines | [docs/ui-ux/branding.md](docs/ui-ux/branding.md) |
+| Legal & Licensing | [docs/legal/licensing.md](docs/legal/licensing.md) |
+| Security Policy | [SECURITY.md](SECURITY.md) |
+| Changelog | [CHANGELOG.md](CHANGELOG.md) |
+| Examples Index | [examples/README.md](examples/README.md) |
 
 ---
 
@@ -104,7 +104,7 @@ Legend: ✅ shipped · 🧪 experimental · ⏳ planned (roadmap) · 🔭 future
 
 ## 🌟 Vision & Mission (Summary)
 
-See full: `docs/business/vision-mission.md`
+See full: [docs/business/vision-mission.md](docs/business/vision-mission.md)
 
 | Pillar | Summary |
 |--------|---------|
@@ -117,7 +117,7 @@ See full: `docs/business/vision-mission.md`
 
 ## 🏗️ Architecture Snapshot
 
-Detailed design: `docs/architecture/overview.md`
+Detailed design: [docs/architecture/overview.md](docs/architecture/overview.md)
 
 ```text
 Core Kernel / Base
@@ -147,47 +147,47 @@ High-level index for faster navigation across all knowledge domains.
 
 ### Product & Strategy
 
-- Vision & Mission: `docs/business/vision-mission.md`
-- Market Analysis: `docs/business/market-analysis.md`
-- Product Features: `docs/product/features.md`
-- Roadmap & Milestones: `docs/roadmap/milestones.md`
+- Vision & Mission: [docs/business/vision-mission.md](docs/business/vision-mission.md)
+- Market Analysis: [docs/business/market-analysis.md](docs/business/market-analysis.md)
+- Product Features: [docs/product/features.md](docs/product/features.md)
+- Roadmap & Milestones: [docs/roadmap/milestones.md](docs/roadmap/milestones.md)
 
 ### Architecture & Engineering
 
-- Overview: `docs/architecture/overview.md`
-- Schemas: `docs/architecture/schemas/`
-- Control API: `docs/api/control-api.md`
-- Environment Manifests: `docs/environments/`
-- Security Policy & Capability Allowlist: `docs/security/`
-- Diagrams: `docs/diagrams/` (planned)
-- Threat Model: `docs/security/threat-model.md`
-*- Supply Chain & Integrity: `docs/architecture/supply-chain.md`
+- Overview: [docs/architecture/overview.md](docs/architecture/overview.md)
+- Schemas: [docs/architecture/schemas/](docs/architecture/schemas/)
+- Control API: [docs/api/control-api.md](docs/api/control-api.md)
+- Environment Manifests: [docs/environments/](docs/environments/)
+- Security Policy & Capability Allowlist: [docs/security/](docs/security/)
+- Diagrams: [docs/diagrams/](docs/diagrams/) (planned)
+- Threat Model: [docs/security/threat-model.md](docs/security/threat-model.md)
+*- Supply Chain & Integrity: [docs/architecture/supply-chain.md](docs/architecture/supply-chain.md)
 
 ### Operations & Processes
 
-- Governance: `docs/contribution/governance.md`
-- Contribution Guide: `CONTRIBUTING.md`
-- Code of Conduct: `CODE_OF_CONDUCT.md`
-- Security Disclosure: `SECURITY.md`
-- Changelog: `CHANGELOG.md`
+- Governance: [docs/contribution/governance.md](docs/contribution/governance.md)
+- Contribution Guide: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- Security Disclosure: [SECURITY.md](SECURITY.md)
+- Changelog: [CHANGELOG.md](CHANGELOG.md)
 
 ### UI / UX
 
-- Branding & Guidelines: `docs/ui-ux/branding.md`
-- Desktop Integration (Draft): `docs/ui-ux/desktop-integration.md`
+- Branding & Guidelines: [docs/ui-ux/branding.md](docs/ui-ux/branding.md)
+- Desktop Integration (Draft): [docs/ui-ux/desktop-integration.md](docs/ui-ux/desktop-integration.md)
 
 ### Examples & Extensions
 
-- Examples Overview: `examples/README.md`
+- Examples Overview: [examples/README.md](examples/README.md)
 - Environment Manifests: `examples/environments/*.yaml`
-- Sample Plugin: `examples/plugins/sample_plugin.py`
-- Plugin Development: `docs/extensions/plugin-development.md`
-- Manifest Authoring: `docs/environments/manifest-authoring.md`
-- Design Environment (Blender + publish workflow): `examples/environments/design.yaml`
+- Sample Plugin: [examples/plugins/sample_plugin.py](examples/plugins/sample_plugin.py)
+- Plugin Development: [docs/extensions/plugin-development.md](docs/extensions/plugin-development.md)
+- Manifest Authoring: [docs/environments/manifest-authoring.md](docs/environments/manifest-authoring.md)
+- Design Environment (Blender + publish workflow): [examples/environments/design.yaml](examples/environments/design.yaml)
 
 ### Future / Planned
 
-- RFCs: `rfcs/` (scaffold; add proposal template)
+- RFCs: [rfcs/](rfcs/) (scaffold; add proposal template)
 - Telemetry Exporter Guide
 - Container Isolation Profiles
 
@@ -232,7 +232,7 @@ Refer to: `docs/roadmap/milestones.md`
 
 Companion & future: Mobile control app (local network) + optional Deepin Desktop integration.
 
-More detail: `docs/product/features.md`
+More detail: [docs/product/features.md](docs/product/features.md)
 
 ---
 
@@ -496,7 +496,7 @@ Future: metrics aggregation, span modeling, structured switch performance stats.
 
 ## 🤝 Contributing
 
-Read: `docs/contribution/governance.md`
+Read: [docs/contribution/governance.md](docs/contribution/governance.md)
 
 ```bash
 git clone https://github.com/Ultra-Cube/Gate-OS.git
@@ -548,7 +548,7 @@ Commercial extensions (future) governed separately.
 
 ## 🛡️ Trademark & Branding
 
-“Gate-OS” & “Ultra Cube” are trademarks of Ultra Cube Tech. Usage guidance: `docs/legal/licensing.md`.
+“Gate-OS” & “Ultra Cube” are trademarks of Ultra Cube Tech. Usage guidance: [docs/legal/licensing.md](docs/legal/licensing.md).
 
 ---
 
@@ -575,7 +575,7 @@ GitHub: <https://github.com/Ultra-Cube>
 | Q1 2026 | Signed Environments | Manifest signing, supply chain tooling |
 | Q2 2026 | Remote Control & Metrics | Companion app, richer observability |
 
-Full detail lives in `docs/roadmap/milestones.md` (kept canonical).
+Full detail lives in [docs/roadmap/milestones.md](docs/roadmap/milestones.md) (kept canonical).
 
 ## ❓ FAQ (Early)
 
@@ -602,5 +602,16 @@ Full detail lives in `docs/roadmap/milestones.md` (kept canonical).
 ---
 
 If something you expected isn't here (no external wiki), open an issue – gaps are tracked aggressively during pre‑beta.
+
+---
+
+## © Copyright
+
+Copyright (c) 2025 **Ultra Cube Tech**. All rights reserved.
+
+This project is released under the terms of the GPLv3 (see [LICENSE](LICENSE)).
+
+Trademarks and brand assets remain the property of Ultra Cube Tech and may
+require additional permission for commercial use.
 
 
