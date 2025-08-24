@@ -7,13 +7,16 @@ import sys
 from datetime import datetime, timezone
 from typing import Any, Dict
 
-LOG_LEVEL = os.getenv("GATEOS_LOG_LEVEL", "INFO").upper()
 LEVEL_ORDER = ["DEBUG", "INFO", "WARN", "ERROR"]
+
+
+def _current_level() -> str:
+    return os.getenv("GATEOS_LOG_LEVEL", "INFO").upper()
 
 
 def _enabled(level: str) -> bool:
     try:
-        return LEVEL_ORDER.index(level) >= LEVEL_ORDER.index(LOG_LEVEL)
+        return LEVEL_ORDER.index(level) >= LEVEL_ORDER.index(_current_level())
     except ValueError:  # pragma: no cover
         return True
 

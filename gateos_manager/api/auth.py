@@ -9,11 +9,9 @@ If neither is set, auth is disabled (development mode).
 from __future__ import annotations
 
 import os
-from functools import lru_cache
 from typing import Optional
 
 
-@lru_cache(maxsize=1)
 def _load_token() -> Optional[str]:
     file_path = os.getenv("GATEOS_API_TOKEN_FILE")
     if file_path and os.path.exists(file_path):  # pragma: no cover - simple IO
@@ -31,7 +29,13 @@ def _load_token() -> Optional[str]:
 
 
 def verify_token(presented: str | None) -> bool:
+    """Verify presented token against current environment or file token.
+
+    Caching was removed to allow tests (and runtime) to modify the auth token
+    dynamically without needing explicit cache invalidation. For development
+    mode (no token configured) auth is disabled.
+    """
     required = _load_token()
-    if required is None:  # auth disabled
+    if required is None:
         return True
     return presented == required

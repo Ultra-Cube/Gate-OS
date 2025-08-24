@@ -1,5 +1,7 @@
 from pathlib import Path
 import pytest
+import textwrap
+import yaml
 
 from gateos_manager.manifest.loader import (
     ManifestValidationError,
@@ -69,12 +71,12 @@ kind: Environment
 metadata:
     name: secbad
 spec:
-    profile:
-        category: security
-    containers:
-        - name: tool
-            image: example/security:latest
-            capabilities: [haxxor]
+        profile:
+                category: security
+        containers:
+            - name: tool
+                image: example/security:latest
+                capabilities: [haxxor]
 """
         )
         with pytest.raises(ManifestValidationError):
@@ -82,22 +84,19 @@ spec:
 
 
 def test_security_capability_allowlist_valid(tmp_path: Path):
-        manifest = tmp_path / "sec-ok.yaml"
-        manifest.write_text(
-                """
-apiVersion: gateos.ultracube.v1alpha1
-kind: Environment
-metadata:
-    name: secok
-spec:
-    profile:
-        category: security
-    containers:
-        - name: tool
-            image: example/security:latest
-            capabilities: [netraw]
-"""
-        )
-        data = load_manifest(manifest, SCHEMA)
-        assert data["metadata"]["name"] == "secok"
+    manifest = tmp_path / "sec-ok.yaml"
+    doc = {
+        "apiVersion": "gateos.ultracube.v1alpha1",
+        "kind": "Environment",
+        "metadata": {"name": "secok"},
+        "spec": {
+            "profile": {"category": "security"},
+            "containers": [
+                {"name": "tool", "image": "example/security:latest", "capabilities": ["netraw"]}
+            ],
+        },
+    }
+    manifest.write_text(yaml.safe_dump(doc, sort_keys=False))
+    data = load_manifest(manifest, SCHEMA)
+    assert data["metadata"]["name"] == "secok"
 
