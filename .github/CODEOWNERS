@@ -1,0 +1,12 @@
+<!-- markdownlint-disable -->
+# CODEOWNERS file (not Markdown content)
+.github/workflows/      @Ultra-Cube/devops
+## CODEOWNERS (plain text)
+# Pattern order matters; last match wins
+# Adjust team handles to match structure
+
+*                       @Ultra-Cube/core-maintainers
+docs/                   @Ultra-Cube/docs-team
+examples/               @Ultra-Cube/engineering
+gateos_manager/         @Ultra-Cube/engineering
+.github/workflows/      @Ultra-Cube/devops
