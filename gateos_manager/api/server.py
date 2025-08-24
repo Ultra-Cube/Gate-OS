@@ -13,6 +13,7 @@ import yaml
 from gateos_manager.manifest.loader import load_manifest, ManifestValidationError
 from gateos_manager.api.auth import verify_token
 from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
+from gateos_manager.plugins.registry import discover_entrypoint_plugins
 from gateos_manager.logging.structured import info, warn
 from gateos_manager.api.rate_limit import consume as rate_consume
 
@@ -20,7 +21,7 @@ api_key_scheme = APIKeyHeader(name="x-token", auto_error=False)
 
 app = FastAPI(
     title="Gate-OS Control API",
-    version="0.0.1",
+    version="0.0.2",
     description="Control API for Gate-OS (experimental). Token auth with optional rate limits.",
     contact={"name": "Ultra Cube Tech"},
 )
@@ -99,6 +100,8 @@ def _shutdown_cleanup():  # pragma: no cover - placeholder
 
 
 def run_server(host: str, port: int, schema_path: Path) -> None:  # pragma: no cover
+    # Discover plugins before loading environments
+    discover_entrypoint_plugins()
     _load_all(schema_path)
     # Optional hot reload controlled via env flag
     import os
