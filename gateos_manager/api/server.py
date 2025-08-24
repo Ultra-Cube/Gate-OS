@@ -21,7 +21,7 @@ api_key_scheme = APIKeyHeader(name="x-token", auto_error=False)
 
 app = FastAPI(
     title="Gate-OS Control API",
-    version="0.0.2",
+    version="0.0.3",
     description="Control API for Gate-OS (experimental). Token auth with optional rate limits.",
     contact={"name": "Ultra Cube Tech"},
 )

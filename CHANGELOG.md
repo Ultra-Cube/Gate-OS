@@ -6,7 +6,22 @@ The format loosely follows Keep a Changelog and Semantic Versioning (will be ado
 
 ## [Unreleased]
 
-### Added
+### Added (Unreleased)
+
+_No changes yet._
+
+### Changed (Unreleased)
+
+_No changes yet._
+
+### Planned (Unreleased)
+
+- Further container isolation (seccomp/AppArmor profiles).
+- Graceful shutdown via API endpoint to trigger flush & plugin shutdown.
+
+## [0.0.3] - 2025-08-24
+
+### Added (0.0.3)
 
 - Graceful telemetry batch flush on process exit.
 - Integration test for successful container switch path.
@@ -16,14 +31,14 @@ The format loosely follows Keep a Changelog and Semantic Versioning (will be ado
 - Security policy unit tests (capability allowlist) & plugin discovery tests.
 - Schema version negotiation tests (valid/missing/unsupported cases).
 
-### Changed
+### Changed (0.0.3)
 
-- Bumped version to 0.0.2 (pending tag).
+- Coverage threshold increased to 65%.
+- Added manifest versioning & plugin discovery documentation.
 
-### Planned
+### Notes (0.0.3)
 
-- Further container isolation (seccomp/AppArmor profiles).
-- Graceful shutdown via API endpoint to trigger flush & plugin shutdown.
+Foundation hardening of extensibility (plugins) and governance around manifest evolution.
 
 ## [0.0.2] - 2025-08-24
 
@@ -55,5 +70,6 @@ Documentation and scaffolding improvements ahead of first tag.
 Early scaffold; API and module interfaces may change without deprecation.
 
 [Unreleased]: https://github.com/Ultra-Cube/Gate-OS/compare/main...HEAD
-[0.0.2]: https://github.com/Ultra-Cube/Gate-OS/compare/v0.0.1...v0.0.2 (tag to be created)
+[0.0.3]: https://github.com/Ultra-Cube/Gate-OS/compare/v0.0.2...v0.0.3 (tag to be created)
+[0.0.2]: https://github.com/Ultra-Cube/Gate-OS/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/Ultra-Cube/Gate-OS/releases/tag/v0.0.1 (tag to be created)
