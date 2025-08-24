@@ -159,6 +159,8 @@ High-level index for faster navigation across all knowledge domains.
 - Environment Manifests: `docs/environments/`
 - Security Policy & Capability Allowlist: `docs/security/`
 - Diagrams: `docs/diagrams/` (planned)
+- Threat Model: `docs/security/threat-model.md`
+*- Supply Chain & Integrity: `docs/architecture/supply-chain.md`
 
 ### Operations & Processes
 
@@ -178,6 +180,8 @@ High-level index for faster navigation across all knowledge domains.
 - Examples Overview: `examples/README.md`
 - Environment Manifests: `examples/environments/*.yaml`
 - Sample Plugin: `examples/plugins/sample_plugin.py`
+- Plugin Development: `docs/extensions/plugin-development.md`
+- Manifest Authoring: `docs/environments/manifest-authoring.md`
 - Design Environment (Blender + publish workflow): `examples/environments/design.yaml`
 
 ### Future / Planned
