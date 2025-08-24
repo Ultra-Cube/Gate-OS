@@ -6,18 +6,35 @@ The format loosely follows Keep a Changelog and Semantic Versioning (will be ado
 
 ## [Unreleased]
 
-### Added (Initial Release)
+### Added
+
+- Graceful telemetry batch flush on process exit.
+- Integration test for successful container switch path.
+- Release automation script.
+
+### Changed
+
+- Bumped version to 0.0.2 (pending tag).
+
+### Planned
+
+- Further container isolation (seccomp/AppArmor profiles).
+- Graceful shutdown via API endpoint to trigger flush & plugin shutdown.
+
+## [0.0.2] - 2025-08-24
+
+### Added (Pre-release Enhancements)
 
 - Expanded root README with comprehensive documentation index.
 - CHANGELOG initialized.
 
-### Planned
+### Notes
 
-- Versioned releases once core switch orchestration is feature-complete.
+Documentation and scaffolding improvements ahead of first tag.
 
 ## [0.0.1] - 2025-08-24
 
-### Added
+### Added (Initial Release)
 
 - Environment manifest loader & schema validation.
 - Security capability allowlist enforcement.
@@ -29,9 +46,10 @@ The format loosely follows Keep a Changelog and Semantic Versioning (will be ado
 - Tests for manifests, API, plugins, logging, containers, watch, failure shutdown hook.
 - Documentation set (architecture, product, roadmap, security, contribution, UI/UX, API spec).
 
-### Notes
+### Notes (Initial Release)
 
 Early scaffold; API and module interfaces may change without deprecation.
 
 [Unreleased]: https://github.com/Ultra-Cube/Gate-OS/compare/main...HEAD
+[0.0.2]: https://github.com/Ultra-Cube/Gate-OS/compare/v0.0.1...v0.0.2 (tag to be created)
 [0.0.1]: https://github.com/Ultra-Cube/Gate-OS/releases/tag/v0.0.1 (tag to be created)

@@ -15,6 +15,7 @@ import urllib.request
 import urllib.error
 import threading
 import queue
+import atexit
 
 # Simple batch queue (not multi-process safe)
 _BATCH_Q: 'queue.Queue[dict]' | None = None
@@ -68,6 +69,34 @@ def _export_batch(batch: list[dict]):  # pragma: no cover - IO
         pass
 
 
+def flush() -> None:  # pragma: no cover - flush logic
+    """Flush any queued batched telemetry events synchronously.
+
+    Called automatically at process exit, safe to invoke manually.
+    Only affects OTLP batch queue; file/stdout already written eagerly.
+    """
+    if os.getenv('GATEOS_TELEMETRY_BATCH') != '1':
+        return
+    global _BATCH_Q
+    if _BATCH_Q is None:
+        return
+    pending: list[dict] = []
+    try:
+        while True:
+            pending.append(_BATCH_Q.get_nowait())
+    except Exception:
+        pass
+    if pending:
+        _export_batch(pending)
+
+
+def _register_flush():  # pragma: no cover
+    try:
+        atexit.register(flush)
+    except Exception:
+        pass
+
+
 def _target() -> Optional[str]:  # pragma: no cover - simple
     return os.getenv("GATEOS_TELEMETRY_FILE")
 
@@ -84,6 +113,7 @@ def emit(event_type: str, correlation_id: str | None = None, **fields: Any) -> N
         payload["correlation_id"] = correlation_id
     # initialize batching if requested
     _ensure_batch_thread()
+    _register_flush()
 
     # stdout / file sink (always immediate)
     line = json.dumps(payload) + "\n"
