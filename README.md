@@ -178,6 +178,7 @@ High-level index for faster navigation across all knowledge domains.
 - Examples Overview: `examples/README.md`
 - Environment Manifests: `examples/environments/*.yaml`
 - Sample Plugin: `examples/plugins/sample_plugin.py`
+- Design Environment (Blender + publish workflow): `examples/environments/design.yaml`
 
 ### Future / Planned
 
@@ -237,6 +238,17 @@ More detail: `docs/product/features.md`
 3. Activate container bundle + apply profile
 4. Refresh UI shell context
 5. Emit telemetry event
+
+### Cross-Environment Workflow (Design → Media)
+
+Blender (Design) outputs renders automatically showcased in the Media (Kodi) environment:
+
+1. Blender container writes renders to `~/GateOS/work/design/renders`.
+2. Export helper (`asset-export` in `examples/environments/design.yaml`) detects new files.
+3. Helper triggers Kodi library refresh (planned plugin: `publish_to_kodi`).
+4. Media environment (Kodi) surfaces latest assets for demo / review.
+
+Benefit: frictionless creative iteration → showcase loop; no manual copying.
 
 ---
 

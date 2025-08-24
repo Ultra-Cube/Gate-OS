@@ -1,0 +1,65 @@
+# Example Design Environment Manifest
+# Demonstrates inclusion of Blender plus supporting creative tools.
+# This is a simplified illustrative manifest (fields align with current schema direction).
+
+environment:
+  name: design
+  description: "Creative workstation: 3D + raster + vector + media preview"
+  category: design
+  version: 0.1.0
+
+containers:
+  - name: blender
+    image: ghcr.io/library/blender:latest
+    gpu: true            # future flag for GPU pass-through handling
+    mounts:
+      - host: ~/GateOS/work/design/projects
+        target: /workspace/projects
+      - host: ~/GateOS/work/design/assets
+        target: /workspace/assets
+    env:
+      BLENDER_USER_SCRIPTS: /workspace/projects/scripts
+  - name: gimp
+    image: ghcr.io/linuxcontainers/gimp:latest
+    mounts:
+      - host: ~/GateOS/work/design/assets
+        target: /assets
+  - name: krita
+    image: ghcr.io/linuxcontainers/krita:latest
+    mounts:
+      - host: ~/GateOS/work/design/assets
+        target: /assets
+  - name: asset-export
+    image: ghcr.io/ultra-cube/gateos-asset-exporter:latest
+    purpose: "Watches render/output directory and publishes to shared media library for Kodi"
+    mounts:
+      - host: ~/GateOS/work/design/renders
+        target: /exports/renders
+      - host: ~/GateOS/work/media/showcase
+        target: /exports/showcase
+    env:
+      EXPORT_PUBLISH_MODE: kodi-scan
+      KODI_LIBRARY_PATH: /exports/showcase
+
+profiles:
+  resource:
+    cpu_shares: high
+    io_priority: high
+  security:
+    capability_allowlist:
+      - SYS_ADMIN # illustrative; tighten for real usage
+      - NET_BIND_SERVICE
+    isolation: relaxed
+
+workflows:
+  # Declarative future hooks describing cross-environment actions
+  - name: publish-render
+    trigger: file-create
+    watch: ~/GateOS/work/design/renders
+    action: plugin:publish_to_kodi
+    description: "Auto-add new renders to media showcase for review/portfolio"
+
+notes:
+  - "GPU flag marks container for future runtime-specific acceleration (NVIDIA / Mesa)."
+  - "asset-export component is a placeholder for a Gate-OS plugin service."
+  - "profiles.security.capability_allowlist should be minimized in production."
