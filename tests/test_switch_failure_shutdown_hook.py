@@ -1,7 +1,9 @@
 from pathlib import Path
+
 import pytest
+
 from gateos_manager.plugins import registry
-from gateos_manager.switch.orchestrator import switch_environment, SwitchError
+from gateos_manager.switch.orchestrator import SwitchError, switch_environment
 
 
 def test_shutdown_hook_called_on_validation_error(tmp_path):

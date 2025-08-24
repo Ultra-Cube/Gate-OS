@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
+
 from fastapi.testclient import TestClient
+
 from gateos_manager.api.server import app
 
 

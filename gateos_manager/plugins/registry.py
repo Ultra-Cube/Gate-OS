@@ -6,13 +6,13 @@ Plugins register via entrypoint function call at import time. Future work:
 """
 from __future__ import annotations
 
-from typing import Callable, Dict, List
-from importlib import metadata
 import os
+from collections.abc import Callable
+from importlib import metadata
 
 Hook = Callable[..., None]
 
-_hooks: Dict[str, List[Hook]] = {
+_hooks: dict[str, list[Hook]] = {
     "pre_switch": [],
     "post_switch": [],
     "shutdown": [],  # invoked on manager shutdown (future) or switch failure cleanup

@@ -1,14 +1,13 @@
 """Environment manifest directory watcher for hot reload (optional)."""
 from __future__ import annotations
 
-import os
+from collections.abc import Callable
 from pathlib import Path
 from threading import Thread
-from typing import Callable
 
 try:  # pragma: no cover - optional import path
-    from watchdog.observers import Observer
     from watchdog.events import FileSystemEventHandler
+    from watchdog.observers import Observer
 except ImportError:  # pragma: no cover
     Observer = None  # type: ignore
     FileSystemEventHandler = object  # type: ignore

@@ -45,13 +45,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "api":
         try:
             from .api.server import run_server
-        except ImportError as e:  # pragma: no cover
+        except ImportError:  # pragma: no cover
             print("FastAPI not installed. Install with 'pip install .[api]'", file=sys.stderr)
             return 1
         run_server(host=args.host, port=args.port, schema_path=Path(args.schema))
         return 0
     if args.cmd == "gen-token":
-        import secrets, string
+        import secrets
+        import string
         alphabet = string.ascii_letters + string.digits
         token = ''.join(secrets.choice(alphabet) for _ in range(args.length))
         print(token)

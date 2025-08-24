@@ -1,8 +1,10 @@
 import os
 import time
+
 from fastapi.testclient import TestClient
-from gateos_manager.api.server import app
+
 from gateos_manager.api import rate_limit as rl
+from gateos_manager.api.server import app
 
 
 def test_rate_limit_basic_window_reset(monkeypatch):

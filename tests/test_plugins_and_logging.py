@@ -1,8 +1,8 @@
 import json
 import os
-from pathlib import Path
-from gateos_manager.plugins import registry
+
 from gateos_manager.logging import structured
+from gateos_manager.plugins import registry
 
 
 def test_plugin_registry_register_and_invoke(capsys):

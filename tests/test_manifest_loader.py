@@ -1,13 +1,12 @@
 from pathlib import Path
+
 import pytest
-import textwrap
 import yaml
 
 from gateos_manager.manifest.loader import (
     ManifestValidationError,
     load_manifest,
 )
-
 
 SCHEMA = Path("docs/architecture/schemas/environment-manifest.schema.yaml")
 EXAMPLES = Path("examples/environments")

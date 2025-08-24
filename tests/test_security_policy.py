@@ -1,5 +1,6 @@
 import pytest
-from gateos_manager.security.policy import validate_security_manifest, SecurityPolicyError
+
+from gateos_manager.security.policy import SecurityPolicyError, validate_security_manifest
 
 
 def test_security_policy_valid_capabilities():

@@ -1,6 +1,7 @@
 import os
 import time
 from pathlib import Path
+
 from gateos_manager.telemetry import emitter
 
 
@@ -30,7 +31,6 @@ def test_telemetry_batch_size_threshold(monkeypatch):
     more than 5 events rapidly only the first batch is exported (removed from the queue)
     while the remainder stay queued (since exporter sleeps for the interval before next batch).
     """
-    import time
     # Environment configuration
     os.environ["GATEOS_TELEMETRY_ENABLED"] = "1"
     os.environ["GATEOS_TELEMETRY_BATCH"] = "1"

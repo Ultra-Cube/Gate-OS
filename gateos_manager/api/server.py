@@ -1,22 +1,21 @@
 """FastAPI control API (experimental)."""
 from __future__ import annotations
 
+import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request, Response, Security
-from contextlib import asynccontextmanager
 from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
-import uuid
-import yaml
 
-from gateos_manager.manifest.loader import load_manifest, ManifestValidationError
 from gateos_manager.api.auth import verify_token
-from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
-from gateos_manager.plugins.registry import discover_entrypoint_plugins
-from gateos_manager.logging.structured import info, warn
 from gateos_manager.api.rate_limit import consume as rate_consume
+from gateos_manager.logging.structured import info
+from gateos_manager.manifest.loader import ManifestValidationError, load_manifest
+from gateos_manager.plugins.registry import discover_entrypoint_plugins
+from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
 
 api_key_scheme = APIKeyHeader(name="x-token", auto_error=False)
 

@@ -24,13 +24,13 @@ from __future__ import annotations
 
 import os
 import shlex
-import subprocess
 import shutil
-from typing import Any, Dict, List
+import subprocess
+from typing import Any
 
-from gateos_manager.logging.structured import info, warn, error
-from gateos_manager.telemetry.emitter import emit
+from gateos_manager.logging.structured import error, info, warn
 from gateos_manager.security.isolation import apply_isolation
+from gateos_manager.telemetry.emitter import emit
 
 
 class ContainerManager:
@@ -41,12 +41,12 @@ class ContainerManager:
         self._runtime = (
             runtime or os.getenv('GATEOS_CONTAINER_RUNTIME') or self._detect_runtime()
         )
-        self._state: Dict[str, str] = {}
+        self._state: dict[str, str] = {}
 
     # ------------------------- public API ------------------------- #
-    def start(self, manifest: dict[str, Any], correlation_id: str | None = None) -> List[str]:
+    def start(self, manifest: dict[str, Any], correlation_id: str | None = None) -> list[str]:
         containers = manifest.get('containers') or []
-        started: List[str] = []
+        started: list[str] = []
         for spec in containers:
             cname = self._container_name(manifest, spec)
             if self._state.get(cname) == 'running':
@@ -55,9 +55,9 @@ class ContainerManager:
                 started.append(cname)
         return started
 
-    def stop(self, manifest: dict[str, Any], correlation_id: str | None = None) -> List[str]:
+    def stop(self, manifest: dict[str, Any], correlation_id: str | None = None) -> list[str]:
         containers = manifest.get('containers') or []
-        stopped: List[str] = []
+        stopped: list[str] = []
         for spec in containers:
             cname = self._container_name(manifest, spec)
             if self._state.get(cname) != 'running':
@@ -66,7 +66,7 @@ class ContainerManager:
                 stopped.append(cname)
         return stopped
 
-    def status(self, manifest: dict[str, Any]) -> Dict[str, str]:
+    def status(self, manifest: dict[str, Any]) -> dict[str, str]:
         containers = manifest.get('containers') or []
         return {self._container_name(manifest, c): self._state.get(self._container_name(manifest, c), 'unknown') for c in containers}
 

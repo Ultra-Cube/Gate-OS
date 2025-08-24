@@ -1,7 +1,9 @@
 from pathlib import Path
-import yaml
+
 import pytest
-from gateos_manager.manifest.loader import load_manifest, ManifestValidationError
+import yaml
+
+from gateos_manager.manifest.loader import ManifestValidationError, load_manifest
 
 SCHEMA = Path("docs/architecture/schemas/environment-manifest.schema.yaml")
 

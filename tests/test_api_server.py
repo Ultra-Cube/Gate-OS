@@ -1,9 +1,9 @@
-import pytest
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
-from gateos_manager.api.server import app, _load_all
+from gateos_manager.api.server import _load_all, app
 
 SCHEMA = Path("docs/architecture/schemas/environment-manifest.schema.yaml")
 

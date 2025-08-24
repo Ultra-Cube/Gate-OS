@@ -9,14 +9,13 @@ If neither is set, auth is disabled (development mode).
 from __future__ import annotations
 
 import os
-from typing import Optional
 
 
-def _load_token() -> Optional[str]:
+def _load_token() -> str | None:
     file_path = os.getenv("GATEOS_API_TOKEN_FILE")
     if file_path and os.path.exists(file_path):  # pragma: no cover - simple IO
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 token = f.readline().strip()
                 if token:
                     return token

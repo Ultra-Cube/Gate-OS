@@ -1,14 +1,15 @@
 """Environment manifest loading & validation (draft)."""
 from __future__ import annotations
 
+import importlib.resources as pkg_resources
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Optional
-import importlib.resources as pkg_resources
+from typing import Any
 
 import jsonschema
-from gateos_manager.security import validate_security_manifest
 import yaml
+
+from gateos_manager.security import validate_security_manifest
 
 
 @dataclass
@@ -21,7 +22,7 @@ class ManifestValidationError(Exception):
 SUPPORTED_SCHEMA_VERSIONS = ["1.0"]  # extend as new versions added
 
 
-def _resolve_schema(version: Optional[str], explicit_path: Path) -> Path:
+def _resolve_schema(version: str | None, explicit_path: Path) -> Path:
     """Resolve schema path by version.
 
     Order:

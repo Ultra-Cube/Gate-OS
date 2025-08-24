@@ -12,7 +12,6 @@ from __future__ import annotations
 import os
 import time
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass
@@ -21,7 +20,7 @@ class _Bucket:
     reset_at: float
 
 
-_buckets: Dict[str, _Bucket] = {}
+_buckets: dict[str, _Bucket] = {}
 
 
 def _config() -> tuple[int | None, int]:  # pragma: no cover - trivial

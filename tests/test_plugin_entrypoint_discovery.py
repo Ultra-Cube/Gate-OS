@@ -1,7 +1,8 @@
-import os
 import importlib.metadata
-import types
+import os
+
 from gateos_manager.plugins.registry import discover_entrypoint_plugins
+
 
 def test_discover_entrypoint_plugins_empty(monkeypatch):
     # Patch importlib.metadata.entry_points to return empty for our group

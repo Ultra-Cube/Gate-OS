@@ -1,9 +1,6 @@
 import os
-from pathlib import Path
-import time
 
 from gateos_manager.containers.manager import ContainerManager
-from gateos_manager.security.isolation import apply_isolation
 from gateos_manager.watch.reloader import _Handler  # type: ignore
 
 
