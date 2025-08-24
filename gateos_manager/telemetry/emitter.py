@@ -6,19 +6,20 @@ to stdout when GATEOS_TELEMETRY_ENABLED=1.
 """
 from __future__ import annotations
 
+import atexit
 import json
 import os
-import sys
-from datetime import datetime, timezone
-from typing import Any, Dict, Optional
-import urllib.request
-import urllib.error
-import threading
 import queue
-import atexit
+import sys
+import threading
+import urllib.error
+import urllib.request
+from contextlib import suppress
+from datetime import datetime, timezone
+from typing import Any
 
 # Simple batch queue (not multi-process safe)
-_BATCH_Q: 'queue.Queue[dict]' | None = None
+_BATCH_Q: queue.Queue[dict] | None = None
 _BATCH_LOCK = threading.Lock()
 _FLUSH_THREAD: threading.Thread | None = None
 
@@ -91,20 +92,18 @@ def flush() -> None:  # pragma: no cover - flush logic
 
 
 def _register_flush():  # pragma: no cover
-    try:
+    with suppress(Exception):
         atexit.register(flush)
-    except Exception:
-        pass
 
 
-def _target() -> Optional[str]:  # pragma: no cover - simple
+def _target() -> str | None:  # pragma: no cover - simple
     return os.getenv("GATEOS_TELEMETRY_FILE")
 
 
 def emit(event_type: str, correlation_id: str | None = None, **fields: Any) -> None:  # pragma: no cover - IO heavy
     if os.getenv("GATEOS_TELEMETRY_ENABLED") != "1":
         return
-    payload: Dict[str, Any] = {
+    payload: dict[str, Any] = {
         "ts": datetime.now(tz=timezone.utc).isoformat(),
         "event": event_type,
         **fields,
@@ -130,10 +129,8 @@ def emit(event_type: str, correlation_id: str | None = None, **fields: Any) -> N
     otlp_endpoint = os.getenv("GATEOS_TELEMETRY_OTLP_HTTP")
     if otlp_endpoint:
         if os.getenv('GATEOS_TELEMETRY_BATCH') == '1' and _BATCH_Q is not None:
-            try:
+            with suppress(Exception):
                 _BATCH_Q.put_nowait(payload)
-            except Exception:
-                pass
         else:
             try:
                 req = urllib.request.Request(otlp_endpoint, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"}, method="POST")

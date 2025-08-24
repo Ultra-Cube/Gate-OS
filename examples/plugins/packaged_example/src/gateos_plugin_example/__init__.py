@@ -1,1 +1,3 @@
-from .hooks import *  # noqa: F401
+from .hooks import announce  # re-export for convenience
+
+__all__ = ["announce"]

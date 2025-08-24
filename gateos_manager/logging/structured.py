@@ -4,8 +4,9 @@ from __future__ import annotations
 import json
 import os
 import sys
+from contextlib import suppress
 from datetime import datetime, timezone
-from typing import Any, Dict
+from typing import Any
 
 LEVEL_ORDER = ["DEBUG", "INFO", "WARN", "ERROR"]
 
@@ -24,7 +25,7 @@ def _enabled(level: str) -> bool:
 def log(level: str, message: str, correlation_id: str | None = None, **fields: Any) -> None:  # pragma: no cover - IO
     if not _enabled(level):
         return
-    record: Dict[str, Any] = {
+    record: dict[str, Any] = {
         "ts": datetime.now(tz=timezone.utc).isoformat(),
         "level": level,
         "msg": message,
@@ -32,10 +33,8 @@ def log(level: str, message: str, correlation_id: str | None = None, **fields: A
     }
     if correlation_id:
         record["correlation_id"] = correlation_id
-    try:
+    with suppress(Exception):  # noqa: BLE001
         sys.stdout.write(json.dumps(record) + "\n")
-    except Exception:  # noqa: BLE001
-        pass
 
 
 def info(message: str, correlation_id: str | None = None, **fields: Any) -> None:
