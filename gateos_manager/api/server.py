@@ -4,7 +4,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI, HTTPException, Request, Response, Security
+from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
 import uuid
 import yaml
@@ -14,6 +15,8 @@ from gateos_manager.api.auth import verify_token
 from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
 from gateos_manager.logging.structured import info, warn
 from gateos_manager.api.rate_limit import consume as rate_consume
+
+api_key_scheme = APIKeyHeader(name="x-token", auto_error=False)
 
 app = FastAPI(
     title="Gate-OS Control API",
@@ -60,8 +63,17 @@ def get_environment(name: str) -> dict[str, Any]:  # pragma: no cover
     return _ENV_CACHE[name]
 
 
-@app.post("/switch/{name}", response_model=SwitchResponse)
-def switch_environment(name: str, request: Request, response: Response, x_token: str | None = None, x_client_id: str | None = None) -> SwitchResponse:  # pragma: no cover - thin wrapper
+@app.post("/switch/{name}", response_model=SwitchResponse, tags=["Switch"],
+          summary="Switch to environment (token required)",
+          description="Switches to the specified environment. Requires x-token header.",
+          responses={401: {"description": "Unauthorized"}, 429: {"description": "Rate limit exceeded"}})
+def switch_environment(
+    name: str,
+    request: Request,
+    response: Response,
+    x_token: str | None = Security(api_key_scheme),
+    x_client_id: str | None = None
+) -> SwitchResponse:
     if not verify_token(x_token):
         raise HTTPException(status_code=401, detail="Unauthorized")
     client_key = x_client_id or "anon"
