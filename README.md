@@ -361,7 +361,14 @@ pip install -e '.[dev,watch]' --upgrade
 
 ## 🔐 Auth Token & Security Basics
 
-The Control API uses a simple token (temporary dev mechanism):
+The Control API uses a simple token (temporary dev mechanism). Resolution precedence:
+
+1. `GATEOS_API_TOKEN_FILE` (first non-empty line wins if file exists & readable)
+2. `GATEOS_API_TOKEN` (environment variable)
+3. If neither → auth disabled (development / test mode)
+
+Runtime changes apply immediately (no restart) because the token is re-read on each request.
+
 
 Generate a token:
 
