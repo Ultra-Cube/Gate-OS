@@ -19,6 +19,33 @@ _No changes yet._
 - Further container isolation (seccomp/AppArmor profiles).
 - Graceful shutdown via API endpoint to trigger flush & plugin shutdown.
 
+## [0.0.4] - 2025-08-24
+
+### Added (0.0.4)
+
+- Telemetry batch size threshold test and stabilization of batching logic coverage.
+- Multi-client rate limit isolation test.
+- Additional negative security capability tests (multiple invalid caps mixed with valid).
+- PyPI publish workflow using trusted publishing (OIDC) on tags `v*`.
+
+### Changed (0.0.4)
+
+- Control API now honors `x-client-id` header for per-client rate limiting
+	(previously only query param / fallback caused bucket collision).
+- Raised overall test count and coverage (43 passing tests) and stabilized telemetry batch size test timing.
+- Version bumped to 0.0.4.
+
+### Fixed (0.0.4)
+
+- Rate limiting incorrectly aggregating different clients due to missing header extraction; now resolved.
+- Flaky assertion in telemetry batch size test (timing variance) relaxed to acceptable range.
+
+### Notes (0.0.4)
+
+Quality hardening release prior to next feature expansion (isolation profiles &
+API shutdown endpoint planned). Focus on correctness of rate limiting, telemetry
+batching behavior, and publish pipeline readiness.
+
 ## [0.0.3] - 2025-08-24
 
 ### Added (0.0.3)
@@ -70,6 +97,7 @@ Documentation and scaffolding improvements ahead of first tag.
 Early scaffold; API and module interfaces may change without deprecation.
 
 [Unreleased]: https://github.com/Ultra-Cube/Gate-OS/compare/main...HEAD
+[0.0.4]: https://github.com/Ultra-Cube/Gate-OS/compare/v0.0.3...v0.0.4 (tag to be created)
 [0.0.3]: https://github.com/Ultra-Cube/Gate-OS/compare/v0.0.2...v0.0.3 (tag to be created)
 [0.0.2]: https://github.com/Ultra-Cube/Gate-OS/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/Ultra-Cube/Gate-OS/releases/tag/v0.0.1 (tag to be created)
