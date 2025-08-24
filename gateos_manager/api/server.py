@@ -13,6 +13,7 @@ from pydantic import BaseModel
 from gateos_manager.api.auth import verify_token
 from gateos_manager.api.rate_limit import consume as rate_consume
 from gateos_manager.logging.structured import info
+from gateos_manager.telemetry.emitter import flush as telemetry_flush, emit as telemetry_emit
 from gateos_manager.manifest.loader import ManifestValidationError, load_manifest
 from gateos_manager.plugins.registry import discover_entrypoint_plugins
 from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
@@ -47,6 +48,11 @@ class SwitchResponse(BaseModel):
     status: str
     environment: str
     correlation_id: str
+
+
+class ShutdownResponse(BaseModel):
+    status: str
+    message: str
 
 _ENV_CACHE: dict[str, dict[str, Any]] = {}
 
@@ -105,6 +111,20 @@ def switch_environment(
     info("switch.request", environment=name, client=client_key, correlation_id=correlation_id)
     result = orchestrate_switch(name, Path("docs/architecture/schemas/environment-manifest.schema.yaml"), correlation_id=correlation_id)
     return SwitchResponse(status=result["status"], environment=name, correlation_id=correlation_id)
+
+
+@app.post("/shutdown", response_model=ShutdownResponse, tags=["Control"], summary="Graceful shutdown (token required)",
+          description="Flushes telemetry batches and emits a shutdown event. Intended for controlled test/CI usage.",
+          responses={401: {"description": "Unauthorized"}})
+def shutdown(request: Request, x_token: str | None = Security(api_key_scheme)) -> ShutdownResponse:  # pragma: no cover - thin wrapper
+    if not verify_token(x_token):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    correlation_id = request.headers.get("x-correlation-id", str(uuid.uuid4()))
+    telemetry_emit("api.shutdown.request", correlation_id=correlation_id)
+    telemetry_flush()  # ensure any queued batched telemetry exported
+    info("api.shutdown.flush", correlation_id=correlation_id)
+    telemetry_emit("api.shutdown.complete", correlation_id=correlation_id)
+    return ShutdownResponse(status="ok", message="flushed telemetry & accepted shutdown request")
 
 
 # (Deprecated on_event handler replaced by lifespan context)
