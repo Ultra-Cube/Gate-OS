@@ -28,7 +28,7 @@ import subprocess
 import shutil
 from typing import Any, Dict, List
 
-from gateos_manager.logging.structured import info, warning, error
+from gateos_manager.logging.structured import info, warn, error
 from gateos_manager.telemetry.emitter import emit
 from gateos_manager.security.isolation import apply_isolation
 
@@ -72,12 +72,17 @@ class ContainerManager:
 
     # ------------------------- internals ------------------------- #
     def _detect_runtime(self) -> str:
-        # Try podman then docker; if neither found, force dry-run
+        """Detect an available container runtime.
+
+        Preference order: podman, docker. If neither is found, switch to dry-run
+        mode and return 'none'.
+        """
         for candidate in ('podman', 'docker'):
             if shutil.which(candidate):
                 return candidate
+        # Neither runtime found: enable dry-run fallback
         self._dry_run = True
-        warning('container.runtime.missing', detail='podman/docker not found; switching to dry-run')
+        warn('container.runtime.missing', detail='podman/docker not found; switching to dry-run')
         return 'none'
 
     def _container_name(self, manifest: dict[str, Any], spec: dict[str, Any]) -> str:
@@ -87,7 +92,7 @@ class ContainerManager:
     def _start_single(self, cname: str, spec: dict[str, Any], correlation_id: str | None = None) -> bool:
         image = spec.get('image')
         if not image:
-            warning('container.skip.no_image', container=cname, correlation_id=correlation_id)
+            warn('container.skip.no_image', container=cname, correlation_id=correlation_id)
             return False
         emit('container.start.attempt', container=cname, image=image, correlation_id=correlation_id)
         info('container.start.attempt', container=cname, image=image, runtime=self._runtime, dry_run=self._dry_run, correlation_id=correlation_id)
