@@ -85,11 +85,13 @@ def switch_environment(
     request: Request,
     response: Response,
     x_token: str | None = Security(api_key_scheme),
-    x_client_id: str | None = None
+    x_client_id: str | None = None  # retained for backward compatibility (query param usage)
 ) -> SwitchResponse:
     if not verify_token(x_token):
         raise HTTPException(status_code=401, detail="Unauthorized")
-    client_key = x_client_id or "anon"
+    # Prefer explicit function param (query), then header, else anon
+    header_client_id = request.headers.get("x-client-id")
+    client_key = x_client_id or header_client_id or "anon"
     allowed, limit, remaining, reset_at = rate_consume(f"switch:{client_key}")
     if limit is not None:
         response.headers["X-RateLimit-Limit"] = str(limit)
