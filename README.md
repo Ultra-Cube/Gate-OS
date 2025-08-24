@@ -44,11 +44,60 @@ environments—gaming, development, design, and media—into a single, modular
 operating system. Users can seamlessly switch between these environments,
 each optimized for its purpose, without needing multiple OS installs.
 
+### Elevator Pitch
+
+Gate-OS turns one workstation into many purpose‑built machines – without reboot rituals,
+multi‑boot clutter, or fragile dotfile juggling. Define an "environment" as code
+(manifests + container bundle + profile) and switch in seconds. It's the convergence
+layer between a traditional Linux distro, a developer platform, and a tuned
+workstation appliance.
+
+### Why It Matters
+
+| Problem Today | Gate-OS Solution |
+|---------------|------------------|
+| Multiple OS installs for gaming/dev/design | Deterministic environment switching on one base install |
+| Manual toolchain isolation | Declarative manifests + container encapsulation |
+| Context switching overhead | One command / API trigger to pivot workflows |
+| Drift & config snowball | Versioned, auditable environment definitions |
+| Security friction | Capability allowlists & (future) sandbox/isolation profiles |
+
+### Key Differentiators
+
+- Environment-as-Code (EaC) schema: reproducible switching
+- Pluggable orchestration: pre/post/shutdown hooks
+- Container runtime abstraction (podman / docker / dry-run)
+- Structured telemetry + OTLP export for fleet / ops insight
+- Designed for future UI shell integration & remote companion control
+
+### Vision in One Line
+
+One OS install that becomes any workstation you need – instantly, predictably, safely.
+
 ### Core Value
 
 - One install, many roles
 - Deterministic environment switching
 - Modular, enterprise-aligned architecture
+
+### Feature Matrix (Early Phase)
+
+| Capability | Status | Notes |
+|------------|--------|-------|
+| Manifest schema validation | ✅ | JSON/YAML validated against spec |
+| Switch orchestration core | ✅ | Dry-run + container start pipeline |
+| Container runtime detection | ✅ | podman → docker → dry-run fallback |
+| Plugin hooks (pre/post/shutdown) | ✅ | Python entrypoints registry |
+| Telemetry (stdout/file/OTLP) | ✅ | Batch + atexit flush |
+| Rate-limited Control API | ✅ | Token auth + headers |
+| Capability allowlist (security) | ✅ | Enforced for security domain manifests |
+| Isolation enforcement | 🧪 | Stub – profiles upcoming |
+| Desktop shell integration | ⏳ | Phase 3 target |
+| GUI Switch Panel | ⏳ | Planned after stable API |
+| Remote companion app | 🔭 | Concept exploration |
+| Signed environment bundles | 🔭 | Supply chain milestone |
+
+Legend: ✅ shipped · 🧪 experimental · ⏳ planned (roadmap) · 🔭 future concept
 
 ---
 
@@ -77,6 +126,17 @@ Core Kernel / Base
   ├─ UI Shell (GTK4 / Libadwaita)
   └─ Telemetry & Security (planned)
 ```
+
+### Layer Deep Dive (Concise)
+
+| Layer | Responsibility | Extensibility |
+|-------|----------------|---------------|
+| Manifest Schema | Define environment intent | Versioned spec + validation |
+| Switch Orchestrator | Coordinates validation → containers → hooks | Plugin lifecycle hooks |
+| Container Manager | Abstracts runtime differences & isolation | Additional runtimes (future) |
+| Telemetry Emitter | Unified event bus (logs/OTLP/file) | Export adapters (custom) |
+| Security Module | Capability policy + isolation stubs | Profiles (seccomp/AppArmor) |
+| API Server | Programmatic control & automation | Additional auth backends |
 
 ---
 
@@ -227,6 +287,24 @@ Verify CLI is available:
 gateos --help
 ```
 
+### Quick Start (Dry-Run Demo)
+
+```bash
+git clone https://github.com/Ultra-Cube/Gate-OS.git
+cd Gate-OS
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e '.[dev]'
+GATEOS_API_TOKEN=$(gateos gen-token) gateos api &  # start API
+curl -H "x-token: $GATEOS_API_TOKEN" http://localhost:8000/environments
+```
+
+Add a sample manifest under `examples/environments/dev.yaml` then perform a switch (placeholder endpoint once implemented):
+
+```bash
+curl -X POST -H "x-token: $GATEOS_API_TOKEN" -H 'Content-Type: application/json' \
+  -d @examples/environments/dev.yaml http://localhost:8000/switch
+```
+
 ---
 
 ## 👨‍💻 Development Setup
@@ -289,6 +367,18 @@ export GATEOS_API_TOKEN_FILE=~/.config/gateos/token
 
 Security capability allowlist is enforced for manifests in the `security` category – see `docs/security/capability-policy.md`.
 
+### Security Model (Foundations)
+
+| Aspect | Current | Planned |
+|--------|---------|---------|
+| Auth | Static token (env/file) | OIDC / mTLS / per-env scopes |
+| Capability Policy | Allowlist validation | Policy bundles + signing |
+| Isolation | Logging stub | Seccomp/AppArmor profiles + namespaces |
+| Supply Chain | Manual review | Signed manifest + provenance attestation |
+| Secrets Handling | Env var pass-through (controlled) | Vault / KMS integration |
+
+Threat model & hardening guidance will ship prior to first beta tag.
+
 ---
 
 ## 🛰️ Running the Control API
@@ -330,6 +420,14 @@ GATEOS_API_TOKEN=$(gateos gen-token) gateos api
 
 Correlation IDs are injected per request and emitted in both logs & telemetry events for traceability.
 
+### Telemetry Modes
+
+- Immediate: stdout/file JSON lines
+- OTLP Single: each event POSTed individually
+- OTLP Batch: queue + size/interval based flush + graceful atexit drain
+
+Future: metrics aggregation, span modeling, structured switch performance stats.
+
 ---
 
 ## ⚙️ Key Environment Variables
@@ -367,6 +465,33 @@ pytest -q
 
 Focus Areas: Core Manager, Environment Manifests, UI Shell, Security Isolation.
 
+### Contribution Workflow (Condensed)
+
+1. Fork & branch: `feature/<topic>`
+2. Add/adjust manifest or code + tests
+3. Run `ruff`, `pytest` (ensure green)
+4. Update `CHANGELOG.md` under Unreleased
+5. Open PR (template auto-applies) – include rationale & risk notes
+6. Merge on approval + passing CI
+
+### Code Quality Tenets
+
+- Deterministic over clever
+- Explicit errors (no silent except unless telemetry)
+- Minimal surface by default (opt-in features)
+- Observability first (logs + telemetry event)
+- No hidden global mutation outside designated managers
+
+### Extensibility: Plugin Hooks
+
+| Hook | Timing | Use Cases |
+|------|--------|-----------|
+| `pre_switch` | Before container activation | Policy gating, env diff checks |
+| `post_switch` | After successful activation | UI refresh, metrics emission |
+| `shutdown` | On orchestrator failure or process exit path | Cleanup, persistence |
+
+Register via entry point or dynamic discovery (see `examples/plugins`).
+
 ---
 
 ## 📄 License
@@ -394,5 +519,44 @@ GitHub: <https://github.com/Ultra-Cube>
 
 
 ### ✨ One OS to Rule Them All – Gate-OS ✨
+
+---
+
+## 🗺️ Roadmap (Inline Snapshot)
+
+| Quarter | Theme | Highlights |
+|---------|-------|-----------|
+| Q3 2025 | Core Orchestration | Switch pipeline, telemetry, plugin lifecycle |
+| Q4 2025 | Isolation & UI Shell | Seccomp/AppArmor profiles, GTK prototype |
+| Q1 2026 | Signed Environments | Manifest signing, supply chain tooling |
+| Q2 2026 | Remote Control & Metrics | Companion app, richer observability |
+
+Full detail lives in `docs/roadmap/milestones.md` (kept canonical).
+
+## ❓ FAQ (Early)
+
+| Question | Answer |
+|----------|--------|
+| Is this a full distro today? | Not yet – currently the manager + scaffolding. |
+| Do I need Docker installed? | Not for dry‑run; real container mode auto-detects runtime if present. |
+| When is beta? | Target after isolation profiles + signed manifest pipeline. |
+| How stable are APIs? | Pre‑1.0: breaking changes may occur (tracked in CHANGELOG). |
+| Will there be a GUI? | Yes – shell integration is roadmap Phase 3. |
+
+## 🧾 Glossary
+
+| Term | Definition |
+|------|------------|
+| Environment | Declarative bundle describing a role (tooling + policies). |
+| Switch | Operation transitioning active environment context. |
+| Manifest | JSON/YAML env definition validated against schema. |
+| Capability Allowlist | Security gate restricting privileged ops. |
+| Dry-Run Mode | Non-executing simulation of container operations. |
+| Hook | Plugin callback executed at lifecycle points. |
+| EaC | Environment-as-Code paradigm (like IaC for workstation roles). |
+
+---
+
+If something you expected isn't here (no external wiki), open an issue – gaps are tracked aggressively during pre‑beta.
 
 
