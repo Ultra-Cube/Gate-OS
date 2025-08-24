@@ -11,6 +11,10 @@ The format loosely follows Keep a Changelog and Semantic Versioning (will be ado
 - Graceful telemetry batch flush on process exit.
 - Integration test for successful container switch path.
 - Release automation script.
+- Schema version negotiation (manifest `schemaVersion` support, v1.0 packaged schema).
+- Plugin entry point discovery (group `gateos.plugins`) with opt-out env var.
+- Security policy unit tests (capability allowlist) & plugin discovery tests.
+- Schema version negotiation tests (valid/missing/unsupported cases).
 
 ### Changed
 

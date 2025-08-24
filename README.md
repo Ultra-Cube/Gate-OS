@@ -437,6 +437,33 @@ GATEOS_API_TOKEN=$(gateos gen-token) gateos api
 
 Correlation IDs are injected per request and emitted in both logs & telemetry events for traceability.
 
+### Manifest Versioning (Draft)
+
+Manifests optionally declare a top-level `schemaVersion` (currently `"1.0"`).
+
+Behavior:
+
+- If `schemaVersion` present and supported → validated against packaged schema `environment-manifest-v<version>.yaml`.
+- If absent → falls back to provided schema path (legacy behavior).
+- If unsupported → load fails with a clear error.
+
+Roadmap: multiple concurrent schema versions + upgrade assistant.
+
+### Plugin Discovery
+
+At startup the manager attempts to load Python entry point plugins in group `gateos.plugins`.
+Each plugin entry point should resolve to a callable whose import triggers hook registration.
+
+Disable auto discovery: `export GATEOS_DISABLE_ENTRYPOINT_PLUGINS=1`.
+
+Hooks exposed:
+
+- `pre_switch`
+- `post_switch`
+- `shutdown`
+
+See: `docs/extensions/plugin-development.md` & `examples/plugins/`.
+
 ### Telemetry Modes
 
 - Immediate: stdout/file JSON lines

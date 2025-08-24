@@ -44,7 +44,7 @@ jobs:
         run: yamllint .
 
       - name: Run tests with coverage
-        run: pytest -q --cov=gateos_manager --cov-report=xml --cov-report=term
+        run: pytest -q --cov=gateos_manager --cov-report=xml --cov-report=term --cov-fail-under=65
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
@@ -93,7 +93,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install .[dev]
       - name: Run API subset tests
-        run: pytest -q tests/test_api_server.py --cov=gateos_manager --cov-append --cov-report=xml --cov-report=term
+        run: pytest -q tests/test_api_server.py --cov=gateos_manager --cov-append --cov-report=xml --cov-report=term --cov-fail-under=65
       - name: Upload API coverage
         uses: actions/upload-artifact@v4
         with:
