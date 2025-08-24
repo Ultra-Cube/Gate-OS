@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gateos-plugin-example"
+version = "0.0.1"
+description = "Example Gate-OS plugin package"
+requires-python = ">=3.10"
+license = {text = "GPL-3.0-or-later"}
+authors = [{name = "Ultra Cube Tech"}]
+dependencies = ["gateos-manager"]
+
+[project.optional-dependencies]
+dev = ["pytest"]

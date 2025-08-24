@@ -1,0 +1,42 @@
+name: Release Preflight
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_version:
+        description: 'Version to release (must match pyproject.toml)'
+        required: true
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate version
+        run: |
+          PY_VERSION=$(grep '^version = ' pyproject.toml | head -1 | cut -d '"' -f2)
+          if [[ "$PY_VERSION" != "${{ github.event.inputs.target_version }}" ]]; then
+            echo "Version mismatch: pyproject=$PY_VERSION input=${{ github.event.inputs.target_version }}" >&2
+            exit 1
+          fi
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install project
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+      - name: Run tests & coverage
+        run: pytest -q --cov=gateos_manager --cov-report=term --cov-report=xml
+      - name: Check for TODO/FIXME in diff
+        run: |
+          if grep -R "TODO\|FIXME" gateos_manager; then
+            echo "Found TODO/FIXME markers" >&2
+            exit 1
+          fi
+      - name: Ensure CHANGELOG updated
+        run: |
+          if ! grep -q "$PY_VERSION" CHANGELOG.md; then
+            echo "CHANGELOG missing version entry" >&2
+            exit 1
+          fi
