@@ -1,0 +1,36 @@
+# Minimal Gate-OS environment manifest schema v1.0
+# (for test/demo purposes; expand as needed)
+$schema: http://json-schema.org/draft-07/schema#
+title: EnvironmentManifest
+version: 1.0
+type: object
+required:
+  - kind
+  - metadata
+properties:
+  kind:
+    type: string
+    enum: [Environment]
+  schemaVersion:
+    type: string
+    pattern: "^1.0$"
+  metadata:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+  spec:
+    type: object
+    properties:
+      containers:
+        type: array
+        items:
+          type: object
+          required: [name, image]
+          properties:
+            name:
+              type: string
+            image:
+              type: string

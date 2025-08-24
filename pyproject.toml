@@ -51,3 +51,8 @@ ignore = ["E203","E501"]
 quote-style = "single"
 indent-style = "space"
 docstring-code-format = true
+
+[tool.hatch.build]
+include = [
+  "gateos_manager/manifest/schemas/*.yaml"
+]
