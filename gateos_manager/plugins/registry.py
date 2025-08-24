@@ -13,6 +13,7 @@ Hook = Callable[..., None]
 _hooks: Dict[str, List[Hook]] = {
     "pre_switch": [],
     "post_switch": [],
+    "shutdown": [],  # invoked on manager shutdown (future) or switch failure cleanup
 }
 
 
