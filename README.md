@@ -22,6 +22,46 @@
 
 ---
 
+## 📋 Table of Contents
+
+- [Quick Links](#quick-links)
+- [Overview](#-overview)
+  - [Why It Matters](#why-it-matters)
+  - [Key Differentiators](#key-differentiators)
+  - [Feature Matrix](#feature-matrix)
+- [Vision & Mission](#-vision--mission-summary)
+- [Architecture Snapshot](#️-architecture-snapshot)
+- [Documentation Map](#-documentation-map)
+- [Current Status](#-current-status)
+- [Stack](#️-stack)
+- [Environments](#-environments-planned-v1)
+- [Switching Concept](#-switching-concept-high-level)
+- [KPIs](#-kpis)
+- [Security](#-security)
+  - [AppArmor Profiles](#apparmor-profiles)
+  - [Seccomp Profiles](#seccomp-profiles)
+  - [Manifest Signing (Ed25519)](#manifest-signing-ed25519)
+- [Observability](#-observability)
+- [Mobile Companion API](#-mobile-companion-api)
+- [OTA Updates](#-ota-updates)
+- [Installation](#-installation)
+  - [Option A — Full OS ISO](#option-a--full-os-installation-iso)
+  - [Option B — Overlay on Ubuntu 24.04](#option-b--overlay-on-existing-ubuntu-2404)
+  - [Option C — Manager Only (Dev/CI)](#option-c--manager-only-for-developers--ci)
+  - [Quick Start (Dry-Run Demo)](#quick-start-dry-run-demo)
+- [Development Setup](#-development-setup)
+- [Auth Token & Security Basics](#-auth-token--security-basics)
+- [Running the Control API](#️-running-the-control-api)
+- [Key Environment Variables](#️-key-environment-variables)
+- [Contributing](#-contributing)
+- [Roadmap](#️-roadmap-inline-snapshot)
+- [FAQ](#-faq)
+- [Glossary](#-glossary)
+- [License](#-license)
+- [Contact](#-contact)
+
+---
+
 ## Quick Links
 
 | Area | Link |
