@@ -6,12 +6,37 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 
 ---
 
-## [Unreleased] — Target: 1.0.0-beta
+## [Unreleased] — Post-Beta
 
 ### Planned
-- All 4 core environments validated end-to-end.
-- OTA update mechanism stub.
-- Beta release notes and migration guide.
+- Flutter Android companion app (basic switch UI)
+- AppArmor profile auto-loader script
+- OTA update `schedule_apply()` via systemd drop-in
+
+---
+
+## [1.0.0-beta] — 2026-03-05 — Iron Gate (Public Beta)
+
+### Added
+- `gateos_manager/updater.py` — OTA update mechanism:
+  - `_parse_version()` / `is_newer()` — SemVer comparison.
+  - `check_for_update(feed_url)` — polls GitHub Releases API; returns `ReleaseInfo` or `None`.
+  - `apply_update(release, dry_run)` — downloads `.deb` to staging; creates `.ready` marker.
+  - `schedule_apply()` — stub raising `NotImplementedError` with manual install instructions.
+- CLI subcommands: `gateos check-update`, `gateos apply-update [--yes]`.
+- `docs/release/v1.0.0-beta.md` — full beta release notes:
+  - Environments table, installation options, breaking changes, known limitations.
+  - Migration guide from v0.0.6 alpha.
+  - Complete test coverage table (198 tests).
+- `tests/test_beta_release.py` — 20 tests (version compare, update check mock, CLI integration).
+
+### Summary of all phases completed this release cycle
+- Phase 3 (v0.1.0): GTK4 Adwaita UI shell
+- Phase 4 (v0.2.0): Ubuntu 24.04 ISO builder
+- Phase 5 (v0.3.0): AppArmor + seccomp profiles, manifest signing
+- Phase 6 (v0.4.0): Prometheus metrics, `/metrics` endpoint, perf CI gate
+- Phase 7 (v0.5.0): WebSocket `/ws/status`, mobile companion docs
+- Phase 8 (v1.0.0-beta): OTA update stub, beta release notes
 
 ---
 

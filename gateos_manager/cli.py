@@ -38,6 +38,14 @@ def _build_parser() -> argparse.ArgumentParser:
     kg = sub.add_parser("gen-keypair", help="Generate a new Ed25519 signing keypair (dev/key-rotation use only)")
     kg.add_argument("--key-dir", default=None, help="Output directory for the key pair")
 
+    cu = sub.add_parser("check-update", help="Check GitHub Releases for a newer Gate-OS version")
+    cu.add_argument("--feed", default=None, help="Custom release feed URL")
+    cu.add_argument("--include-prerelease", action="store_true", help="Include pre-release versions")
+
+    au = sub.add_parser("apply-update", help="Download and stage a Gate-OS update (dry-run by default)")
+    au.add_argument("--dry-run", action="store_true", default=True, help="Check download URL without downloading (default: True)")
+    au.add_argument("--yes", action="store_true", help="Actually download the update package")
+
     return p
 
 
@@ -102,6 +110,42 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         except SigningError as e:
             print(f"Error: {e}", file=sys.stderr)
+            return 1
+    if args.cmd == "check-update":
+        from .updater import check_for_update, UpdateError
+        from gateos_manager import __version__ as _ver
+        try:
+            release = check_for_update(args.feed)
+            if release is None:
+                print(f"Gate-OS is up to date (v{_ver})")
+                return 0
+            if release.prerelease and not args.include_prerelease:
+                print(f"Pre-release v{release.version} available (use --include-prerelease to see)")
+                return 0
+            print(f"Update available: v{release.version}")
+            print(f"  Download: {release.download_url}")
+            if release.release_notes:
+                print(f"  Release notes:\n{release.release_notes[:500]}")
+            return 0
+        except UpdateError as e:
+            print(f"Update check failed: {e}", file=sys.stderr)
+            return 1
+    if args.cmd == "apply-update":
+        from .updater import check_for_update, apply_update, UpdateError
+        dry_run = not args.yes
+        try:
+            release = check_for_update()
+            if release is None:
+                print("Already up to date.")
+                return 0
+            apply_update(release, dry_run=dry_run)
+            if dry_run:
+                print(f"Dry-run OK: v{release.version} download URL is accessible. Use --yes to download.")
+            else:
+                print(f"Downloaded v{release.version} to staging. Reboot to apply.")
+            return 0
+        except UpdateError as e:
+            print(f"Update failed: {e}", file=sys.stderr)
             return 1
     return 0
 
