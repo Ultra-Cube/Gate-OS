@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300" role="img" aria-label="Gate-OS Logo">
   <defs>
     <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00d4ff"/>
-      <stop offset="100%" stop-color="#7c3aed"/>
+      <stop offset="0%" stop-color="#ff8c00"/>
+      <stop offset="100%" stop-color="#ff4500"/>
     </linearGradient>
     <linearGradient id="gateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#cbd5e1"/>
+      <stop offset="0%" stop-color="#ffe0b2"/>
+      <stop offset="100%" stop-color="#ff8c00"/>
     </linearGradient>
     <filter id="glow">
       <feGaussianBlur stdDeviation="6" result="blur"/>
@@ -51,7 +51,7 @@
         stroke-linecap="butt"/>
 
   <!-- ── Accent dot at keystone ── -->
-  <circle cx="150" cy="62" r="9" fill="#00d4ff" filter="url(#softGlow)"/>
+  <circle cx="150" cy="62" r="9" fill="#ffb300" filter="url(#softGlow)"/>
 
   <!-- ── Horizontal ground bar ── -->
   <rect x="88" y="188" width="124" height="6" rx="3" fill="url(#ringGrad)" opacity="0.85"/>
