@@ -1,3 +1,4 @@
-"""Gate-OS Environment Manager (scaffold)."""
+"""Gate-OS Environment Manager."""
 
-__all__ = ["manifest"]
+__version__ = "0.1.0"
+__all__ = ["manifest", "ui"]

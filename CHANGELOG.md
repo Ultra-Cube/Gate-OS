@@ -6,17 +6,86 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 
 ---
 
-## [Unreleased] — Target: 0.1.0
+## [Unreleased] — Target: 0.2.0
 
 ### Planned
-- Real switch engine: systemd service orchestration + real podman/docker container start/stop.
-- GTK4 UI shell (Adw.Application) with environment list and switch panel.
 - Ubuntu 24.04 LTS ISO build script (`scripts/build-iso.sh`).
-- ServiceManager class for managing systemd units per environment.
-- Performance benchmark test (target: < 3s switch latency).
 - AppArmor profile stubs per environment.
-- Further container isolation (seccomp/AppArmor profiles).
+- seccomp profile stubs for containers.
 - Graceful shutdown via API endpoint to trigger flush & plugin shutdown.
+
+---
+
+## [0.1.0] — 2026-03-05 — GTK4 UI Shell
+
+### Added
+- `gateos_manager/ui/` package — full GTK4/Libadwaita UI shell:
+  - `__init__.py` — `GTK_AVAILABLE` flag, `require_gtk()` guard, `GtkNotAvailableError`,
+    `APP_ID`, `API_URL` constants. Graceful degradation when PyGObject not installed.
+  - `api_client.py` — `GateOSAPI` synchronous HTTP client (stdlib `urllib`, no extra deps)
+    wrapping `/environments`, `/switch/{name}`, `/health` endpoints with bearer token auth.
+  - `env_list.py` — `EnvListPanel(Adw.PreferencesGroup)` + `EnvRow(Adw.ActionRow)` widgets;
+    fetches environments from Control API, emits `env-selected` signal on switch request.
+  - `switch_button.py` — `SwitchButton` compound widget with animated `Gtk.Spinner`
+    during switch, success/failure badge, `switch-started/done/failed` signals.
+  - `status_bar.py` — `StatusBar(Gtk.ActionBar)` with active-env label, live API health
+    indicator (auto-polls every 5 s), and version badge.
+  - `tray.py` — `AppIndicatorTray` system tray icon (AyatanaAppIndicator3); gracefully
+    disabled when the library is absent.
+  - `app.py` — `GateOSApp(Adw.Application)` + `GateOSWindow(Adw.ApplicationWindow)`;
+    `GATEOS_UI_NO_DISPLAY=1` env var for headless/CI mode; `main()` entry point.
+- `data/gate-os-manager.desktop` — XDG desktop entry for autostart and app launchers.
+- `tests/test_ui_components.py` — **32 new tests** covering API client, env list,
+  switch button, status bar, tray (all headless with full GTK mock — runnable in CI).
+- `[project.scripts]` `gateos-ui` entry point in `pyproject.toml`.
+- `[project.optional-dependencies]` `ui = ["PyGObject>=3.44.0"]` extra group.
+- `[tool.hatch.build]` now includes `data/*.desktop`.
+
+### Changed
+- `gateos_manager/__init__.py` — added `__version__ = "0.1.0"` and exposed `ui` in `__all__`.
+- `pyproject.toml` — version bumped `0.0.6 → 0.1.0`; updated description.
+
+### Tests
+- **100 tests passing** (was 68; +32 UI component tests)
+
+
+
+## [0.0.6] — 2026-03-05
+
+### Added
+- `tests/test_perf_switch_latency.py` — 4 benchmark tests (`@pytest.mark.benchmark`):
+  1-container, 3-container, 10-container, and 10× repeated-switch stability runs.
+  All complete well under the 3 s SLA in dry-run mode (typically < 50 ms).
+- `pyproject.toml` `[tool.pytest.ini_options]` — registered `benchmark` marker to suppress
+  `PytestUnknownMarkWarning`; added default `addopts = "--tb=short"`.
+
+### Changed
+- `gateos_manager/containers/manager.py` — production-grade improvements:
+  - Module-level `_START_TIMEOUT` (default 30 s) and `_STOP_TIMEOUT` (default 15 s) constants,
+    overridable via `GATEOS_CONTAINER_START_TIMEOUT` / `GATEOS_CONTAINER_STOP_TIMEOUT` env vars.
+  - `_start_single()` now captures stderr, checks `returncode`, and emits `status=error`
+    on non-zero exit instead of silently succeeding.
+  - `subprocess.TimeoutExpired` handled separately with a `status=timeout` telemetry event.
+  - Container labelling: `--label gateos.env=<manifest_name>` and
+    `--label gateos.managed=true` added to every `podman run` call.
+  - Top-level `manifest.mounts` applied to every container via `-v source:target[:ro]`.
+  - Per-container `spec.mounts` extends top-level mounts using the same `-v` syntax.
+  - `_stop_single()` uses `podman rm --force` (was plain `rm`) so cleanup always succeeds
+    even when the container has already exited; stop timeout applied here too.
+  - `_start_single()` signature extended with `manifest_name` and `top_mounts` keyword args;
+    `start()` passes these through.
+  - Clarified docstring: added manifest contract example with `mounts` field + timeout docs.
+- `pyproject.toml` — version bumped `0.0.5 → 0.0.6`.
+
+### Fixed
+- `_stop_single()` could silently leave orphaned containers if `podman rm` hit a non-zero exit
+  (e.g. container already removed). Now uses `--force` flag to guarantee cleanup.
+- Unchecked `subprocess.run` return codes in `_start_single()` could mark a failed container
+  launch as `running`. Fixed by checking `result.returncode`.
+
+### Test Results
+- **68 tests passing** (up from 64 in v0.0.5)
+- New tests: +4 (performance benchmarks)
 
 ---
 

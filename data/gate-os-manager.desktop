@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Gate-OS Manager
+GenericName=Environment Manager
+Comment=Switch between Gate-OS environments (gaming, dev, design, media, security)
+Exec=gateos-ui
+Icon=applications-system
+Terminal=false
+Categories=System;Settings;
+Keywords=environment;switch;gateos;linux;
+StartupNotify=true
+StartupWMClass=io.gateos.Manager
