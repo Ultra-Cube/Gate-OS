@@ -13,7 +13,9 @@
 [![Coverage](./coverage.svg)](coverage.xml)
 [![Dev Check](https://github.com/Ultra-Cube/Gate-OS/actions/workflows/dev-check.yml/badge.svg)](.github/workflows/dev-check.yml)
 [![Docs](https://img.shields.io/badge/docs-index-brightgreen.svg)](docs/README.md)
-[![Roadmap](https://img.shields.io/badge/status-Phase%202%20In%20Progress-orange.svg)](docs/roadmap/milestones.md)
+[![Version](https://img.shields.io/badge/version-1.0.0--beta-green.svg)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/tests-198%20passing-brightgreen.svg)](tests/)
+[![Roadmap](https://img.shields.io/badge/status-v1.0.0--beta%20Released-green.svg)](docs/roadmap/milestones.md)
 [![Ultra Cube Tech](https://img.shields.io/badge/by-Ultra%20Cube%20Tech-blue.svg)](https://www.ucubetech.com)
 
 </div>
@@ -35,6 +37,8 @@
 | Security Policy | [SECURITY.md](SECURITY.md) |
 | Changelog | [CHANGELOG.md](CHANGELOG.md) |
 | Examples Index | [examples/README.md](examples/README.md) |
+| Beta Release Notes | [docs/release/v1.0.0-beta.md](docs/release/v1.0.0-beta.md) |
+| Mobile Companion API | [docs/mobile/companion-api.md](docs/mobile/companion-api.md) |
 
 
 ## 🎯 Overview
@@ -80,7 +84,7 @@ One OS install that becomes any workstation you need – instantly, predictably,
 - Deterministic environment switching
 - Modular, enterprise-aligned architecture
 
-### Feature Matrix (Early Phase)
+### Feature Matrix
 
 | Capability | Status | Notes |
 |------------|--------|-------|
@@ -91,13 +95,20 @@ One OS install that becomes any workstation you need – instantly, predictably,
 | Telemetry (stdout/file/OTLP) | ✅ | Batch + atexit flush |
 | Rate-limited Control API | ✅ | Token auth + headers |
 | Capability allowlist (security) | ✅ | Enforced for security domain manifests |
-| Isolation enforcement | 🧪 | Stub – profiles upcoming |
-| Desktop shell integration | ⏳ | Phase 3 target |
-| GUI Switch Panel | ⏳ | Planned after stable API |
-| Remote companion app | 🔭 | Concept exploration |
-| Signed environment bundles | 🔭 | Supply chain milestone |
+| AppArmor profiles | ✅ | 5 environments: dev, gaming, security, design, media |
+| Seccomp JSON profiles | ✅ | `gateos-default` and `gateos-security` |
+| Manifest signing (Ed25519) | ✅ | `gateos sign/verify/gen-keypair` CLI |
+| Desktop shell integration | ✅ | GTK4 + Libadwaita env list + switch panel |
+| GUI Switch Panel | ✅ | Phase 3: status bar, tray, headless mode |
+| Prometheus metrics | ✅ | `/metrics` endpoint, zero external dependencies |
+| WebSocket companion API | ✅ | `/ws/status` real-time switch broadcast |
+| Mobile companion docs | ✅ | [docs/mobile/companion-api.md](docs/mobile/companion-api.md) |
+| OTA update checks | ✅ | `gateos check-update` / `apply-update` CLI |
+| Ubuntu 24.04 LTS ISO builder | ✅ | `gateos_manager/packaging/` module |
+| systemd service unit | ✅ | `gateos-manager.service` |
+| Signed environment bundles | ✅ | Ed25519 manifest signatures |
 
-Legend: ✅ shipped · 🧪 experimental · ⏳ planned (roadmap) · 🔭 future concept
+Legend: ✅ shipped · 🧪 experimental · ⏳ planned (roadmap)
 
 ---
 
@@ -160,7 +171,9 @@ High-level index for faster navigation across all knowledge domains.
 - Security Policy & Capability Allowlist: [docs/security/](docs/security/)
 - Diagrams: [docs/diagrams/](docs/diagrams/) (planned)
 - Threat Model: [docs/security/threat-model.md](docs/security/threat-model.md)
-*- Supply Chain & Integrity: [docs/architecture/supply-chain.md](docs/architecture/supply-chain.md)
+- Supply Chain & Integrity: [docs/architecture/supply-chain.md](docs/architecture/supply-chain.md)
+- AppArmor Profiles: [profiles/apparmor/](profiles/apparmor/)
+- Seccomp Profiles: [profiles/seccomp/](profiles/seccomp/)
 
 ### Operations & Processes
 
@@ -184,11 +197,19 @@ High-level index for faster navigation across all knowledge domains.
 - Manifest Authoring: [docs/environments/manifest-authoring.md](docs/environments/manifest-authoring.md)
 - Design Environment (Blender + publish workflow): [examples/environments/design.yaml](examples/environments/design.yaml)
 
+### Release Notes
+
+- v1.0.0-beta (Iron Gate): [docs/release/v1.0.0-beta.md](docs/release/v1.0.0-beta.md)
+
+### Mobile & Companion
+
+- Companion API Reference: [docs/mobile/companion-api.md](docs/mobile/companion-api.md)
+
 ### Future / Planned
 
 - RFCs: [rfcs/](rfcs/) (scaffold; add proposal template)
 - Telemetry Exporter Guide
-- Container Isolation Profiles
+- v1.0.0 Stable Release Notes
 
 ---
 
@@ -196,26 +217,34 @@ High-level index for faster navigation across all knowledge domains.
 
 ## 🚀 Current Status
 
-Phase 2: Core System Development (≈40%)  
-Refer to: `docs/roadmap/milestones.md`
+**v1.0.0-beta (Iron Gate)** — All 8 phases complete · 198 tests passing
+Refer to: [`CHANGELOG.md`](CHANGELOG.md) · [`docs/release/v1.0.0-beta.md`](docs/release/v1.0.0-beta.md)
 
-| Phase | Status | Notes |
-|-------|--------|-------|
-| P1 Planning | ✅ | Complete |
-| P2 Core Dev | 🔄 | Manager + UI work |
-| P3 Environments | ⏳ | Spec refinement |
-
----
+| Phase | Version | Status | Tests | Notes |
+|-------|---------|--------|-------|-------|
+| P0 Foundation | – | ✅ | – | Project scaffold, docs, CI |
+| P1 Switch Engine | – | ✅ | 64 | Orchestrator, rollback, telemetry |
+| P2 API & Security Base | – | ✅ | 100 | Rate-limited Control API, capability allowlist |
+| P3 GTK4 UI Shell | v0.1.0 | ✅ | 100 | Adwaita env list, switch panel, tray |
+| P4 ISO Builder | v0.2.0 | ✅ | 114 | Ubuntu 24.04 LTS ISO, systemd service |
+| P5 Security Hardening | v0.3.0 | ✅ | 147 | AppArmor (5 envs), seccomp, Ed25519 signing |
+| P6 Observability | v0.4.0 | ✅ | 166 | Prometheus metrics, `/metrics` endpoint |
+| P7 Mobile Companion | v0.5.0 | ✅ | 178 | WebSocket `/ws/status`, switch broadcast |
+| P8 Beta Release | v1.0.0-beta | ✅ | 198 | OTA updates, beta release notes |
 
 ## 🛠️ Stack
 
 | Layer | Tech |
 |-------|------|
-| Base | Ubuntu 22.04 LTS (patched) |
-| Manager | Python + GTK4 |
+| Base | Ubuntu 24.04 LTS (Noble Numbat) |
+| Manager | Python 3.12 + GTK4 |
 | Containers | Docker / Podman |
-| UI | GTK4 + Libadwaita |
+| UI | GTK4 + Libadwaita (headless: `GATEOS_UI_NO_DISPLAY=1`) |
 | Display | Wayland (X11 compat) |
+| Security | AppArmor · seccomp · Ed25519 signing |
+| Metrics | Prometheus-compatible `/metrics` (stdlib, no external deps) |
+| Companion | WebSocket `/ws/status` (FastAPI) |
+| Updates | OTA via GitHub Releases API |
 
 ---
 
@@ -256,14 +285,129 @@ Benefit: frictionless creative iteration → showcase loop; no manual copying.
 
 ---
 
-## 🧪 Early KPIs (Draft)
+## 🧪 KPIs
 
-| Metric | Target (v1) |
-|--------|-------------|
-| Switch Latency | < 3s |
-| Crash-Free Activation | > 99% |
-| Memory Overhead | < 8% over base |
-| Cold Boot to Ready | < 35s |
+| Metric | Target (v1) | Status |
+|--------|-------------|--------|
+| Switch Latency | < 3s | 🧪 Measured in dry-run |
+| Crash-Free Activation | > 99% | ✅ 198/198 tests passing |
+| Memory Overhead | < 8% over base | ⏳ Pending profiling |
+| Cold Boot to Ready | < 35s | ⏳ Pending real hardware |
+
+---
+
+## 🔒 Security
+
+Gate-OS ships production-ready security hardening as of v0.3.0.
+
+### AppArmor Profiles
+
+Located in `profiles/apparmor/`. One profile per environment:
+
+| Profile | Environment | Restrictions |
+|---------|-------------|--------------|
+| `gateos-env-dev` | Development | Network: full; filesystem: limited to home + project dirs |
+| `gateos-env-gaming` | Gaming | Network: Steam/game servers; no system write |
+| `gateos-env-security` | Security / Pentest | Capabilities: NET_ADMIN, SYS_PTRACE; read-only rootfs stubs |
+| `gateos-env-design` | Design (Blender/GIMP) | GPU access; no network write |
+| `gateos-env-media` | Media (Kodi/OBS) | Audio/video devices; no SSH socket |
+
+### Seccomp Profiles
+
+Located in `profiles/seccomp/`:
+- `gateos-default.json` — baseline allowlist (safe for all envs)
+- `gateos-security.json` — extended capabilities for pentest environment
+
+### Manifest Signing (Ed25519)
+
+```bash
+# Generate a key pair (stored in GATEOS_KEY_DIR or ~/.config/gateos/keys/)
+gateos gen-keypair
+
+# Sign a manifest before distribution
+gateos sign examples/environments/gaming.yaml
+
+# Verify before applying
+gateos verify examples/environments/gaming.yaml gaming.yaml.sig
+```
+
+---
+
+## 📊 Observability
+
+Gate-OS exposes Prometheus-compatible metrics at `/metrics` (default port `9100`).
+
+### Available Metrics
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `gateos_switch_total` | Counter | Total environment switches (label: `env`) |
+| `gateos_switch_duration_seconds` | Histogram | Switch latency distribution |
+| `gateos_api_requests_total` | Counter | Control API requests (label: `method`, `path`) |
+| `gateos_active_env` | Gauge | Currently active environment (1 = active) |
+
+### Scrape Configuration (Prometheus)
+
+```yaml
+scrape_configs:
+  - job_name: gateos
+    static_configs:
+      - targets: ["localhost:9100"]
+```
+
+Start metrics server (automatic when API starts, or standalone):
+
+```python
+from gateos_manager.telemetry.prometheus import start_metrics_server
+start_metrics_server(port=9100)
+```
+
+---
+
+## 📱 Mobile Companion API
+
+Real-time WebSocket endpoint for mobile or external clients.
+
+**Endpoint:** `ws://<host>:8088/ws/status`
+
+| Message Type | Direction | Description |
+|-------------|-----------|-------------|
+| `welcome` | Server → Client | Sent on connect with current active env |
+| `switch_done` | Server → Client | Broadcast after every environment switch |
+| `ping` | Client → Server | Keepalive; echoed back as `pong` |
+
+**Example connection:**
+```javascript
+const ws = new WebSocket("ws://localhost:8088/ws/status");
+ws.onmessage = (event) => {
+  const msg = JSON.parse(event.data);
+  console.log(msg.type, msg.active_env); // e.g. "switch_done", "gaming"
+};
+```
+
+Full reference: [docs/mobile/companion-api.md](docs/mobile/companion-api.md)
+
+---
+
+## 🔄 OTA Updates
+
+Gate-OS can check for and apply updates from GitHub Releases.
+
+```bash
+# Check for available updates
+gateos check-update
+
+# Check including pre-release builds
+gateos check-update --include-prerelease
+
+# Apply the latest update (will prompt unless --yes)
+gateos apply-update
+
+# Dry-run (HEAD check only, no download)
+gateos apply-update --dry-run
+```
+
+Disable update checks entirely: `export GATEOS_UPDATE_DISABLE=1`
 
 ---
 
@@ -482,21 +626,57 @@ Future: metrics aggregation, span modeling, structured switch performance stats.
 
 ## ⚙️ Key Environment Variables
 
+### API & Auth
 | Variable | Purpose | Example |
 |----------|---------|---------|
 | `GATEOS_API_TOKEN` | Direct token auth | `export GATEOS_API_TOKEN=abc123` |
 | `GATEOS_API_TOKEN_FILE` | Path to token file | `~/.config/gateos/token` |
-| `GATEOS_RATE_LIMIT` | Requests/min (integer) | `120` |
-| `GATEOS_WATCH` | Enable manifest watch reload | `1` |
-| `GATEOS_TELEMETRY_FILE` | Append telemetry JSON lines | `telemetry.log` |
-| `GATEOS_TELEMETRY_OTLP_HTTP` | Send each event to OTLP HTTP endpoint | `http://localhost:4318/v1/traces` |
+| `GATEOS_API_RATE_LIMIT` | Requests/min (integer) | `120` |
+| `GATEOS_API_RATE_WINDOW` | Rate limit window (s) | `60` |
+| `GATEOS_API_URL` | Manager API base URL | `http://127.0.0.1:8088` |
+
+### Container & Runtime
+| Variable | Purpose | Example |
+|----------|---------|---------|
 | `GATEOS_CONTAINER_DRY_RUN` | Avoid real runtime, in-memory state | `1` |
 | `GATEOS_CONTAINER_RUNTIME` | Override container runtime binary | `podman` |
-| `GATEOS_SECURITY_ENFORCE` | Enable isolation hook stubs | `1` |
-| `GATEOS_SECURITY_PROFILE` | Named isolation profile (future) | `strict` |
+| `GATEOS_CONTAINER_START_TIMEOUT` | Container start timeout (s) | `30` |
+| `GATEOS_CONTAINER_STOP_TIMEOUT` | Container stop timeout (s) | `10` |
+| `GATEOS_WATCH_ENABLED` | Enable manifest watch reload | `1` |
+
+### Telemetry
+| Variable | Purpose | Example |
+|----------|---------|---------|
+| `GATEOS_TELEMETRY_ENABLED` | Enable/disable telemetry | `1` |
+| `GATEOS_TELEMETRY_FILE` | Append telemetry JSON lines | `telemetry.log` |
+| `GATEOS_TELEMETRY_OTLP_HTTP` | OTLP HTTP endpoint | `http://localhost:4318/v1/traces` |
 | `GATEOS_TELEMETRY_BATCH` | Enable OTLP batch mode | `1` |
-| `GATEOS_TELEMETRY_BATCH_INTERVAL` | Batch flush interval seconds | `2` |
+| `GATEOS_TELEMETRY_BATCH_INTERVAL` | Batch flush interval (s) | `2` |
 | `GATEOS_TELEMETRY_BATCH_SIZE` | Max events per batch POST | `50` |
+| `GATEOS_METRICS_PORT` | Prometheus metrics server port | `9100` |
+
+### Security & Signing
+| Variable | Purpose | Example |
+|----------|---------|---------|
+| `GATEOS_SECURITY_ENFORCE` | Enable AppArmor/seccomp enforcement | `1` |
+| `GATEOS_SECURITY_PROFILE` | Named isolation profile | `strict` |
+| `GATEOS_KEY_DIR` | Ed25519 key directory (signing) | `~/.config/gateos/keys` |
+| `GATEOS_PROFILE_DRY_RUN` | Skip real profile application | `1` |
+
+### OTA Updates
+| Variable | Purpose | Example |
+|----------|---------|---------|
+| `GATEOS_UPDATE_DISABLE` | Disable all update checks | `1` |
+| `GATEOS_UPDATE_FEED` | Custom GitHub Releases feed URL | `https://api.github.com/repos/Ultra-Cube/Gate-OS/releases` |
+| `GATEOS_UPDATE_DIR` | OTA download staging directory | `/tmp/gateos-updates` |
+
+### Misc
+| Variable | Purpose | Example |
+|----------|---------|---------|
+| `GATEOS_LOG_LEVEL` | Logging verbosity | `DEBUG` |
+| `GATEOS_UI_NO_DISPLAY` | Run UI in headless mode | `1` |
+| `GATEOS_SYSTEMD_DRY_RUN` | Skip real systemd calls | `1` |
+| `GATEOS_DISABLE_ENTRYPOINT_PLUGINS` | Disable plugin entrypoint discovery | `1` |
 
 ---
 
@@ -574,24 +754,29 @@ GitHub: <https://github.com/Ultra-Cube>
 
 ## 🗺️ Roadmap (Inline Snapshot)
 
-| Quarter | Theme | Highlights |
-|---------|-------|-----------|
-| Q3 2025 | Core Orchestration | Switch pipeline, telemetry, plugin lifecycle |
-| Q4 2025 | Isolation & UI Shell | Seccomp/AppArmor profiles, GTK prototype |
-| Q1 2026 | Signed Environments | Manifest signing, supply chain tooling |
-| Q2 2026 | Remote Control & Metrics | Companion app, richer observability |
+| Quarter | Theme | Status | Highlights |
+|---------|-------|--------|------------|
+| Q3 2025 | Core Orchestration | ✅ Done | Switch pipeline, telemetry, plugin lifecycle |
+| Q4 2025 | Isolation & UI Shell | ✅ Done | Seccomp/AppArmor profiles, GTK4 Adwaita shell |
+| Q1 2026 | Signed Environments | ✅ Done | Ed25519 manifest signing, seccomp profiles |
+| Q1 2026 | Remote Control & Metrics | ✅ Done | WebSocket companion API, Prometheus metrics |
+| Q2 2026 | Beta Release | ✅ Done | OTA updates, 198 tests, v1.0.0-beta (Iron Gate) |
+| Q3 2026 | Stable v1.0 | ⏳ Planned | Hardware integration, enterprise profiles, GUI installer |
 
 Full detail lives in [docs/roadmap/milestones.md](docs/roadmap/milestones.md) (kept canonical).
 
-## ❓ FAQ (Early)
+## ❓ FAQ
 
 | Question | Answer |
 |----------|--------|
-| Is this a full distro today? | Not yet – currently the manager + scaffolding. |
+| Is this a full distro today? | Not yet – currently the manager + scaffolding running on Ubuntu 24.04 LTS base. |
 | Do I need Docker installed? | Not for dry‑run; real container mode auto-detects runtime if present. |
-| When is beta? | Target after isolation profiles + signed manifest pipeline. |
-| How stable are APIs? | Pre‑1.0: breaking changes may occur (tracked in CHANGELOG). |
-| Will there be a GUI? | Yes – shell integration is roadmap Phase 3. |
+| Is the beta stable? | Yes – v1.0.0-beta (Iron Gate) has 198 passing tests and is suitable for early adopters. |
+| How stable are APIs? | The Control API and WebSocket API are stable within the 1.x line; breaking changes tracked in CHANGELOG. |
+| Is there a GUI? | Yes – GTK4 + Libadwaita shell is complete (Phase 3). Headless mode available (`GATEOS_UI_NO_DISPLAY=1`). |
+| Is there mobile control? | Yes – WebSocket API at `/ws/status` streams real-time switch events. See [docs/mobile/companion-api.md](docs/mobile/companion-api.md). |
+| How do I get OTA updates? | Run `gateos check-update` and `gateos apply-update`. Disable with `GATEOS_UPDATE_DISABLE=1`. |
+| How do I sign manifests? | `gateos gen-keypair`, then `gateos sign <manifest>`. Verify with `gateos verify <manifest> <sig>`. |
 
 ## 🧾 Glossary
 
@@ -613,7 +798,7 @@ If something you expected isn't here (no external wiki), open an issue – gaps 
 
 ## © Copyright
 
-Copyright (c) 2025 **Ultra Cube Tech**. All rights reserved.
+Copyright (c) 2025-2026 **Ultra Cube Tech**. All rights reserved.
 
 This project is released under the terms of the GPLv3 (see [LICENSE](LICENSE)).
 
