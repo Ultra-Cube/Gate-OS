@@ -1,0 +1,69 @@
+# AppArmor profile for the Gate-OS design environment
+# Environment: design — GIMP, Inkscape, Blender, Krita, Figma (browser)
+# Applies to: containers started with `gateos switch design`
+
+#include <tunables/global>
+
+profile gateos-env-design flags=(attach_disconnected, mediate_deleted) {
+  #include <abstractions/base>
+  #include <abstractions/X>
+  #include <abstractions/wayland>
+  #include <abstractions/nameservice>
+  #include <abstractions/audio>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+
+  # ── Workspace ─────────────────────────────────────────────────────────────
+  owner @{HOME}/design-workspace/** rw,
+  owner @{HOME}/Pictures/** rw,
+  owner @{HOME}/Videos/renders/** rw,
+  owner /var/lib/gateos/design/** rw,
+
+  # Design applications
+  /usr/bin/gimp* rix,
+  /usr/bin/inkscape rix,
+  /usr/bin/blender rix,
+  /usr/bin/krita rix,
+  /usr/bin/darktable rix,
+  /usr/bin/rawtherapee rix,
+  /usr/bin/scribus rix,
+  /usr/bin/python3* rix,                 # Blender scripting
+
+  # Shared libraries & data
+  /lib/** r,
+  /usr/lib/** r,
+  /usr/share/** r,
+  /etc/ld.so.cache r,
+
+  # GPU access (Blender GPU rendering)
+  /dev/dri/ r,
+  /dev/dri/** rw,
+  /sys/devices/**/drm/ r,
+  /sys/class/drm/ r,
+
+  # Tmp
+  /tmp/** rw,
+  /var/tmp/** rw,
+
+  # Proc (minimal)
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/maps r,
+  @{PROC}/cpuinfo r,
+
+  # ── Capabilities ──────────────────────────────────────────────────────────
+  capability dac_read_search,
+
+  # ── Network (limited — for Figma browser / asset downloads) ───────────────
+  network inet stream,
+  network inet6 stream,
+  network unix stream,
+
+  # ── Deny list ─────────────────────────────────────────────────────────────
+  deny /boot/** rw,
+  deny /etc/passwd w,
+  deny /etc/shadow rw,
+  deny /etc/sudoers rw,
+  deny /sys/firmware/** rw,
+  deny /dev/nvidia* rw,       # AMD/Intel GPU only via dri
+  deny /home/*/** rw,         # no access to other users' home dirs
+}

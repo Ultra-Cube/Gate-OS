@@ -1,0 +1,82 @@
+# AppArmor profile for the Gate-OS media environment
+# Environment: media — VLC, OBS, Ardour, kdenlive, Spotify
+# Applies to: containers started with `gateos switch media`
+
+#include <tunables/global>
+
+profile gateos-env-media flags=(attach_disconnected, mediate_deleted) {
+  #include <abstractions/base>
+  #include <abstractions/X>
+  #include <abstractions/wayland>
+  #include <abstractions/nameservice>
+  #include <abstractions/audio>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+
+  # ── Workspace ─────────────────────────────────────────────────────────────
+  owner @{HOME}/media-workspace/** rw,
+  owner @{HOME}/Music/** rw,
+  owner @{HOME}/Videos/** rw,
+  owner @{HOME}/Pictures/** r,
+  owner /var/lib/gateos/media/** rw,
+
+  # Media applications
+  /usr/bin/vlc rix,
+  /usr/bin/obs rix,
+  /usr/bin/ardour* rix,
+  /usr/bin/kdenlive rix,
+  /usr/bin/audacity rix,
+  /usr/bin/ffmpeg rix,
+  /usr/bin/mpv rix,
+  /usr/bin/spotify rix,
+
+  # Shared libraries & data
+  /lib/** r,
+  /usr/lib/** r,
+  /usr/share/** r,
+  /etc/ld.so.cache r,
+  /etc/pulse/ r,
+  /etc/pulse/** r,
+
+  # GPU (video decoding / OBS GPU encoding)
+  /dev/dri/ r,
+  /dev/dri/** rw,
+  /dev/nvidia* rw,
+  /sys/devices/**/drm/ r,
+  /sys/class/drm/ r,
+
+  # Video capture devices (OBS webcam / capture cards)
+  /dev/video* rw,
+  /dev/v4l/ r,
+  /dev/v4l/** rw,
+
+  # Audio devices
+  /dev/snd/ r,
+  /dev/snd/** rw,
+
+  # Tmp
+  /tmp/** rw,
+  /var/tmp/** rw,
+
+  # Proc
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/maps r,
+  @{PROC}/cpuinfo r,
+  @{PROC}/asound/** r,
+
+  # realtime scheduling (Ardour / OBS)
+  capability sys_nice,
+
+  # ── Network (streaming / Spotify) ─────────────────────────────────────────
+  network inet stream,
+  network inet6 stream,
+  network unix stream,
+
+  # ── Deny list ─────────────────────────────────────────────────────────────
+  deny /boot/** rw,
+  deny /etc/passwd w,
+  deny /etc/shadow rw,
+  deny /etc/sudoers rw,
+  deny /sys/firmware/** rw,
+  deny /home/*/** rw,
+}

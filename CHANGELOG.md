@@ -6,14 +6,36 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 
 ---
 
-## [Unreleased] — Target: 0.3.0
+## [Unreleased] — Target: 0.4.0
 
 ### Planned
-- AppArmor profiles per environment (`profiles/apparmor/`).
-- seccomp profiles for containers (`profiles/seccomp/`).
-- Manifest signing CLI (`gateos sign` / `gateos verify`).
-- Network namespace segmentation per container.
-- Read-only root + ephemeral overlay for security environment.
+- Prometheus metrics endpoint (`/metrics`).
+- OpenTelemetry real exporter (replace stdout-only OTLP).
+- CI perf-test threshold (fail if switch > 3 s).
+- Memory-delta measurement per environment switch.
+
+---
+
+## [0.3.0] — 2026-03-05 — Security Hardening
+
+### Added
+- `profiles/apparmor/` — AppArmor profiles for all five environments:
+  - `gateos-env-dev` — deny-list; allows git, Python, Node, Cargo, Go, Podman.
+  - `gateos-env-gaming` — GPU devices, Steam/Proton/Wine/Lutris, `sys_nice`.
+  - `gateos-env-security` — strict isolation, raw sockets (nmap/tshark), no GPU, audited denies.
+  - `gateos-env-design` — GIMP, Inkscape, Blender, GPU for rendering.
+  - `gateos-env-media` — VLC, OBS, Ardour, video capture devices, `sys_nice`.
+- `profiles/seccomp/gateos-default.json` — OCI seccomp allowlist for all container environments.
+- `profiles/seccomp/gateos-security.json` — strict seccomp for security environment; blocks `init_module`, `kexec_load`, `mount`, `unshare`, `setns`, privilege escalation paths.
+- `gateos_manager/security/signing.py` — Ed25519 manifest signing module:
+  - `sign(manifest_path)` — signs manifest and writes `.sig` file.
+  - `verify(manifest_path, sig_path)` — verifies Ed25519 signature.
+  - `generate_keypair(key_dir)` — generates PEM keypair for dev/key-rotation.
+- CLI subcommands: `gateos sign`, `gateos verify`, `gateos gen-keypair`.
+- `tests/test_security_hardening.py` — 33 tests covering AppArmor syntax, seccomp schema, signing round-trip, tamper detection, and CLI integration.
+
+### Fixed
+- `pyproject.toml` — removed duplicate `[project.optional-dependencies.ui]` section.
 
 ---
 

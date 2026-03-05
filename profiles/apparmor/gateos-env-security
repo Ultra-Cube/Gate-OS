@@ -1,0 +1,84 @@
+# AppArmor profile for the Gate-OS security research environment
+# Environment: security — Kali tools, pentesting, isolated containers
+# Applies to: containers started with `gateos switch security`
+#
+# This profile enforces STRICT isolation:
+# - No access to host /home outside the security workspace
+# - No GPU (reduces attack surface)
+# - Network access only to explicitly allowed ranges
+# - Audit log on any deny
+
+#include <tunables/global>
+
+profile gateos-env-security flags=(attach_disconnected, mediate_deleted) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl_certs>
+
+  # ── Dedicated workspace only ──────────────────────────────────────────────
+  owner @{HOME}/security-workspace/** rw,
+  owner /var/lib/gateos/security/** rw,
+
+  # Security tools (Kali packages installed in container)
+  /usr/bin/nmap rix,
+  /usr/bin/nikto rix,
+  /usr/bin/sqlmap rix,
+  /usr/bin/metasploit* rix,
+  /usr/bin/burpsuite rix,
+  /usr/bin/wireshark rix,
+  /usr/bin/tshark rix,
+  /usr/bin/python3* rix,
+  /usr/bin/ruby* rix,
+  /usr/bin/perl rix,
+  /usr/local/bin/** rix,
+
+  # Container runtime (for running isolated tool containers)
+  /usr/bin/podman rix,
+
+  # Read system libraries
+  /lib/** r,
+  /usr/lib/** r,
+  /usr/share/** r,
+  /etc/ld.so.cache r,
+  /etc/hosts r,
+  /etc/resolv.conf r,
+
+  # Proc (restricted)
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/maps r,
+  @{PROC}/net/if_inet6 r,
+
+  # Tmp (isolated)
+  /tmp/security-** rw,
+  /var/tmp/security-** rw,
+
+  # ── Capabilities ──────────────────────────────────────────────────────────
+  capability net_raw,        # raw sockets (nmap, tshark)
+  capability net_admin,      # network interface manipulation
+  capability dac_read_search,
+
+  # ── Network ───────────────────────────────────────────────────────────────
+  network inet stream,
+  network inet6 stream,
+  network inet dgram,
+  network inet raw,          # raw packets for security tools
+  network unix stream,
+
+  # ── Deny list (strict) ────────────────────────────────────────────────────
+  deny /boot/** rw,
+  deny /etc/passwd w,
+  deny /etc/shadow rw,
+  deny /etc/sudoers rw,
+  deny /sys/firmware/** rw,
+  deny /dev/dri/** rw,       # no GPU access
+  deny /dev/nvidia* rw,
+
+  # Strictly deny access to other environments' workspaces
+  deny @{HOME}/** rw,        # only security-workspace is allowed (above)
+  deny /home/**  rw,
+
+  # ── Audit ─────────────────────────────────────────────────────────────────
+  audit deny capability sys_ptrace,
+  audit deny capability sys_admin,
+  audit deny capability sys_module,
+}

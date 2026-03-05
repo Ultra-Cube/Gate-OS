@@ -25,6 +25,19 @@ def _build_parser() -> argparse.ArgumentParser:
     a.add_argument("--schema", default="docs/architecture/schemas/environment-manifest.schema.yaml", help="Schema for environment listing")
     t = sub.add_parser("gen-token", help="Generate and print a random API token")
     t.add_argument("--length", type=int, default=32, help="Token length")
+
+    s = sub.add_parser("sign", help="Sign a manifest file with the Ed25519 private key")
+    s.add_argument("manifest", help="Path to the manifest YAML file")
+    s.add_argument("--key-dir", default=None, help="Directory containing signing.key (default: /etc/gateos/keys/)")
+
+    vf = sub.add_parser("verify", help="Verify the Ed25519 signature of a manifest file")
+    vf.add_argument("manifest", help="Path to the manifest YAML file")
+    vf.add_argument("--sig", default=None, help="Signature file path (default: <manifest>.sig)")
+    vf.add_argument("--key-dir", default=None, help="Directory containing signing.pub (default: /etc/gateos/keys/)")
+
+    kg = sub.add_parser("gen-keypair", help="Generate a new Ed25519 signing keypair (dev/key-rotation use only)")
+    kg.add_argument("--key-dir", default=None, help="Output directory for the key pair")
+
     return p
 
 
@@ -56,6 +69,40 @@ def main(argv: list[str] | None = None) -> int:
         token = ''.join(secrets.choice(alphabet) for _ in range(args.length))
         print(token)
         return 0
+    if args.cmd == "sign":
+        from .security.signing import sign, SigningError
+        from pathlib import Path as _Path
+        try:
+            key_dir = _Path(args.key_dir) if args.key_dir else None
+            sig_path = sign(args.manifest, key_dir=key_dir)
+            print(f"Signed: {args.manifest}  →  {sig_path}")
+            return 0
+        except SigningError as e:
+            print(f"Error: {e}", file=sys.stderr)
+            return 1
+    if args.cmd == "verify":
+        from .security.signing import verify, SigningError
+        from pathlib import Path as _Path
+        try:
+            key_dir = _Path(args.key_dir) if args.key_dir else None
+            verify(args.manifest, args.sig, key_dir=key_dir)
+            print(f"OK: signature valid for {args.manifest}")
+            return 0
+        except SigningError as e:
+            print(f"INVALID: {e}", file=sys.stderr)
+            return 1
+    if args.cmd == "gen-keypair":
+        from .security.signing import generate_keypair, SigningError
+        from pathlib import Path as _Path
+        try:
+            key_dir = _Path(args.key_dir) if args.key_dir else None
+            priv, pub = generate_keypair(key_dir)
+            print(f"Private key: {priv}")
+            print(f"Public key:  {pub}")
+            return 0
+        except SigningError as e:
+            print(f"Error: {e}", file=sys.stderr)
+            return 1
     return 0
 
 

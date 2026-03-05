@@ -1,0 +1,91 @@
+# AppArmor profile for the Gate-OS development environment
+# Environment: dev — software development workstation
+# Applies to: containers started with `gateos switch dev`
+#
+# Install:
+#   sudo apparmor_parser -r /etc/apparmor.d/gateos-env-dev
+#   sudo aa-enforce gateos-env-dev
+#
+# Deny list philosophy: default allow with specific high-risk restrictions.
+# For production use consider moving to "deny all, allow specific".
+
+#include <tunables/global>
+
+profile gateos-env-dev flags=(attach_disconnected, mediate_deleted) {
+  #include <abstractions/base>
+  #include <abstractions/bash>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl_certs>
+
+  # ── File system ────────────────────────────────────────────────────────────
+  # Read-write access to user home and project directories
+  owner @{HOME}/** rw,
+  owner @{HOME}/.ssh/** r,             # Read SSH keys (no write)
+  owner @{HOME}/.gnupg/** r,
+
+  # Development tools
+  /usr/bin/git rix,
+  /usr/bin/python3* rix,
+  /usr/bin/node rix,
+  /usr/bin/npm rix,
+  /usr/bin/cargo rix,
+  /usr/bin/rustc rix,
+  /usr/bin/go rix,
+  /usr/bin/make rix,
+  /usr/bin/gcc* rix,
+  /usr/bin/clang* rix,
+  /usr/local/bin/** rix,
+
+  # Container runtimes (needed for dev containers)
+  /usr/bin/podman rix,
+  /usr/bin/docker rix,
+
+  # Package managers
+  /usr/bin/pip3 rix,
+  /usr/bin/apt rix,
+
+  # System libraries (read-only)
+  /lib/** r,
+  /usr/lib/** r,
+  /usr/share/** r,
+  /etc/ld.so.cache r,
+  /etc/passwd r,
+  /etc/group r,
+
+  # Proc access (limited)
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/maps r,
+  @{PROC}/sys/kernel/ngroups_max r,
+
+  # Tmp
+  /tmp/** rw,
+  /var/tmp/** rw,
+
+  # ── Capability ────────────────────────────────────────────────────────────
+  capability dac_override,
+  capability net_bind_service,
+  capability setuid,
+  capability setgid,
+
+  # ── Network ───────────────────────────────────────────────────────────────
+  network inet stream,
+  network inet6 stream,
+  network inet dgram,
+  network inet6 dgram,
+  network unix stream,
+
+  # ── Deny list ─────────────────────────────────────────────────────────────
+  # Prevent writing to system directories (apart from /tmp)
+  deny /boot/** w,
+  deny /etc/passwd w,
+  deny /etc/shadow rw,
+  deny /etc/sudoers rw,
+  deny /sys/firmware/** rw,
+  deny /proc/sysrq-trigger rw,
+
+  # Prevent ptrace on other PIDs
+  deny ptrace (read, trace) peer=unconfined,
+
+  # ── Signals ───────────────────────────────────────────────────────────────
+  signal (send) set=(term, kill) peer=unconfined,
+}

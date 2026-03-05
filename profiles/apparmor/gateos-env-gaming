@@ -1,0 +1,85 @@
+# AppArmor profile for the Gate-OS gaming environment
+# Environment: gaming — Steam, Proton, Lutris, GPU-intensive workloads
+# Applies to: containers/processes started with `gateos switch gaming`
+
+#include <tunables/global>
+
+profile gateos-env-gaming flags=(attach_disconnected, mediate_deleted) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/X>
+  #include <abstractions/wayland>
+  #include <abstractions/vulkan>
+  #include <abstractions/opengl>
+  #include <abstractions/audio>
+  #include <abstractions/ssl_certs>
+
+  # ── Gaming executables ────────────────────────────────────────────────────
+  owner @{HOME}/** rw,
+  /usr/bin/steam* rix,
+  /usr/games/** rix,
+  # Steam runtime libraries
+  @{HOME}/.steam/** rw,
+  @{HOME}/.local/share/Steam/** rw,
+
+  # Proton / Wine
+  @{HOME}/.wine/** rw,
+  /usr/bin/wine* rix,
+
+  # Lutris
+  /usr/bin/lutris* rix,
+  @{HOME}/.local/share/lutris/** rw,
+
+  # MangoHUD overlay
+  /usr/lib/mangohud/** r,
+
+  # ── GPU device access ─────────────────────────────────────────────────────
+  /dev/dri/* rw,
+  /dev/nvidia* rw,
+  /dev/nvidiactl rw,
+  /sys/class/drm/ r,
+  /sys/class/drm/** r,
+  /sys/devices/pci**/** r,
+
+  # ── Input devices ─────────────────────────────────────────────────────────
+  /dev/input/* rw,
+  /dev/uinput rw,
+
+  # ── Audio ─────────────────────────────────────────────────────────────────
+  /dev/snd/ r,
+  /dev/snd/** rw,
+
+  # System libraries
+  /lib/** r,
+  /usr/lib/** r,
+  /usr/share/games/** r,
+  /etc/ld.so.cache r,
+
+  # Proc
+  @{PROC}/@{pid}/** r,
+  @{PROC}/sys/kernel/ngroups_max r,
+
+  # Tmp
+  /tmp/** rw,
+  /var/tmp/** rw,
+
+  # ── Capabilities ──────────────────────────────────────────────────────────
+  capability dac_override,
+  capability net_bind_service,
+  capability sys_nice,       # Allow nice() for game process priority
+
+  # ── Network ───────────────────────────────────────────────────────────────
+  network inet stream,
+  network inet6 stream,
+  network inet dgram,
+  network unix stream,
+
+  # ── Deny list ─────────────────────────────────────────────────────────────
+  deny /boot/** w,
+  deny /etc/passwd w,
+  deny /etc/shadow rw,
+  deny /etc/sudoers rw,
+  deny /sys/firmware/** w,
+  deny @{HOME}/.ssh/** w,   # protect SSH keys
+  deny @{HOME}/.gnupg/** w,
+}
