@@ -3,7 +3,7 @@
 
 <div align="center">
   
-![Gate-OS Logo](https://via.placeholder.com/200x200.png?text=Gate-OS) <!-- Replace with actual logo -->
+![Gate-OS Logo](assets/logo.svg)
 
 **The Universal Linux Distribution - One OS for All Environments**  
 *Seamlessly switch between gaming, development, design, and media environments*
