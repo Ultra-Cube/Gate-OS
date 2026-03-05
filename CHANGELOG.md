@@ -20,22 +20,32 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 
 ---
 
-## [0.0.5] — 2026-03-05 🔄 In Progress
+## [0.0.5] — 2026-03-05
 
 ### Added
-- `TODO.md` — living task board with all work phases (Phase 0 → Phase 9) and per-task status.
-- `docs/plan/project-plan.md` — Ubuntu 24.04 LTS base decision documented; three-phase installable OS roadmap (Alpha → Beta → v1.0); team adoption plan with per-role first tasks; risk register updated.
-- Base OS decision confirmed: **Ubuntu 24.04 LTS "Noble Numbat"** as Gate-OS foundation.
-- Installable OS roadmap: Phase A (team alpha ISO, May 2026), Phase B (public beta, Aug 2026), Phase C (v1.0, Q4 2026).
-- Team adoption quick-start (Step 1–4) added to project plan.
+- `TODO.md` — living task board with all work phases (Phase 0–9) and per-task status (✅/🔄/⏳/📋).
+- `Makefile` — developer shortcuts: `make setup`, `make test`, `make test-cov`, `make lint`, `make lint-fix`, `make validate`, `make api`, `make token`, `make check`, `make clean`.
+- `.gitignore` — covers Python pycache/eggs, venv, Node `package-lock.json`, Gate-OS runtime dirs, secrets.
+- `gateos_manager/services/__init__.py` — `ServiceManager` class: start/stop systemd services from manifest `spec.services`, dry-run fallback when `systemctl` unavailable, required vs optional service distinction, `ServiceError` on critical failures, full telemetry events.
+- `gateos_manager/profile/__init__.py` — `ProfileApplicator` class: applies CPU governor via sysfs, GPU mode stub, NIC priority stub, `restore_defaults()` for rollback; dry-run mode.
+- `tests/test_service_manager.py` — 8 tests: dry-run start/stop, empty services, no-name skip, status, required failure raises, optional failure silent.
+- `tests/test_profile_applicator.py` — 8 tests: CPU governor (valid/unknown), GPU stub, NIC stub, empty/absent performance key, all-settings, restore defaults.
+- `tests/test_switch_orchestrator_enhanced.py` — 5 tests: SwitchContext defaults, correlation ID, perform_switch with services, missing manifest error.
 
 ### Changed
-- `docs/plan/project-plan.md` — full project health assessment added with strengths/gaps table; milestones M12–M17 added (real switch engine, perf harness, diagram sprint, dev toolchain fix, manifest signing, public beta); all milestones updated with actual status vs. original targets.
-- `CHANGELOG.md` — adopted Keep a Changelog format fully.
+- `gateos_manager/switch/orchestrator.py` — full rewrite from stub to real pipeline: `SwitchContext` dataclass (tracks started containers/services/profile for rollback); activation steps (pre_switch → services → profile → containers → post_switch); `_rollback()` best-effort recovery; `ManifestValidationError` import removed (covered by base `Exception`).
+- `pyproject.toml` — version bumped `0.0.4 → 0.0.5`; `httpx>=0.27.0` added to `[dev]` (required by FastAPI `TestClient`); description updated.
+- `scripts/setup-dev-env.sh` — complete rewrite: fixed duplicated shebang/content, added apt auto-install fallback for Ubuntu, Python 3.10+ version validation, venv creation check, post-install test run for verification.
+- `CONTRIBUTING.md` — `Getting Started` section replaced with full Ubuntu 24.04 prerequisites, `make` targets reference table.
+- `docs/plan/project-plan.md` — Ubuntu 24.04 LTS base OS confirmed with rationale; 3-phase installable OS roadmap (Alpha May 2026, Beta Aug 2026, v1.0 Q4 2026); team adoption plan (Step 1–4); milestones M12–M17 added; risk register expanded.
 
-### Notes
-- This release is a **planning & documentation milestone** before Phase 1 development begins.
-- No Python source changes in this version.
+### Fixed
+- Missing `httpx` dependency caused `FastAPI TestClient` import failure in 3 test files (`test_api_server.py`, `test_auth.py`, `test_rate_limit.py`).
+- `setup-dev-env.sh` had duplicated `#!/usr/bin/env bash` and conflicting logic.
+
+### Test Results
+- **64 tests passing** (up from 43 in v0.0.4)
+- New tests: +21 (ServiceManager: 8, ProfileApplicator: 8, SwitchContext: 5)
 
 ## [0.0.4] - 2025-08-24
 
