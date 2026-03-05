@@ -413,13 +413,123 @@ Disable update checks entirely: `export GATEOS_UPDATE_DISABLE=1`
 
 ## 📦 Installation
 
+Gate-OS offers three installation paths depending on your use-case:
+
+| Path | When to Use |
+|------|-------------|
+| [Option A — Full OS ISO](#option-a--full-os-installation-iso) | New machine or bare-metal install |
+| [Option B — Overlay on Existing Ubuntu](#option-b--overlay-on-existing-ubuntu-2404) | Keep your current system, add Gate-OS on top |
+| [Option C — Manager Only (Dev/CI)](#option-c--manager-only-for-developers--ci) | Development, testing, or CI environments |
+
+---
+
+### Option A — Full OS Installation (ISO)
+
+> Installs Gate-OS as the primary operating system using a bootable Ubuntu 24.04 LTS base image with Gate-OS pre-installed.
+
+#### Step 1 — Build the ISO (or download a release)
+
+```bash
+git clone https://github.com/Ultra-Cube/Gate-OS.git
+cd Gate-OS
+# Build the ISO (requires: debootstrap, squashfs-tools, grub-pc-bin, xorriso)
+sudo bash scripts/build-iso.sh --version 1.0.0-beta --output ~/gateos.iso
+```
+
+Or download the pre-built ISO from [Releases](https://github.com/Ultra-Cube/Gate-OS/releases).
+
+#### Step 2 — Write to USB (minimum 4 GB)
+
+```bash
+# Linux / macOS
+sudo dd if=~/gateos.iso of=/dev/sdX bs=4M status=progress && sync
+
+# Windows — use Rufus (dd mode) or balenaEtcher
+```
+
+#### Step 3 — Boot and Install
+
+1. Set USB as first boot device in BIOS/UEFI
+2. Select **"Install Gate-OS"** from the GRUB menu
+3. Follow the Ubuntu-based installer (language, disk, user)
+4. On first login, the `gateos-api.service` systemd unit starts automatically
+
+#### Step 4 — Verify
+
+```bash
+systemctl status gateos-api.service
+gateos --version          # should print 1.0.0-beta
+gateos validate examples/environments/dev.yaml
+```
+
+---
+
+### Option B — Overlay on Existing Ubuntu 24.04+
+
+> Installs the Gate-OS manager and systemd service on top of your running Ubuntu system.
+
+#### Step 1 — Install the .deb Package
+
+```bash
+# Download the latest .deb from Releases
+wget https://github.com/Ultra-Cube/Gate-OS/releases/download/v1.0.0-beta/gateos-manager_1.0.0-beta_amd64.deb
+
+# Install
+sudo dpkg -i gateos-manager_1.0.0-beta_amd64.deb
+sudo apt-get install -f   # resolve any missing dependencies
+```
+
+Or build the package locally:
+
+```bash
+git clone https://github.com/Ultra-Cube/Gate-OS.git
+cd Gate-OS
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e '.[dev]'
+python3 -c "
+from gateos_manager.packaging import build_deb
+from pathlib import Path
+build_deb(Path('.'), '1.0.0-beta', Path('/tmp/gateos-pkg'))
+"
+sudo dpkg -i /tmp/gateos-pkg/gateos-manager_1.0.0-beta_amd64.deb
+```
+
+#### Step 2 — Load AppArmor and Seccomp Profiles (Optional but Recommended)
+
+```bash
+# Load AppArmor profiles for your environments
+sudo apparmor_parser -r profiles/apparmor/gateos-env-dev
+sudo apparmor_parser -r profiles/apparmor/gateos-env-gaming
+
+# Profiles are applied automatically when switching environments
+```
+
+#### Step 3 — Start and Enable Service
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now gateos-api.service
+```
+
+#### Step 4 — Verify
+
+```bash
+systemctl status gateos-api.service
+gateos --version
+gateos validate examples/environments/dev.yaml
+```
+
+---
+
+### Option C — Manager Only (for Developers / CI)
+
 Prerequisites:
 
-- Python 3.10+ (system package: `python3`, `python3-venv`)
+- Python 3.10+ (`python3`, `python3-venv`)
 - Git
-- (Optional) `podman` or `docker` for future container integration
+- (Optional) `podman` or `docker` for real container switching
 
-Clone & install (editable) with development and watch extras:
+Clone & install (editable) with development extras:
 
 ```bash
 git clone https://github.com/Ultra-Cube/Gate-OS.git
@@ -430,23 +540,25 @@ pip install --upgrade pip
 pip install -e '.[dev,watch]'
 ```
 
-Extras:
-
-- `dev` – testing, linting, tooling
-- `watch` – file watching (hot reload) via `watchdog`
-
-Minimal runtime only:
+Verify CLI:
 
 ```bash
-pip install -e .
-```
-
-Verify CLI is available:
-
-```bash
+gateos --version
 gateos --help
 ```
 
+Extras available:
+
+| Extra | Contents |
+|-------|----------|
+| `dev` | pytest, ruff, coverage tooling |
+| `watch` | `watchdog` for hot manifest reload |
+| `ui` | GTK4 / Libadwaita bindings |
+
+Minimal runtime only (no dev tools):
+
+```bash
+pip install -e .
 ### Quick Start (Dry-Run Demo)
 
 ```bash
