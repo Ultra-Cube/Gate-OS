@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gateos-manager"
-version = "0.3.0"
+version = "0.4.0"
 description = "Gate-OS environment manager — Ubuntu ISO builder, GTK4 UI shell, real container orchestration, service management, performance profiles"
 requires-python = ">=3.10"
 license = {text = "GPL-3.0-or-later"}

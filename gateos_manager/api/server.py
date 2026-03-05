@@ -17,6 +17,7 @@ from gateos_manager.switch.orchestrator import switch_environment as orchestrate
 from gateos_manager.plugins.registry import discover_entrypoint_plugins
 from gateos_manager.logging.structured import info, warn
 from gateos_manager.api.rate_limit import consume as rate_consume
+from gateos_manager.telemetry.prometheus import registry as _metrics_registry
 
 api_key_scheme = APIKeyHeader(name="x-token", auto_error=False)
 
@@ -37,6 +38,28 @@ app = FastAPI(
     contact={"name": "Ultra Cube Tech"},
     lifespan=lifespan,
 )
+
+
+@app.middleware("http")
+async def _metrics_middleware(request: Request, call_next):
+    response = await call_next(request)
+    _metrics_registry.inc(
+        "gateos_api_requests_total",
+        labels={
+            "method": request.method,
+            "path": request.url.path,
+            "status_code": str(response.status_code),
+        },
+    )
+    return response
+
+
+@app.get("/metrics", tags=["Observability"],
+         summary="Prometheus metrics",
+         description="Returns Prometheus text format metrics for scraping.")
+def metrics_endpoint() -> Response:
+    body = _metrics_registry.text_exposition()
+    return Response(content=body, media_type="text/plain; version=0.0.4; charset=utf-8")
 
 
 class EnvironmentSummary(BaseModel):
@@ -105,6 +128,7 @@ def switch_environment(
     correlation_id = request.headers.get("x-correlation-id", str(uuid.uuid4()))
     info("switch.request", environment=name, client=client_key, correlation_id=correlation_id)
     result = orchestrate_switch(name, Path("docs/architecture/schemas/environment-manifest.schema.yaml"), correlation_id=correlation_id)
+    _metrics_registry.inc("gateos_switch_total", labels={"env": name, "status": result["status"]})
     return SwitchResponse(status=result["status"], environment=name, correlation_id=correlation_id)
 
 

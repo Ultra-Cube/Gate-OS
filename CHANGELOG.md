@@ -6,13 +6,32 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 
 ---
 
-## [Unreleased] — Target: 0.4.0
+## [Unreleased] — Target: 0.5.0
 
 ### Planned
-- Prometheus metrics endpoint (`/metrics`).
-- OpenTelemetry real exporter (replace stdout-only OTLP).
-- CI perf-test threshold (fail if switch > 3 s).
-- Memory-delta measurement per environment switch.
+- WebSocket endpoint (`/ws/status`) for real-time environment status.
+- Flutter Android companion app scaffold.
+- Remote switch trigger from mobile.
+
+---
+
+## [0.4.0] — 2026-03-05 — Performance & Observability
+
+### Added
+- `gateos_manager/telemetry/prometheus.py` — in-process Prometheus metrics:
+  - `Counter`, `Gauge`, `Histogram` primitives (thread-safe, zero dependencies).
+  - `MetricsRegistry` with pre-declared metrics: `gateos_switch_total`, `gateos_switch_latency_seconds`, `gateos_switch_latency_p99_seconds`, `gateos_active_environment`, `gateos_api_requests_total`, `gateos_memory_delta_bytes`, `gateos_build_info`.
+  - `start_metrics_server(port)` — daemon HTTP server on `/metrics` (Prometheus text format 0.0.4).
+  - P99 rolling window (last 100 samples) without external libraries.
+- `GET /metrics` FastAPI endpoint — returns Prometheus text exposition from `registry`.
+- HTTP middleware on all API routes — auto-increments `gateos_api_requests_total` with method/path/status labels.
+- `POST /switch/{name}` — increments `gateos_switch_total` with env and status labels on every switch.
+- `tests/test_observability.py` — 19 tests:
+  - Counter/Gauge/Histogram unit tests.
+  - Registry text format assertions.
+  - FastAPI `/metrics` endpoint integration tests.
+  - Perf CI gate: switch pipeline must complete in < 3 s (marked `benchmark`).
+  - Metrics server start/stop/404 tests.
 
 ---
 
