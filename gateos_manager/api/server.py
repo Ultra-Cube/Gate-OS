@@ -18,6 +18,7 @@ from gateos_manager.plugins.registry import discover_entrypoint_plugins
 from gateos_manager.logging.structured import info, warn
 from gateos_manager.api.rate_limit import consume as rate_consume
 from gateos_manager.telemetry.prometheus import registry as _metrics_registry
+from gateos_manager.api.websocket import router as ws_router, broadcast_sync, _make_message
 
 api_key_scheme = APIKeyHeader(name="x-token", auto_error=False)
 
@@ -60,6 +61,9 @@ async def _metrics_middleware(request: Request, call_next):
 def metrics_endpoint() -> Response:
     body = _metrics_registry.text_exposition()
     return Response(content=body, media_type="text/plain; version=0.0.4; charset=utf-8")
+
+
+app.include_router(ws_router)
 
 
 class EnvironmentSummary(BaseModel):
@@ -129,6 +133,7 @@ def switch_environment(
     info("switch.request", environment=name, client=client_key, correlation_id=correlation_id)
     result = orchestrate_switch(name, Path("docs/architecture/schemas/environment-manifest.schema.yaml"), correlation_id=correlation_id)
     _metrics_registry.inc("gateos_switch_total", labels={"env": name, "status": result["status"]})
+    broadcast_sync(_make_message("switch_done", active_env=name, payload={"status": result["status"], "correlation_id": correlation_id}))
     return SwitchResponse(status=result["status"], environment=name, correlation_id=correlation_id)
 
 

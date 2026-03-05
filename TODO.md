@@ -187,14 +187,21 @@ All items committed and tagged.
 
 ---
 
-## 📱 Phase 7 — Mobile Companion (v0.5.0) 📋 PLANNED
+## 📱 Phase 7 — Mobile Companion (v0.5.0) ✅ COMPLETE
 
-**Target:** August 2026
+**Goal:** WebSocket real-time status streaming and mobile-ready REST API.  
+**Completed:** 2026-03-05 | **178 tests passing**
 
-- 📋 Flutter Android app scaffold
-- 📋 WebSocket endpoint for real-time status
-- 📋 Remote switch trigger from mobile
-- 📋 Environment status notifications
+- ✅ `gateos_manager/api/websocket.py` — ConnectionManager, `GET /ws/status` endpoint, `broadcast_sync()`
+- ✅ `POST /switch/{env}` now broadcasts `switch_done` to all WS clients
+- ✅ WebSocket router integrated via `app.include_router(ws_router)`
+- ✅ `docs/mobile/companion-api.md` — full WebSocket API reference + Flutter scaffold guide
+- ✅ `tests/test_mobile_companion.py` — 12 tests (anyio async + TestClient WebSocket)
+- ✅ Fixed `_flush_loop` in `emitter.py` — interval/batch-size now re-read per cycle
+- 📋 Flutter Android app (basic switch UI) — Project v0.6.0
+- 📋 Push notifications (FCM) on environment change — Project v0.7.0
+
+**Commit:** `feat(mobile): WebSocket /ws/status endpoint, switch broadcast, mobile docs; 178 tests`
 
 ---
 

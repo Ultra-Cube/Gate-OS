@@ -37,10 +37,10 @@ def _ensure_batch_thread():  # pragma: no cover - thread mgmt
 
 
 def _flush_loop():  # pragma: no cover - background
-    interval = float(os.getenv('GATEOS_TELEMETRY_BATCH_INTERVAL', '2'))
-    max_batch = int(os.getenv('GATEOS_TELEMETRY_BATCH_SIZE', '50'))
     while True:
         try:
+            interval = float(os.getenv('GATEOS_TELEMETRY_BATCH_INTERVAL', '2'))
+            max_batch = int(os.getenv('GATEOS_TELEMETRY_BATCH_SIZE', '50'))
             if _BATCH_Q is None:
                 return
             first = _BATCH_Q.get()

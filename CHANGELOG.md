@@ -6,12 +6,35 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 
 ---
 
-## [Unreleased] — Target: 0.5.0
+## [Unreleased] — Target: 1.0.0-beta
 
 ### Planned
-- WebSocket endpoint (`/ws/status`) for real-time environment status.
-- Flutter Android companion app scaffold.
-- Remote switch trigger from mobile.
+- All 4 core environments validated end-to-end.
+- OTA update mechanism stub.
+- Beta release notes and migration guide.
+
+---
+
+## [0.5.0] — 2026-03-05 — Mobile Companion API
+
+### Added
+- `gateos_manager/api/websocket.py` — WebSocket real-time status endpoint:
+  - `ConnectionManager` — thread-safe multi-client broadcast pool with dead-connection cleanup.
+  - `GET /ws/status` WebSocket endpoint — sends welcome on connect, echoes pings.
+  - `broadcast_sync()` — fire-and-forget from synchronous code; tasks broadcast on live loop.
+  - `_make_message()` helper — consistent JSON message envelope with ISO-8601 timestamp.
+- `POST /switch/{env}` — now broadcasts `switch_done` message to all WebSocket clients after every successful switch.
+- `GET /ws/status` route registered in FastAPI app via `app.include_router(ws_router)`.
+- `docs/mobile/companion-api.md` — comprehensive mobile companion documentation:
+  - WebSocket message type reference table.
+  - REST remote switch usage.
+  - Flutter scaffold setup guide.
+  - Security considerations (TLS, Keystore).
+  - Roadmap table v0.5.0 → v1.0.0.
+- `tests/test_mobile_companion.py` — 12 tests covering ConnectionManager, message helpers, WebSocket endpoint, anyio-based async tests.
+
+### Fixed
+- `gateos_manager/telemetry/emitter.py` — `_flush_loop` now re-reads `GATEOS_TELEMETRY_BATCH_INTERVAL` and `GATEOS_TELEMETRY_BATCH_SIZE` each cycle (was captured once at thread start), fixing a timing flakiness in tests.
 
 ---
 
