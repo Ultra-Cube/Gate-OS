@@ -2,7 +2,7 @@
 
 > Living document — updated after every completed phase.  
 > Last updated: **March 5, 2026**  
-> Current version: **0.2.0** → Next target: **0.3.0** (Security Hardening)
+> Current version: **v1.0.0-beta** → Next target: **v1.1.0** (Coverage & OTLP)
 
 | Symbol | Meaning |
 |--------|---------|
@@ -241,14 +241,44 @@ All items committed and tagged.
 
 ---
 
-## 🏁 Phase 9 — v1.0 Launch 📋 PLANNED
+## 🔧 Phase 9 — Quality & Observability (v1.1.0) 🔄 IN PROGRESS
+
+**Goal:** Raise test coverage to 85%+, implement deferred v1.0.0-beta stubs, launch docs site.  
+**Started:** 2026-03-05
+
+### 9.1 — Test Coverage
+- ✅ Add `TestGateOSWindow` — construction + all callbacks (ui/app.py 35% → 70%+)
+- ✅ Add `TestGateOSApp` — do_activate, do_startup, main() (ui/app.py)
+- ✅ Add `TestAppIndicatorTrayWithIndicator` — indicator code paths (ui/tray.py 58% → 80%+)
+- ✅ New `tests/test_watch_reloader.py` — start_watch() full coverage (53% → 100%)
+
+### 9.2 — Feature Completions (from v1.0.0-beta backlog)
+- ✅ `schedule_apply()` — systemd drop-in + flag file fallback (was NotImplementedError stub)
+- ✅ `scripts/load-apparmor-profiles.sh` — auto-loader with enforce/complain modes
+- ✅ `gateos_manager/telemetry/otlp.py` — real OTLP/HTTP JSON exporter (spans + logs + batch)
+- ✅ `mkdocs.yml` — MkDocs Material documentation site scaffold
+- ✅ `docs/index.md` — project home page
+- ✅ `docs/observability/otlp.md` — OTLP integration guide
+
+### 9.3 — Upcoming
+- ⏳ GPU mode real implementation (nvidia-smi / AMD sysfs in ProfileApplicator)
+- ⏳ NIC priority (tc/qdisc integration)
+- ⏳ `allowlistRef` named capability in manifest schema
+- ⏳ Network namespace per-container isolation
+- ⏳ Flutter companion app scaffold (Android)
+- ⏳ Push notifications (FCM) on environment change
+- ⏳ OpenTelemetry auto-instrumentation for switch pipeline spans
+
+---
+
+## 🏁 Phase 10 — v1.0.0 Stable 📋 PLANNED
 
 **Target:** Q4 2026
 
 - 📋 v1.0.0 stable release
 - 📋 Enterprise pilot: 2 organizations
 - 📋 25+ community contributors
-- 📋 Full documentation site (MkDocs)
+- 📋 Full documentation site live (MkDocs Material on GitHub Pages)
 
 ---
 
@@ -280,13 +310,13 @@ P2        AppArmor profile for dev environment           Sec      📋 Soon
 | 0.0.6 | ✅ | 2026-03-05 | Real container orchestration (timeout/labels/volumes) + benchmark tests; 68 tests |
 | 0.1.0 | ✅ | 2026-03-05 | GTK4 UI shell (env list, switch panel, status bar, tray); 100 tests |
 | 0.2.0 | ✅ | 2026-03-05 | Ubuntu ISO builder + systemd service + packaging utils; 114 tests |
-| 0.3.0 | — | 2026-06 | Security hardening ⏳ |
-| 0.3.0 | — | 2026-06 | Ubuntu 24.04 ISO builder ⏳ |
-| 0.4.0 | — | 2026-07 | Security hardening ⏳ |
-| 0.5.0 | — | 2026-07 | Perf & observability ⏳ |
-| 0.6.0 | — | 2026-08 | Mobile companion ⏳ |
-| 1.0.0-beta | — | 2026-09 | Public beta 📋 |
-| 1.0.0 | — | 2026-Q4 | Stable release 📋 |
+| 0.3.0 | ✅ | 2026-03-05 | AppArmor + seccomp profiles, manifest signing; 147 tests |
+| 0.4.0 | ✅ | 2026-03-05 | Prometheus metrics, /metrics endpoint, perf CI gate; 166 tests |
+| 0.5.0 | ✅ | 2026-03-05 | WebSocket /ws/status, mobile companion; 178 tests |
+| 1.0.0-beta | ✅ v1.0.0-beta | 2026-03-05 | OTA stub, beta release notes, 198 tests |
+| 1.1.0 | 🔄 | 2026-03 | Coverage 85%+, schedule_apply(), OTLP exporter, docs site |
+| 1.0.0 | 📋 | 2026-Q4 | Stable release |
+
 
 ---
 

@@ -6,12 +6,33 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 
 ---
 
-## [Unreleased] — Post-Beta
+## [Unreleased] — v1.1.0
 
-### Planned
-- Flutter Android companion app (basic switch UI)
-- AppArmor profile auto-loader script
-- OTA update `schedule_apply()` via systemd drop-in
+### Added
+- `gateos_manager/telemetry/otlp.py` — real OTLP/HTTP JSON exporter:
+  - `OTLPExporter.export_log(name, attrs, severity)` — OTLP LogRecord
+  - `OTLPExporter.export_span(name, start_ns, end_ns, attrs)` — OTLP Span
+  - `OTLPExporter.export_batch(events)` — batch log export
+  - `default_exporter()` — module-level lazy singleton
+  - Configured via `GATEOS_OTLP_ENDPOINT`, `GATEOS_OTLP_SERVICE`, `GATEOS_OTLP_TIMEOUT`, `GATEOS_OTLP_DISABLE`
+- `scripts/load-apparmor-profiles.sh` — AppArmor auto-loader:
+  - Loads all `profiles/apparmor/gateos-env-*` profiles
+  - `--enforce` (default) / `--complain` / `--no-reload` flags
+  - Preflight checks for root, apparmor_parser, kernel support
+- `mkdocs.yml` — MkDocs Material documentation site scaffold
+- `docs/index.md` — project home page with architecture diagram
+- `docs/observability/otlp.md` — OTLP integration guide with collector setup
+
+### Fixed / Implemented
+- `updater.schedule_apply()` — replaced `NotImplementedError` stub with real implementation:
+  - Strategy 1: systemd drop-in in `/etc/systemd/system/gateos-manager.service.d/`
+  - Strategy 2: flag file at `<GATEOS_UPDATE_DIR>/apply-at-boot.flag` (fallback)
+- `tests/test_ui_components.py` — added 18 new tests for previously uncovered paths:
+  - `TestGateOSWindow` — construction, `_initial_load`, all 4 callbacks, `do_close_request`
+  - `TestGateOSApp` — `do_activate` (create + reuse), `do_startup`, `main()` both paths
+  - `TestAppIndicatorTrayWithIndicator` — `set_environments`, `set_active_env`,
+    `_build_menu`, `_on_menu_activate`, `_on_quit` (8 tests)
+- New `tests/test_watch_reloader.py` — 9 tests covering `start_watch()` with/without Observer
 
 ---
 

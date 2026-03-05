@@ -171,10 +171,58 @@ def apply_update(release: ReleaseInfo, *, dry_run: bool = False) -> None:
 def schedule_apply() -> None:
     """Mark the staged update to be applied at next system boot.
 
-    Creates a systemd drop-in or a flag file that the gate-os-updater.service
-    references on startup.  Not yet implemented — stub only.
+    Strategy (in priority order):
+      1. Write a systemd drop-in under
+         ``/etc/systemd/system/gateos-manager.service.d/apply-update.conf``
+         so the service runs ``dpkg -i`` before the next start.
+      2. Fall back to a plain flag file at
+         ``<GATEOS_UPDATE_DIR>/apply-at-boot.flag`` (read by the
+         gate-os-updater.service ExecStartPre script).
+
+    Raises :class:`UpdateError` if no staged package is found.
     """
-    raise NotImplementedError(
-        "schedule_apply() is a stub in v1.0.0-beta. "
-        "Manual installation: sudo dpkg -i /var/cache/gateos/updates/gateos-*.deb"
-    )
+    import subprocess
+
+    # Find the most recent staged .ready marker
+    ready_files = sorted(_DEFAULT_UPDATE_DIR.glob("*.ready"))
+    if not ready_files:
+        raise UpdateError(
+            "No staged update found. Run apply_update() first to download the package."
+        )
+
+    ready_file = ready_files[-1]
+    version = ready_file.read_text().strip()
+    deb_file = ready_file.with_suffix(".deb")
+
+    if not deb_file.exists():
+        raise UpdateError(
+            f"Staged package missing: {deb_file}. "
+            "Re-run apply_update() to re-download."
+        )
+
+    # --- Strategy 1: systemd drop-in ---
+    dropin_dir = Path("/etc/systemd/system/gateos-manager.service.d")
+    try:
+        dropin_dir.mkdir(parents=True, exist_ok=True)
+        dropin = dropin_dir / "apply-update.conf"
+        dropin.write_text(
+            "[Service]\n"
+            f"ExecStartPre=/usr/bin/dpkg -i {deb_file}\n"
+            "ExecStartPre=/bin/rm -f "
+            f"{deb_file} {ready_file} {dropin_dir}/apply-update.conf\n"
+        )
+        subprocess.run(
+            ["systemctl", "daemon-reload"],
+            check=False,
+            capture_output=True,
+            timeout=5,
+        )
+        return
+    except PermissionError:
+        pass  # fallthrough to flag file strategy
+
+    # --- Strategy 2: flag file ---
+    _DEFAULT_UPDATE_DIR.mkdir(parents=True, exist_ok=True)
+    flag = _DEFAULT_UPDATE_DIR / "apply-at-boot.flag"
+    flag.write_text(str(deb_file))
+

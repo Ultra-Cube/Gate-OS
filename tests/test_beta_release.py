@@ -8,7 +8,7 @@ Covers:
 - CLI: gateos check-update, gateos apply-update
 - UpdateError propagation on network failure
 - GATEOS_UPDATE_DISABLE env var
-- schedule_apply() stub raises NotImplementedError
+- schedule_apply() raises UpdateError when no staged package exists
 """
 from __future__ import annotations
 
@@ -193,10 +193,21 @@ def test_apply_update_download_creates_ready_marker(mock_release, tmp_path, monk
 # schedule_apply stub test
 # ──────────────────────────────────────────────────────────────────────────
 
-def test_schedule_apply_raises_not_implemented():
-    from gateos_manager.updater import schedule_apply
-    with pytest.raises(NotImplementedError, match="stub"):
-        schedule_apply()
+def test_schedule_apply_raises_update_error_when_no_staged_package():
+    """schedule_apply() raises UpdateError when no staged .ready file exists."""
+    from gateos_manager.updater import schedule_apply, UpdateError
+    import tempfile, os
+    # Point update dir at empty temp directory so no .ready files exist
+    with tempfile.TemporaryDirectory() as d:
+        with patch.dict(os.environ, {"GATEOS_UPDATE_DIR": d}):
+            # Re-import to pick up the new env var
+            import importlib
+            import gateos_manager.updater as _upd
+            importlib.reload(_upd)
+            with pytest.raises(_upd.UpdateError, match="No staged update"):
+                _upd.schedule_apply()
+        # Restore
+        importlib.reload(_upd)
 
 
 # ──────────────────────────────────────────────────────────────────────────

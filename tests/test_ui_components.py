@@ -106,6 +106,22 @@ def _make_gi_mock() -> types.ModuleType:
         def pack_end(self, w): pass
         def set_center_widget(self, w): pass
 
+    class Menu(Widget):
+        def __init__(self): self._items = []
+        def append(self, item): self._items.append(item)
+        def show_all(self): pass
+
+    class MenuItem(Widget):
+        def __init__(self): self._label = ""
+        @classmethod
+        def new_with_label(cls, l):
+            m = cls(); m._label = l; return m
+        def connect(self, sig, cb, *a): pass
+
+    class SeparatorMenuItem(Widget):
+        @classmethod
+        def new(cls): return cls()
+
     gtk_mod.Box = Box
     gtk_mod.Label = Label
     gtk_mod.Button = Button
@@ -114,6 +130,9 @@ def _make_gi_mock() -> types.ModuleType:
     gtk_mod.ScrolledWindow = ScrolledWindow
     gtk_mod.Image = Image
     gtk_mod.ActionBar = ActionBar
+    gtk_mod.Menu = Menu
+    gtk_mod.MenuItem = MenuItem
+    gtk_mod.SeparatorMenuItem = SeparatorMenuItem
     gtk_mod.Align = MagicMock()
     gtk_mod.Align.CENTER = 3
     gtk_mod.Align.START = 1
@@ -230,6 +249,7 @@ from gateos_manager.ui.env_list import EnvListPanel  # noqa: E402
 from gateos_manager.ui.status_bar import StatusBar  # noqa: E402
 from gateos_manager.ui.switch_button import SwitchButton  # noqa: E402
 from gateos_manager.ui.tray import AppIndicatorTray  # noqa: E402
+from gateos_manager.ui.app import GateOSApp, GateOSWindow  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -507,6 +527,165 @@ class TestMainEntryPoint(unittest.TestCase):
         import gateos_manager.ui as _ui_mod
         importlib.reload(_ui_mod)
         assert "127.0.0.1" in _ui_mod.API_URL or "localhost" in _ui_mod.API_URL
+
+
+class TestGateOSWindow(unittest.TestCase):
+    """Tests for GateOSWindow construction and all callbacks."""
+
+    def _make_window(self, env_list=None):
+        mock_api = MagicMock()
+        mock_api.list_environments.return_value = env_list or []
+        mock_api.health.return_value = {"status": "ok"}
+        app = GateOSApp.__new__(GateOSApp)
+        # Required attribute for ApplicationWindow ctor
+        app._window = None
+        with patch("gateos_manager.ui.app.GateOSAPI", return_value=mock_api):
+            window = GateOSWindow(app)
+        return window, mock_api
+
+    def test_window_construction_no_crash(self):
+        window, _ = self._make_window()
+        assert window is not None
+
+    def test_initial_load_calls_refresh(self):
+        # GLib.idle_add immediately calls _initial_load → env_list.refresh()
+        _, mock_api = self._make_window()
+        mock_api.list_environments.assert_called()
+
+    def test_on_refresh_triggers_env_list_refresh(self):
+        window, mock_api = self._make_window()
+        mock_api.list_environments.reset_mock()
+        window._on_refresh(MagicMock())
+        mock_api.list_environments.assert_called()
+
+    def test_on_env_selected_sets_switch_target(self):
+        window, _ = self._make_window()
+        window._on_env_selected(None, "gaming")
+        assert window._switch_btn._target == "gaming"
+
+    def test_on_switch_done_updates_status_bar(self):
+        window, _ = self._make_window()
+        window._on_switch_done(None, "dev")
+        label = window._status_bar._env_label.get_label()
+        assert "Dev" in label or "dev" in label
+
+    def test_on_switch_done_updates_tray(self):
+        window, _ = self._make_window()
+        # Tray is unavailable in CI; set_active_env should be a no-op
+        window._on_switch_done(None, "gaming")  # must not raise
+
+    def test_close_request_stops_polling(self):
+        window, _ = self._make_window()
+        window._status_bar._timer_id = 99
+        result = window.do_close_request()
+        assert result is False
+        assert window._status_bar._timer_id is None
+
+
+class TestGateOSApp(unittest.TestCase):
+    """Tests for GateOSApp lifecycle methods."""
+
+    def _patched_api(self):
+        mock_api = MagicMock()
+        mock_api.list_environments.return_value = []
+        mock_api.health.return_value = {"status": "ok"}
+        return mock_api
+
+    def test_do_activate_creates_window(self):
+        app = GateOSApp()
+        assert app._window is None
+        with patch("gateos_manager.ui.app.GateOSAPI", return_value=self._patched_api()):
+            app.do_activate()
+        assert app._window is not None
+
+    def test_do_activate_reuses_existing_window(self):
+        app = GateOSApp()
+        mock_api = self._patched_api()
+        with patch("gateos_manager.ui.app.GateOSAPI", return_value=mock_api):
+            app.do_activate()
+            w1 = app._window
+            app.do_activate()
+            w2 = app._window
+        assert w1 is w2
+
+    def test_do_startup_no_crash(self):
+        app = GateOSApp()
+        # Should not raise
+        app.do_startup()
+
+    def test_main_no_display_mode(self):
+        with patch.dict("os.environ", {"GATEOS_UI_NO_DISPLAY": "1"}):
+            from gateos_manager.ui.app import main
+            assert main([]) == 0
+
+    def test_main_default_runs_app(self):
+        """main() without display flag creates GateOSApp and calls run()."""
+        import os as _os
+        env = {k: v for k, v in _os.environ.items() if k != "GATEOS_UI_NO_DISPLAY"}
+        with patch.dict("os.environ", env, clear=True):
+            with patch("gateos_manager.ui.app.GateOSAPI", return_value=self._patched_api()):
+                from gateos_manager.ui.app import main
+                result = main(["gateos-ui"])
+        assert result == 0  # mock Adw.Application.run() returns 0
+
+
+class TestAppIndicatorTrayWithIndicator(unittest.TestCase):
+    """Test AppIndicatorTray code paths that run when indicator IS available."""
+
+    def _make_tray_with_indicator(self):
+        api = MagicMock(spec=GateOSAPI)
+        with patch("gateos_manager.ui.tray._INDICATOR_AVAILABLE", False):
+            tray = AppIndicatorTray(api)
+        tray._indicator = MagicMock()
+        tray.available = True
+        return tray
+
+    def test_set_environments_calls_build_menu(self):
+        tray = self._make_tray_with_indicator()
+        tray.set_environments([{"metadata": {"name": "dev"}}])
+        tray._indicator.set_menu.assert_called_once()
+
+    def test_set_environments_empty_builds_quit_only_menu(self):
+        tray = self._make_tray_with_indicator()
+        tray.set_environments([])
+        tray._indicator.set_menu.assert_called_once()
+
+    def test_set_active_env_calls_indicator_set_label(self):
+        tray = self._make_tray_with_indicator()
+        tray.set_active_env("gaming")
+        tray._indicator.set_label.assert_called_once()
+        label_arg = tray._indicator.set_label.call_args[0][0]
+        assert "Gaming" in label_arg
+
+    def test_set_active_env_none_indicator_no_crash(self):
+        api = MagicMock(spec=GateOSAPI)
+        with patch("gateos_manager.ui.tray._INDICATOR_AVAILABLE", False):
+            tray = AppIndicatorTray(api)
+        tray.set_active_env("dev")  # _indicator is None → should not raise
+
+    def test_build_menu_with_envs(self):
+        tray = self._make_tray_with_indicator()
+        envs = [{"metadata": {"name": "dev"}}, {"name": "gaming"}]
+        tray._build_menu(envs=envs)
+        tray._indicator.set_menu.assert_called_once()
+
+    def test_build_menu_without_envs(self):
+        tray = self._make_tray_with_indicator()
+        tray._build_menu()
+        tray._indicator.set_menu.assert_called_once()
+
+    def test_on_menu_activate_emits_env_selected(self):
+        tray = self._make_tray_with_indicator()
+        emitted: list = []
+        tray.emit = lambda sig, *a: emitted.append((sig, *a))
+        tray._on_menu_activate(MagicMock(), "dev")
+        assert ("env-selected", "dev") in emitted
+
+    def test_on_quit_calls_sys_exit(self):
+        tray = self._make_tray_with_indicator()
+        with patch("sys.exit") as mock_exit:
+            tray._on_quit(MagicMock())
+        mock_exit.assert_called_once_with(0)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,106 @@
+site_name: Gate-OS Documentation
+site_description: The intelligent multi-environment OS manager for Linux
+site_author: Fadhel-SH
+site_url: https://ultra-cube.github.io/Gate-OS/
+repo_name: Ultra-Cube/Gate-OS
+repo_url: https://github.com/Ultra-Cube/Gate-OS
+edit_uri: edit/main/docs/
+
+copyright: Copyright &copy; 2025-2026 Fadhel-SH / Ultra-Cube
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: slate
+      primary: deep orange
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: deep orange
+      accent: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.instant
+    - navigation.tracking
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - def_list
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Ultra-Cube/Gate-OS
+  analytics:
+    provider: google
+    property: !ENV GOOGLE_ANALYTICS_ID
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: installation/guide.md
+    - Quick Start: getting-started/quickstart.md
+    - Configuration: getting-started/configuration.md
+  - Architecture:
+    - Overview: architecture/overview.md
+    - Environments: architecture/environments.md
+    - Switch Engine: architecture/switch-engine.md
+  - API Reference:
+    - Control API: api/control-api.md
+    - WebSocket API: mobile/companion-api.md
+  - Security:
+    - Overview: security/overview.md
+    - AppArmor Profiles: security/apparmor.md
+    - Manifest Signing: security/signing.md
+  - Observability:
+    - Prometheus Metrics: observability/metrics.md
+    - OpenTelemetry: observability/otlp.md
+  - OTA Updates:
+    - How It Works: ota/how-it-works.md
+    - Schedule Apply: ota/schedule-apply.md
+  - Mobile Companion:
+    - Flutter Setup: mobile/companion-api.md
+  - Development:
+    - Contributing: contributing.md
+    - Plugin Guide: plugins/plugin-guide.md
+    - Release Checklist: release-checklist.md
+    - Changelog: changelog.md
+  - Release Notes:
+    - v1.0.0-beta: release/v1.0.0-beta.md
