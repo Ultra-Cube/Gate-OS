@@ -44,20 +44,58 @@ All contributors must follow the [Code of Conduct](CODE_OF_CONDUCT.md). Security
 
 ## Getting Started
 
-1. Fork `Ultra-Cube/Gate-OS`.  
-2. Clone your fork:  
+### Prerequisites (Ubuntu 22.04 / 24.04 LTS recommended)
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv python3-pip git make
+```
+
+### Setup (one command)
+
+1. Fork `Ultra-Cube/Gate-OS` and clone your fork:
 
    ```bash
    git clone https://github.com/<your-username>/Gate-OS.git
    cd Gate-OS
-   ./scripts/setup-dev-env.sh   # creates virtualenv, installs tooling (once available)
    ```
 
-3. Create a focused branch:  
+2. Set up the dev environment:
+
+   ```bash
+   ./scripts/setup-dev-env.sh
+   # OR using make:
+   make setup
+   ```
+
+3. Activate the virtualenv and verify:
+
+   ```bash
+   source .venv/bin/activate
+   make test        # should show 43+ passing tests
+   make lint        # ruff check
+   make validate    # validate example manifests
+   ```
+
+4. Create a focused branch:
 
    ```bash
    git checkout -b feat/env-switch-metrics
    ```
+
+### Available make targets
+
+| Command | Description |
+|---------|-------------|
+| `make setup` | Create venv + install all dev dependencies |
+| `make test` | Run all tests |
+| `make test-cov` | Run tests with coverage report |
+| `make lint` | Run ruff linter |
+| `make lint-fix` | Run ruff linter with auto-fix |
+| `make validate` | Validate all example manifests |
+| `make api` | Start Control API on port 8088 |
+| `make token` | Generate a new API token |
+| `make check` | Full pre-commit check (lint + validate + tests) |
+| `make clean` | Remove venv and caches |
 
 4. Implement & add/update tests.
 5. Run lint & security scan (future CI helpers).

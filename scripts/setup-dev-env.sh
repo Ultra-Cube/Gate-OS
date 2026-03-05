@@ -1,55 +1,69 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "[Gate-OS] Dev environment setup" >&2
+# Gate-OS Dev Environment Setup
+# Usage: ./scripts/setup-dev-env.sh
+# Tested on: Ubuntu 22.04 LTS, Ubuntu 24.04 LTS
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$PROJECT_ROOT"
+
+echo "[Gate-OS] Setting up development environment..."
+
+# ── 1. Ensure Python 3.10+ ───────────────────────────────────────────────────
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
-  echo "Python not found. Install Python 3.10+ first." >&2
-  exit 1
+  echo "[Gate-OS] Python 3 not found. Attempting install via apt..." >&2
+  if command -v apt >/dev/null 2>&1; then
+    sudo apt update -qq && sudo apt install -y python3 python3-venv python3-pip
+    PYTHON_BIN=python3
+  else
+    echo "[Gate-OS] ERROR: Install Python 3.10+ manually then re-run." >&2
+    exit 1
+  fi
 fi
 
+PY_MINOR=$("$PYTHON_BIN" -c 'import sys; print(sys.version_info.minor)')
+if [[ "$PY_MINOR" -lt 10 ]]; then
+  echo "[Gate-OS] ERROR: Python 3.10+ required (found 3.$PY_MINOR)." >&2
+  exit 1
+fi
+echo "[Gate-OS] Using: $("$PYTHON_BIN" --version)"
+
+# ── 2. Create virtualenv ─────────────────────────────────────────────────────
 VENV_DIR=".venv"
 if [[ ! -d "$VENV_DIR" ]]; then
   "$PYTHON_BIN" -m venv "$VENV_DIR"
+  echo "[Gate-OS] Created virtualenv at $VENV_DIR"
+else
+  echo "[Gate-OS] Virtualenv already exists at $VENV_DIR"
 fi
+
+# ── 3. Install dependencies ──────────────────────────────────────────────────
+# shellcheck disable=SC1091
 source "$VENV_DIR/bin/activate"
-python -m pip install --upgrade pip
-pip install -e '.[dev]'
-echo "Done. Activate with: source $VENV_DIR/bin/activate" >&2
-#!/usr/bin/env bash
-set -euo pipefail
+python -m pip install --upgrade pip -q
+pip install -e '.[dev]' -q
+echo "[Gate-OS] Dependencies installed."
 
-# Gate-OS Dev Environment Bootstrap (Draft)
-# Usage: ./scripts/setup-dev-env.sh
-
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$PROJECT_ROOT"
-
-echo "[Gate-OS] Bootstrapping development environment..."
-
-# 1. Python virtual environment (if Python sources present later)
-if command -v python3 >/dev/null 2>&1; then
-  if [ ! -d .venv ]; then
-    python3 -m venv .venv
-  fi
-  # shellcheck disable=SC1091
-  source .venv/bin/activate
-  pip install --upgrade pip >/dev/null 2>&1 || true
-  # Placeholder for future dependencies
-fi
-
-# 2. Pre-commit (optional future)
+# ── 4. Optional: pre-commit hooks ───────────────────────────────────────────
 if command -v pre-commit >/dev/null 2>&1; then
-  pre-commit install || true
+  pre-commit install --quiet || true
+  echo "[Gate-OS] pre-commit hooks installed."
 fi
 
-# 3. Create local hooks dir
+# ── 5. Create local runtime dirs ────────────────────────────────────────────
 mkdir -p .gateos/tmp
 
-# 4. Output manifest schema reference
-if [ -f docs/architecture/schemas/environment-manifest.schema.yaml ]; then
-  echo "Schema located: docs/architecture/schemas/environment-manifest.schema.yaml"
-fi
-
-echo "[Gate-OS] Done. (Future steps: build core manager, run tests, lint)"
+# ── 6. Verify setup ─────────────────────────────────────────────────────────
+echo ""
+echo "[Gate-OS] Verifying installation..."
+python -m pytest tests/ -q --tb=no 2>&1 | tail -3
+echo ""
+echo "[Gate-OS] ✅ Done! Next steps:"
+echo "  source $VENV_DIR/bin/activate"
+echo "  make test        # run all tests"
+echo "  make lint        # run ruff linter"
+echo "  make validate    # validate manifests"
+echo "  make api         # start Control API on :8088"

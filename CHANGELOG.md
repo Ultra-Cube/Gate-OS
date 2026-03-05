@@ -2,22 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
-The format loosely follows Keep a Changelog and Semantic Versioning (will be adopted once < 1.0 stabilizes).
+Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [Semantic Versioning](https://semver.org/)
 
-## [Unreleased]
+---
 
-### Added (Unreleased)
+## [Unreleased] — Target: 0.1.0
 
-_No changes yet._
-
-### Changed (Unreleased)
-
-_No changes yet._
-
-### Planned (Unreleased)
-
+### Planned
+- Real switch engine: systemd service orchestration + real podman/docker container start/stop.
+- GTK4 UI shell (Adw.Application) with environment list and switch panel.
+- Ubuntu 24.04 LTS ISO build script (`scripts/build-iso.sh`).
+- ServiceManager class for managing systemd units per environment.
+- Performance benchmark test (target: < 3s switch latency).
+- AppArmor profile stubs per environment.
 - Further container isolation (seccomp/AppArmor profiles).
 - Graceful shutdown via API endpoint to trigger flush & plugin shutdown.
+
+---
+
+## [0.0.5] — 2026-03-05 🔄 In Progress
+
+### Added
+- `TODO.md` — living task board with all work phases (Phase 0 → Phase 9) and per-task status.
+- `docs/plan/project-plan.md` — Ubuntu 24.04 LTS base decision documented; three-phase installable OS roadmap (Alpha → Beta → v1.0); team adoption plan with per-role first tasks; risk register updated.
+- Base OS decision confirmed: **Ubuntu 24.04 LTS "Noble Numbat"** as Gate-OS foundation.
+- Installable OS roadmap: Phase A (team alpha ISO, May 2026), Phase B (public beta, Aug 2026), Phase C (v1.0, Q4 2026).
+- Team adoption quick-start (Step 1–4) added to project plan.
+
+### Changed
+- `docs/plan/project-plan.md` — full project health assessment added with strengths/gaps table; milestones M12–M17 added (real switch engine, perf harness, diagram sprint, dev toolchain fix, manifest signing, public beta); all milestones updated with actual status vs. original targets.
+- `CHANGELOG.md` — adopted Keep a Changelog format fully.
+
+### Notes
+- This release is a **planning & documentation milestone** before Phase 1 development begins.
+- No Python source changes in this version.
 
 ## [0.0.4] - 2025-08-24
 

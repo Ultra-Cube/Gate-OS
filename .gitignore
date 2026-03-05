@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+.env
+pip-wheel-metadata/
+*.whl
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+
+# Linting
+.ruff_cache/
+
+# IDE / Editor
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node (not primary, but present in repo)
+node_modules/
+package-lock.json
+
+# Gate-OS local runtime
+.gateos/
+*.api.token
+api.token
+
+# Build artifacts
+sbom.json
+gateos_manager.egg-info/
+
+# Secrets
+.env.local
+.secrets
+*.pem
+*.key
