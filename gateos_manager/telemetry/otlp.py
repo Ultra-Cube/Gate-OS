@@ -26,6 +26,7 @@ Environment variables:
 """
 from __future__ import annotations
 
+import functools
 import json
 import os
 import sys
@@ -34,7 +35,9 @@ import threading
 import urllib.error
 import urllib.request
 import uuid
-from typing import Any
+from typing import Any, Callable, TypeVar
+
+_F = TypeVar("_F", bound=Callable)
 
 from gateos_manager import __version__
 
@@ -236,3 +239,39 @@ def default_exporter() -> OTLPExporter:
             if _singleton is None:
                 _singleton = OTLPExporter()
     return _singleton
+
+
+def otlp_span(name: str) -> Callable[[_F], _F]:
+    """Decorator that wraps a function in an OTLP trace span.
+
+    Records start/end time and exports a span via the module-level singleton
+    exporter.  The span ``status_ok`` is ``False`` if the function raises.
+    Export failures are silently ignored (the decorated function is unaffected).
+
+    Usage::
+
+        @otlp_span("switch.pipeline")
+        def switch_environment(name: str, ...) -> dict:
+            ...
+    """
+    def decorator(func: _F) -> _F:
+        @functools.wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            start = _ns_now()
+            status_ok = True
+            try:
+                return func(*args, **kwargs)
+            except Exception:
+                status_ok = False
+                raise
+            finally:
+                end = _ns_now()
+                default_exporter().export_span(
+                    name,
+                    start_ns=start,
+                    end_ns=end,
+                    attrs={"duration_ms": (end - start) // 1_000_000},
+                    status_ok=status_ok,
+                )
+        return wrapper  # type: ignore[return-value]
+    return decorator  # type: ignore[return-value]
