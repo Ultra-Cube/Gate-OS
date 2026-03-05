@@ -2,9 +2,7 @@
 
 > Living document — updated after every completed phase.  
 > Last updated: **March 5, 2026**  
-> Current version: **0.1.0** → Next target: **0.2.0** (Ubuntu ISO Builder)
-
-## Legend
+> Current version: **0.2.0** → Next target: **0.3.0** (Security Hardening)
 
 | Symbol | Meaning |
 |--------|---------|
@@ -132,28 +130,24 @@ All items committed and tagged.
 
 ---
 
-## 🐧 Phase 4 — Ubuntu ISO Builder (v0.2.0) ⏳ PLANNED
+## 🐧 Phase 4 — Ubuntu ISO Builder (v0.2.0) ✅ COMPLETE
 
-**Goal:** Bootable Gate-OS ISO installable on physical hardware.  
-**Target:** May–June 2026 | **Branch:** `feat/ubuntu-iso-builder`  
-**Owner:** DevOps
+**Goal:** Bootable Gate-OS ISO installable on physical hardware.
+**Completed:** March 5, 2026 | **Branch:** `feat/ubuntu-iso-builder`
 
-- ⏳ Create `scripts/build-iso.sh` — automated ISO build script
-- ⏳ Use `cubic` or `live-build` on Ubuntu 24.04 LTS base
-- ⏳ Build `.deb` package for `gateos-manager` (`hatch build` → deb conversion)
-- ⏳ Add `gateos-manager` to ISO's preseed/postinstall
-- ⏳ Auto-configure systemd service `gateos-api.service` on boot
-- ⏳ Add DDE session option (complete `install-dde.sh` integration)
-- ⏳ Create `docs/installation/` guide (ISO download + Ventoy/USB instructions)
-- ⏳ Add GitHub Actions workflow: `.github/workflows/build-iso.yml`
-- ⏳ Internal team ISO distribution process
+- ✅ `scripts/build-iso.sh` — automated ISO build (download + chroot + squashfs + xorriso + checksum)
+- ✅ `data/systemd/gateos-api.service` — hardened systemd unit (token auto-gen, restart policy)
+- ✅ `gateos_manager/packaging/__init__.py` — `build_deb()`, `generate_preseed()`, `generate_postinstall_script()`
+- ✅ `docs/installation/guide.md` — full install guide (ISO flash, overlay, post-config)
+- ✅ `.github/workflows/build-iso.yml` — CI workflow: builds + publishes ISO on release tags
+- ✅ 14 new packaging tests; **114 tests passing**
+- ✅ Version bumped to `0.2.0`
 
-**Commit target:** `feat(iso): Ubuntu 24.04 LTS base + gateos-manager overlay build script`  
-**Version bump:** `0.2.0 → 0.3.0`
+**Commit:** `feat(iso): Ubuntu 24.04 LTS ISO builder, systemd service, packaging utils; 114 tests`
 
 ---
 
-## 🔒 Phase 5 — Security Hardening (v0.4.0) 📋 PLANNED
+## 🔒 Phase 5 — Security Hardening (v0.3.0) ⏳ PLANNED
 
 **Goal:** Production-grade security for environment isolation.  
 **Target:** June–July 2026 | **Branch:** `feat/security-hardening`  
@@ -247,7 +241,8 @@ P2        AppArmor profile for dev environment           Sec      📋 Soon
 | 0.0.5 | ✅ | 2026-03-05 | Dev toolchain fix + ServiceManager + ProfileApplicator + SwitchContext; 64 tests |
 | 0.0.6 | ✅ | 2026-03-05 | Real container orchestration (timeout/labels/volumes) + benchmark tests; 68 tests |
 | 0.1.0 | ✅ | 2026-03-05 | GTK4 UI shell (env list, switch panel, status bar, tray); 100 tests |
-| 0.2.0 | — | 2026-05 | Ubuntu 24.04 ISO builder ⏳ |
+| 0.2.0 | ✅ | 2026-03-05 | Ubuntu ISO builder + systemd service + packaging utils; 114 tests |
+| 0.3.0 | — | 2026-06 | Security hardening ⏳ |
 | 0.3.0 | — | 2026-06 | Ubuntu 24.04 ISO builder ⏳ |
 | 0.4.0 | — | 2026-07 | Security hardening ⏳ |
 | 0.5.0 | — | 2026-07 | Perf & observability ⏳ |

@@ -1,0 +1,93 @@
+name: Build Gate-OS ISO
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Gate-OS version to embed in ISO (defaults to tag)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Dry run (print commands, skip actual build)"
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build-iso:
+    name: Build ISO (Ubuntu 24.04 LTS)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    permissions:
+      contents: write  # For creating a GitHub Release with iso artifact
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set version
+        id: version
+        run: |
+          if [[ -n "${{ github.event.inputs.version }}" ]]; then
+            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.ref_type }}" == "tag" ]]; then
+            echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          else
+            VERSION=$(python3 -c "import tomllib; \
+              d=tomllib.load(open('pyproject.toml','rb')); \
+              print(d['project']['version'])")
+            echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install ISO build dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends \
+            squashfs-tools xorriso grub-efi-amd64-bin \
+            grub-pc-bin mtools debootstrap isolinux \
+            syslinux-utils wget
+
+      - name: Cache Ubuntu base ISO
+        uses: actions/cache@v4
+        with:
+          path: /tmp/ubuntu-base-24.04.iso
+          key: ubuntu-24.04-base-iso-v1
+          restore-keys: ubuntu-24.04-base-iso-
+
+      - name: Build Gate-OS ISO
+        env:
+          GATEOS_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          chmod +x scripts/build-iso.sh
+          DRY_FLAG=""
+          [[ "${{ github.event.inputs.dry_run }}" == "true" ]] && DRY_FLAG="--dry-run"
+          ./scripts/build-iso.sh \
+            --version "$GATEOS_VERSION" \
+            --output dist/iso \
+            $DRY_FLAG
+
+      - name: Upload ISO artifact
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-os-iso-${{ steps.version.outputs.version }}
+          path: |
+            dist/iso/*.iso
+            dist/iso/*.sha256
+          retention-days: 30
+
+      - name: Create GitHub Release with ISO
+        if: ${{ github.ref_type == 'tag' && github.event.inputs.dry_run != 'true' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/iso/*.iso
+            dist/iso/*.sha256
+          body_path: CHANGELOG.md
+          prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}

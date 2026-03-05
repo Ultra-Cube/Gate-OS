@@ -1,0 +1,49 @@
+[Unit]
+Description=Gate-OS Control API
+Documentation=https://github.com/Ultra-Cube/Gate-OS
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=gateos
+Group=gateos
+# Runtime directory auto-created by systemd (no manual mkdir needed)
+RuntimeDirectory=gateos
+StateDirectory=gateos
+LogsDirectory=gateos
+
+# Main process
+ExecStart=/usr/local/bin/gateos api --host 127.0.0.1 --port 8088
+
+# Token file: generated on first start by ExecStartPre
+ExecStartPre=/bin/bash -c \
+    'test -f /var/lib/gateos/api.token || \
+     /usr/local/bin/gateos gen-token --length 48 > /var/lib/gateos/api.token'
+
+# Environment
+Environment=GATEOS_API_TOKEN_FILE=/var/lib/gateos/api.token
+Environment=GATEOS_LOG_LEVEL=INFO
+Environment=GATEOS_TELEMETRY_ENDPOINT=
+
+# Hardening
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+NoNewPrivileges=true
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=false
+RestrictRealtime=true
+SystemCallFilter=@system-service
+
+# Restart policy
+Restart=on-failure
+RestartSec=5
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target

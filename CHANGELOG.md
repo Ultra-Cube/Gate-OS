@@ -6,15 +6,51 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 
 ---
 
-## [Unreleased] — Target: 0.2.0
+## [Unreleased] — Target: 0.3.0
 
 ### Planned
-- Ubuntu 24.04 LTS ISO build script (`scripts/build-iso.sh`).
-- AppArmor profile stubs per environment.
-- seccomp profile stubs for containers.
-- Graceful shutdown via API endpoint to trigger flush & plugin shutdown.
+- AppArmor profiles per environment (`profiles/apparmor/`).
+- seccomp profiles for containers (`profiles/seccomp/`).
+- Manifest signing CLI (`gateos sign` / `gateos verify`).
+- Network namespace segmentation per container.
+- Read-only root + ephemeral overlay for security environment.
 
 ---
+
+## [0.2.0] — 2026-03-05 — Ubuntu ISO Builder
+
+### Added
+- `scripts/build-iso.sh` — full automated Ubuntu 24.04 LTS ISO build script:
+  - Downloads Ubuntu 24.04 base ISO (cached in CI), extracts squashfs.
+  - Chroot customization: installs gateos-manager, PyGObject, podman, desktop file.
+  - Repacks squashfs with xz compression, applies Gate-OS GRUB branding.
+  - Builds final hybrid ISO (BIOS + UEFI) with xorriso; generates SHA-256 checksum.
+  - Supports `--dry-run`, `--skip-download`, `--version`, `--output` flags.
+- `data/systemd/gateos-api.service` — production systemd unit with security hardening:
+  - `ProtectSystem=strict`, `PrivateTmp`, `NoNewPrivileges`, `RestrictNamespaces`.
+  - Auto-generates API token on first start via `ExecStartPre`.
+  - Restart policy: `on-failure`, max 3 retries per 60 s.
+- `gateos_manager/packaging/__init__.py` — Python packaging utilities:
+  - `build_deb()` — generates `.deb` package (DEBIAN/control, postinst, prerm, install tree).
+  - `generate_preseed()` — Ubuntu auto-install preseed config stub.
+  - `generate_postinstall_script()` — standalone overlay install script.
+- `docs/installation/guide.md` — full installation guide:
+  - ISO flashing with Ventoy / `dd` / Rufus.
+  - Overlay install on existing Ubuntu 24.04.
+  - Post-install configuration, API token setup, environment switching.
+  - Troubleshooting table for common issues.
+- `.github/workflows/build-iso.yml` — CI workflow that builds and publishes ISO on release tags.
+- `tests/test_packaging.py` — **14 new tests** for packaging utilities (all dry-run safe).
+
+### Changed
+- `gateos_manager/__init__.py` — version bumped to `0.2.0`; `packaging` added to `__all__`.
+- `pyproject.toml` — version `0.1.0 → 0.2.0`; updated description.
+- `[tool.hatch.build]` — includes `data/systemd/*.service`.
+
+### Tests
+- **114 tests passing** (was 100; +14 packaging tests)
+
+
 
 ## [0.1.0] — 2026-03-05 — GTK4 UI Shell
 
