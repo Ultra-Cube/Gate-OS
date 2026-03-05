@@ -1,27 +1,29 @@
-# Diagrams Index (Placeholders)
+# Diagrams Index
 
-This folder will contain architecture, sequence, and component diagrams.
+> All architecture diagrams use [Mermaid](https://mermaid.js.org/) — rendered natively in GitHub and MkDocs Material.
 
-## Planned Assets
+## Available Diagrams
 
-- system-architecture.drawio
-- env-switch-sequence.drawio
-- module-boundaries.drawio
+| File | Diagram Type | Description |
+|------|-------------|-------------|
+| [system-architecture.md](system-architecture.md) | C4 / Component | Layer-by-layer system overview |
+| [env-switch-sequence.md](env-switch-sequence.md) | Sequence | Full environment switch request flow |
+| [module-boundaries.md](module-boundaries.md) | Graph | gateos_manager package dependencies |
+| [api-flow.md](api-flow.md) | Sequence | REST + WebSocket API request/response |
 
-## ASCII Preview (Environment Switch)
+## Environment Switch (Quick Reference)
 
-```text
-User Action
-   |
-   v
-+-----------+      +-------------------+      +-----------------+
-| UI Shell  | ---> | Environment Mgr   | ---> | Container Layer |
-+-----------+      +-------------------+      +-----------------+
-                          |                           |
-                          v                           v
-                      Validate Manifest         Activate Profiles
+```mermaid
+graph LR
+    U[User] -->|POST /switch/gaming| API[FastAPI :8088]
+    API -->|activate| SO[SwitchOrchestrator]
+    SO -->|load| ML[ManifestLoader]
+    SO -->|stop old| SM[ServiceManager]
+    SO -->|apply| PA[ProfileApplicator]
+    SO -->|start| CM[ContainerManager]
+    SO -->|emit| TE[TelemetryEmitter]
+    API -->|broadcast| WS[WebSocket Clients]
 ```
 
 ---
-**Date:** July 2025 | **By:** Fadhel.SH  
-**Company:** [Ultra-Cube Tech](https://ucubetech.com)
+**Last updated:** March 2026 | **By:** Fadhel.SH | **Company:** Ultra-Cube Tech

@@ -2,7 +2,7 @@
 
 > Living document — updated after every completed phase.  
 > Last updated: **March 5, 2026**  
-> Current version: **v1.0.0-beta** → Next target: **v1.1.0** (Coverage & OTLP)
+> Current version: **v1.1.0** → Next target: **v1.2.0** (Coverage Sprint & Docs)
 
 | Symbol | Meaning |
 |--------|---------|
@@ -225,26 +225,31 @@ All items committed and tagged.
 
 ## 🏁 Project Status Summary
 
-| Phase | Version | Tests | Status |
-|-------|---------|-------|--------|
-| Phase 0 — Foundation | v0.0.4 | 43 | ✅ Complete |
-| Phase 1 — Dev Env Fix | v0.0.5 | 64 | ✅ Complete |
-| Phase 2 — Real Switch Engine | v0.0.6 | 68 | ✅ Complete |
-| Phase 3 — GTK4 UI Shell | v0.1.0 | 100 | ✅ Complete |
-| Phase 4 — ISO Builder | v0.2.0 | 114 | ✅ Complete |
-| Phase 5 — Security Hardening | v0.3.0 | 147 | ✅ Complete |
-| Phase 6 — Observability | v0.4.0 | 166 | ✅ Complete |
-| Phase 7 — Mobile Companion | v0.5.0 | 178 | ✅ Complete |
-| Phase 8 — Beta Release | v1.0.0-beta | **198** | ✅ **Complete** |
-- 📋 Community: open beta waitlist
-- 📋 Release notes + migration guide
+| Phase | Version | Tests | Coverage | Status |
+|-------|---------|-------|----------|--------|
+| Phase 0 — Foundation | v0.0.4 | 43 | — | ✅ Complete |
+| Phase 1 — Dev Env Fix | v0.0.5 | 64 | — | ✅ Complete |
+| Phase 2 — Real Switch Engine | v0.0.6 | 68 | — | ✅ Complete |
+| Phase 3 — GTK4 UI Shell | v0.1.0 | 100 | — | ✅ Complete |
+| Phase 4 — ISO Builder | v0.2.0 | 114 | — | ✅ Complete |
+| Phase 5 — Security Hardening | v0.3.0 | 147 | — | ✅ Complete |
+| Phase 6 — Observability | v0.4.0 | 166 | — | ✅ Complete |
+| Phase 7 — Mobile Companion | v0.5.0 | 178 | — | ✅ Complete |
+| Phase 8 — Beta Release | v1.0.0-beta | 198 | 82% | ✅ Complete |
+| Phase 9 — Quality & Observability | v1.1.0 | **228** | **87%** | ✅ **Complete** |
+| Phase 10 — Coverage Sprint | v1.2.0 | — | ≥90% | ⏳ Planned |
+| Phase 11 — Documentation & Diagrams | v1.2.0 | — | — | ⏳ Planned |
+| Phase 12 — Profile & System Completion | v1.3.0 | — | — | 📋 Planned |
+| Phase 13 — Security Hardening v2 | v1.3.0 | — | — | 📋 Planned |
+| Phase 14 — Mobile Companion App | v1.4.0 | — | — | 📋 Planned |
+| Phase 15 — v1.0.0 Stable | v1.0.0 | — | — | 📋 Planned |
 
 ---
 
-## 🔧 Phase 9 — Quality & Observability (v1.1.0) 🔄 IN PROGRESS
+## 🔧 Phase 9 — Quality & Observability (v1.1.0) ✅ COMPLETE
 
 **Goal:** Raise test coverage to 85%+, implement deferred v1.0.0-beta stubs, launch docs site.  
-**Started:** 2026-03-05
+**Completed:** 2026-03-05 | **228 tests passing** | **87% coverage**
 
 ### 9.1 — Test Coverage
 - ✅ Add `TestGateOSWindow` — construction + all callbacks (ui/app.py 35% → 70%+)
@@ -260,43 +265,173 @@ All items committed and tagged.
 - ✅ `docs/index.md` — project home page
 - ✅ `docs/observability/otlp.md` — OTLP integration guide
 
-### 9.3 — Upcoming
-- ⏳ GPU mode real implementation (nvidia-smi / AMD sysfs in ProfileApplicator)
-- ⏳ NIC priority (tc/qdisc integration)
-- ⏳ `allowlistRef` named capability in manifest schema
-- ⏳ Network namespace per-container isolation
-- ⏳ Flutter companion app scaffold (Android)
-- ⏳ Push notifications (FCM) on environment change
-- ⏳ OpenTelemetry auto-instrumentation for switch pipeline spans
+### 9.3 — Deferred to Next Phases
+- 📋 GPU mode real implementation (nvidia-smi / AMD sysfs in ProfileApplicator) → Phase 12
+- 📋 NIC priority (tc/qdisc integration) → Phase 12
+- 📋 `allowlistRef` named capability in manifest schema → Phase 12
+- 📋 Network namespace per-container isolation → Phase 12
+- 📋 Flutter companion app scaffold (Android) → Phase 14
+- 📋 Push notifications (FCM) on environment change → Phase 14
+- 📋 OpenTelemetry auto-instrumentation for switch pipeline spans → Phase 10
 
 ---
 
-## 🏁 Phase 10 — v1.0.0 Stable 📋 PLANNED
+---
+
+## 🧪 Phase 10 — Coverage Sprint (v1.2.0) ⏳ PLANNED
+
+**Goal:** Raise all modules to 90%+ coverage; close instrumentation gaps.  
+**Target:** Q2 2026 | **Target:** ≥ 90% total
+
+### 10.1 — Module Coverage Targets
+- ⏳ `containers/manager.py` 50% → 90%+ — mock `subprocess` / podman calls for lines 130-216
+- ⏳ `services/__init__.py` 67% → 90%+ — mock `systemctl` start/stop/status (lines 85-203)
+- ⏳ `cli.py` 73% → 90%+ — exercise `sign`, `verify`, `gen-keypair`, `apply-update` commands (lines 56-150)
+- ⏳ `updater.py` 80% → 95%+ — mock dpkg/systemd in schedule_apply paths (lines 163-227)
+
+### 10.2 — Instrumentation
+- ⏳ OpenTelemetry auto-instrumentation decorator for `SwitchOrchestrator.activate()`
+- ⏳ Span/trace IDs injected into structured log records
+- ⏳ `otlp.py` module coverage added to CI gate
+
+---
+
+## 📝 Phase 11 — Documentation & Diagrams (v1.2.0) ⏳ PLANNED
+
+**Goal:** Bring all docs stubs to production quality; add architecture diagrams; deploy docs site.  
+**Target:** Q2 2026
+
+### 11.1 — Architecture Diagrams (docs/diagrams/)
+- ⏳ `system-architecture.md` — Mermaid C4/component diagram (Layer: Kernel → Core Services → Env Manager → Containers → UI)
+- ⏳ `env-switch-sequence.md` — Mermaid sequence diagram (User → UI → Orchestrator → ServiceManager → ContainerManager)
+- ⏳ `module-boundaries.md` — Mermaid dependency graph of all `gateos_manager/` subpackages
+- ⏳ `api-flow.md` — REST + WebSocket request/response flow diagram
+
+### 11.2 — Outdated Doc Updates
+- ⏳ `docs/architecture/overview.md` — inline current tech stack + Mermaid layer diagram; remove stubs
+- ⏳ `docs/roadmap/milestones.md` — reflect all completed phases and new roadmap to v1.0.0 Stable
+- ⏳ `docs/plan/project-plan.md` — update milestone table (many ❌ now ✅)
+- ⏳ `docs/plan/requirements.md` — update traceability matrix to reflect implemented items
+- ⏳ `docs/product/features.md` — replace stub with real feature spec + MoSCoW table
+- ⏳ `docs/business/vision-mission.md` — fill in real vision/mission/value proposition text
+- ⏳ `docs/business/market-analysis.md` — real competitive landscape section
+- ⏳ `docs/security/threat-model.md` — add current controls and validate planned controls
+- ⏳ `docs/architecture/supply-chain.md` — update manifest signing status to ✅ Done
+
+### 11.3 — Documentation Site
+- ⏳ Deploy MkDocs Material site to GitHub Pages (`mkdocs gh-deploy`)
+- ⏳ Fill in all navigation stubs in `mkdocs.yml`
+- ⏳ Add getting-started tutorial covering `make setup` → `gateos validate` → `gateos api`
+- ⏳ API reference page auto-generated from FastAPI OpenAPI schema
+
+---
+
+## ⚙️ Phase 12 — Profile & System Completion (v1.3.0) 📋 PLANNED
+
+**Goal:** Real hardware profile application; security schema completions.  
+**Target:** Q3 2026
+
+### 12.1 — Hardware Profiles (gateos_manager/profile/__init__.py)
+- 📋 GPU mode: real `nvidia-smi -pm 1` / AMD `/sys/class/drm/card0/device/power_dpm_state`
+- 📋 NIC priority: `tc qdisc add dev <nic> root tbf rate <limit>` per environment
+- 📋 CPU governor validation: guard against missing cpufreq sysfs with fallback log
+- 📋 Power profile: `powerprofilesctl set performance/balanced/power-saver`
+
+### 12.2 — Manifest Schema Completions
+- 📋 `allowlistRef` field in `data/schema/environment-manifest.schema.json` (named allowlist refs)
+- 📋 Network namespace per-container: `networkNamespace` field in container spec
+- 📋 Schema version bump → v0.2.0 + migration hook in `loader.py`
+
+### 12.3 — DDE Integration
+- 📋 Shell adapter interface (`gateos_manager/ui/shell_adapter.py`) — abstract `on_switch()` callback
+- 📋 DDE panel plugin stub (env list widget for Deepin taskbar)
+- 📋 `scripts/install-dde.sh` update for Ubuntu 24.04 Deepin PPA
+
+---
+
+## 🔐 Phase 13 — Security Hardening v2 (v1.3.0) 📋 PLANNED
+
+**Goal:** Harden remaining threat model mitigations; supply chain integrity.  
+**Target:** Q3 2026
+
+### 13.1 — API Security
+- 📋 API token rotation endpoint (`POST /auth/rotate-token`)
+- 📋 OIDC-backed auth option (Keycloak / Dex integration stub)
+- 📋 WebSocket auth (pass bearer token on connect, currently unauthenticated)
+- 📋 Rate limit per-IP with configurable window via env vars
+
+### 13.2 — Plugin Sandbox
+- 📋 Plugin signature verification before entry-point load (`signing.py` integration)
+- 📋 Plugin process isolation (run in subprocess with restricted capabilities)
+- 📋 `GATEOS_ALLOW_UNSIGNED_PLUGINS=false` flag (opt-in for dev)
+
+### 13.3 — Container Supply Chain
+- 📋 Digest pin enforcement in manifests (`image` field validates `@sha256:` or warn)
+- 📋 SLSA provenance attestation for Gate-OS Python package (GitHub Actions)
+- 📋 SBOM transparency log — emit `sbom_generated` telemetry event after Syft run
+- 📋 Read-only root + ephemeral overlay for `security` environment containers
+
+### 13.4 — Telemetry TLS
+- 📋 OTLP exporter TLS support (`GATEOS_OTLP_TLS_CERT` env var)
+- 📋 PII redaction filter for structured log fields
+
+---
+
+## 📱 Phase 14 — Mobile Companion App (v1.4.0) 📋 PLANNED
+
+**Goal:** Functional Flutter Android app for remote environment control.  
+**Target:** Q3-Q4 2026
+
+### 14.1 — Flutter App Scaffold
+- 📋 `mobile/` directory with Flutter project (`lib/main.dart`, `pubspec.yaml`)
+- 📋 WebSocket client connecting to `ws://gate-os.local:8088/ws/status`
+- 📋 Environment list UI (Material Design, 5 env cards: dev/gaming/design/media/security)
+- 📋 Switch button with loading state + success/failure toast
+- 📋 Settings screen: host, port, API token
+
+### 14.2 — Push Notifications
+- 📋 FCM integration in Flutter app (Firebase Cloud Messaging)
+- 📋 Gate-OS server-side push hook: on `switch_done` → FCM notify
+- 📋 `GATEOS_FCM_SERVER_KEY` env var; graceful no-op if not set
+
+### 14.3 — Mobile CI
+- 📋 `.github/workflows/flutter.yml` — lint + test + APK build on PR
+- 📋 GitHub release artifact: attach debug APK
+
+---
+
+## 🏁 Phase 15 — v1.0.0 Stable 📋 PLANNED
 
 **Target:** Q4 2026
 
-- 📋 v1.0.0 stable release
+- 📋 v1.0.0 stable release (all phases 10-14 complete)
 - 📋 Enterprise pilot: 2 organizations
 - 📋 25+ community contributors
 - 📋 Full documentation site live (MkDocs Material on GitHub Pages)
+- 📋 GitHub Actions release pipeline: ISO build + APK + PyPI publish
+- 📋 Security audit by external reviewer
 
 ---
 
-## 📌 Immediate Next Actions (This Week)
+## 📌 Immediate Next Actions (v1.2.0 Sprint)
 
 ```
-Priority  Task                                          Owner    Status
-────────  ────────────────────────────────────────────  ───────  ──────
-P0        Fix setup-dev-env.sh (ensurepip)              DevOps   ✅ Done
-P0        Update CONTRIBUTING.md (Ubuntu 24.04 steps)   PM       ✅ Done
-P0        Add Makefile (make setup / test / lint)        DevOps   ✅ Done
-P1        ServiceManager (systemd integration)           Core     ✅ Done
-P1        Real ContainerManager.start() with podman      Core     ✅ Done
-P1        Performance benchmark test file                QA       ✅ Done
-P1        GTK4 window scaffold (Adw.Application)         UI       ✅ Done
-P1        Full GTK4 UI shell (env list/switch/tray)      UI       ✅ Done
-P1        build-iso.sh first draft (cubic-based)         DevOps   ⏳ Next
-P2        AppArmor profile for dev environment           Sec      📋 Soon
+Priority  Task                                                  Owner    Phase  Status
+────────  ────────────────────────────────────────────────────  ───────  ─────  ──────
+P0        containers/manager.py coverage 50%→90%               QA       10     ⏳ Next
+P0        services/__init__.py coverage 67%→90%                 QA       10     ⏳ Next
+P0        cli.py coverage 73%→90%                               QA       10     ⏳ Next
+P0        Mermaid system architecture diagram                    Arch     11     ⏳ Next
+P0        Mermaid env-switch sequence diagram                    Arch     11     ⏳ Next
+P1        Deploy docs site (mkdocs gh-deploy)                    DevOps   11     ⏳ Next
+P1        Update architecture/overview.md (stubs → real)        Arch     11     ⏳ Next
+P1        Update roadmap/milestones.md (outdated)               PM       11     ⏳ Next
+P1        Update docs/plan/project-plan.md milestone table       PM       11     ⏳ Next
+P1        OpenTelemetry span decorator on SwitchOrchestrator     Core     10     ⏳ Next
+P2        GPU real implementation (nvidia-smi / AMD sysfs)       Core     12     📋 Soon
+P2        NIC priority tc/qdisc                                  Core     12     📋 Soon
+P2        allowlistRef in manifest schema v0.2.0                Arch     12     📋 Soon
+P2        Flutter Android app scaffold                           Mobile   14     📋 Soon
 
 ## 📈 Version History Summary
 
@@ -314,8 +449,11 @@ P2        AppArmor profile for dev environment           Sec      📋 Soon
 | 0.4.0 | ✅ | 2026-03-05 | Prometheus metrics, /metrics endpoint, perf CI gate; 166 tests |
 | 0.5.0 | ✅ | 2026-03-05 | WebSocket /ws/status, mobile companion; 178 tests |
 | 1.0.0-beta | ✅ v1.0.0-beta | 2026-03-05 | OTA stub, beta release notes, 198 tests |
-| 1.1.0 | 🔄 | 2026-03 | Coverage 85%+, schedule_apply(), OTLP exporter, docs site |
-| 1.0.0 | 📋 | 2026-Q4 | Stable release |
+| 1.1.0 | ✅ v1.1.0 | 2026-03-05 | Coverage 87%, schedule_apply(), OTLP exporter, docs scaffold; 228 tests |
+| 1.2.0 | ⏳ | 2026-Q2 | Coverage Sprint ≥90%, architecture diagrams, docs site deployed |
+| 1.3.0 | 📋 | 2026-Q3 | GPU/NIC profiles, allowlistRef, network ns, Security Hardening v2 |
+| 1.4.0 | 📋 | 2026-Q3 | Flutter Android app, FCM push, mobile CI |
+| 1.0.0 | 📋 | 2026-Q4 | Stable release, enterprise pilot, 25+ contributors |
 
 
 ---

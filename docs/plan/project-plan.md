@@ -111,42 +111,46 @@ backed by a declarative manifest model, open governance, and enterprise-ready se
 
 ---
 
-## Milestones & Tracker (Updated)
+## Milestones & Tracker (Updated March 2026)
 
-| ID | Milestone | Description | Original Target | Updated Target | Status | Owner |
-|----|-----------|-------------|-----------------|----------------|--------|-------|
-| M1 | Schema Foundation | JSON Schema v0.1.0 + examples | 2025-09 | — | ✅ Done | Arch |
-| M2 | Manager Core | load/validate + switch orchestration skeleton | 2025-10 | — | ✅ Done (skeleton) | Core |
-| M3 | UI Shell MVP | GTK4: list envs + trigger switch button | 2025-11 | 2026-04 | ❌ Not Started | UI |
-| M4 | Telemetry Stub | Emit switch events + basic metrics | 2025-11 | — | ✅ Done | Core |
-| M5 | Security Baseline | isolationLevel enforcement hooks | 2025-12 | — | ✅ Done (stub) | Sec |
-| M6 | Coverage 80% | Unit tests for manager & schema helpers | 2025-12 | 2026-04 | 🔄 In Progress | QA |
-| M7 | Packaging Alpha | Image build + install script | 2026-01 | 2026-05 | ❌ Not Started | DevOps |
-| M8 | Security Env | Security (Kali tools) manifest + hardening | 2026-01 | — | ✅ Done (manifest) | Sec |
-| M9 | DDE Integration | Deepin Desktop session support | 2026-02 | 2026-05 | 🔄 Script exists | UI |
-| M10 | Mobile Companion Alpha | Android app API + Flutter prototype | 2026-03 | 2026-06 | ❌ Not Started | Mobile |
-| M11 | Security Policy v1 | Capability allowlist + validation errors | 2026-03 | — | ✅ Done (v0) | Sec |
-| M12 | Real Switch Engine | OS-level env switch: suspend services, apply cgroups/kernel params | — | 2026-05 | ❌ Critical Gap | Core |
-| M13 | Perf Test Harness | Automated latency benchmark (target < 3s) | — | 2026-04 | ❌ Not Started | QA |
-| M14 | Dev Environment Setup | Fix pip/pytest for contributor onboarding | — | 2026-03 | 🔄 Immediate | DevOps |
-| M15 | Manifest Signing | CLI stub for signature verification | — | 2026-06 | ❌ Not Started | Sec |
-| M16 | Architecture Diagrams | .drawio files: system, sequence, module boundaries | — | 2026-04 | ❌ Not Started | Arch |
-| M17 | 1.0 Public Beta | Bootable system + 2 working environments | — | 2026-08 | ❌ Planned | PM |
+| ID | Milestone | Description | Target | Status | Phase |
+|----|-----------|-------------|--------|--------|-------|
+| M1 | Schema Foundation | JSON Schema v0.1.0 + examples | 2025-09 | ✅ Done | 0 |
+| M2 | Manager Core | load/validate + switch orchestration skeleton | 2025-10 | ✅ Done | 0 |
+| M3 | UI Shell MVP | GTK4: list envs + trigger switch button | 2025-11 | ✅ Done (Phase 3) | 3 |
+| M4 | Telemetry Stub | Emit switch events + basic metrics | 2025-11 | ✅ Done | 0 |
+| M5 | Security Baseline | isolationLevel enforcement hooks | 2025-12 | ✅ Done | 0 |
+| M6 | Coverage 87% | Unit tests across all modules | 2025-12 | ✅ Done (87%, v1.1.0) | 9 |
+| M7 | Packaging Alpha | Ubuntu ISO build + install script | 2026-01 | ✅ Done (Phase 4) | 4 |
+| M8 | Security Env | AppArmor/seccomp + manifest hardening | 2026-01 | ✅ Done (Phase 5) | 5 |
+| M9 | DDE Integration | Deepin Desktop session support | 2026-02 | 🔄 Script exists; adapter pending | 12 |
+| M10 | Mobile Companion Alpha | WebSocket API + Flutter prototype | 2026-03 | 🔄 WebSocket ✅; Flutter ❌ pending | 14 |
+| M11 | Security Policy v1 | Capability allowlist + signing CLI | 2026-03 | ✅ Done (Ed25519 signing, Phase 5) | 5 |
+| M12 | Real Switch Engine | OS-level: suspend services, apply profiles, start containers | 2026-03 | ✅ Done (Phase 2) | 2 |
+| M13 | Perf Test Harness | Automated <3s latency benchmark | 2026-04 | ✅ Done (Phase 2 benchmarks) | 2 |
+| M14 | Dev Environment Setup | Fix pip/pytest for contributor onboarding | 2026-03 | ✅ Done (Phase 1) | 1 |
+| M15 | Manifest Signing | CLI for sign / verify / gen-keypair | 2026-03 | ✅ Done (Phase 5) | 5 |
+| M16 | Architecture Diagrams | Mermaid: system, sequence, module boundaries | Q2 2026 | ⏳ Next (Phase 11) | 11 |
+| M17 | Beta Release | v1.0.0-beta + OTA updater + 198 tests | 2026-03 | ✅ Done (Phase 8) | 8 |
+| M18 | Real OTLP Exporter | OTLP/HTTP JSON spans + logs (no SDK dep) | 2026-03 | ✅ Done (Phase 9) | 9 |
+| M19 | Coverage ≥ 90% | containers, services, cli modules | Q2 2026 | ⏳ Next (Phase 10) | 10 |
+| M20 | Docs Site Deployed | MkDocs Material on GitHub Pages | Q2 2026 | ⏳ Scaffold ready (Phase 11) | 11 |
+| M21 | GPU/NIC Profiles | Real nvidia-smi + tc/qdisc integration | Q3 2026 | 📋 Planned (Phase 12) | 12 |
+| M22 | Security Hardening v2 | Token rotation, plugin sandbox, SLSA | Q3 2026 | 📋 Planned (Phase 13) | 13 |
+| M23 | Flutter Mobile App | Android switch UI + FCM push | Q3-Q4 2026 | 📋 Planned (Phase 14) | 14 |
+| M24 | v1.0.0 Stable | All phases complete, enterprise pilot | Q4 2026 | 📋 Planned (Phase 15) | 15 |
 
-Status Legend: ✅ Done / 🔄 In Progress / ❌ Not Started / ⚠️ At Risk / 🔴 Blocked
+Status Legend: ✅ Done / 🔄 In Progress / ⏳ Next Sprint / 📋 Future / ❌ Cancelled
 
 ---
 
-## Immediate Action Items (Q1–Q2 2026)
+## Immediate Action Items (Q2 2026 Sprint — v1.2.0)
 
-These are the highest-priority unblocking tasks:
-
-1. **Fix Dev Toolchain** — Install `python3-pip`, `pytest`, set up virtualenv; update `CONTRIBUTING.md` with exact setup steps.
-2. **Implement Real Switch Engine** — Replace dry-run `ContainerManager` with real `podman`/`docker` orchestration + systemd service management.
-3. **Build GTK4 UI Shell** — Implement the environment list panel and switch button.
-4. **Add Performance Test Harness** — Measure switch latency end-to-end against the < 3s KPI.
-5. **Complete Architecture Diagrams** — Create `.drawio` assets referenced in docs but missing.
-6. **Fill Documentation Stubs** — Replace placeholder text in `vision-mission.md`, `market-analysis.md` with real content.
+1. **Coverage Sprint** — Raise `containers/manager.py` (50%), `services/__init__.py` (67%), `cli.py` (73%) to 90%+.
+2. **Architecture Diagrams** — Create Mermaid system + sequence + module-boundary diagrams in `docs/diagrams/`.
+3. **Deploy Docs Site** — Run `mkdocs gh-deploy`; fill navigation stubs in `mkdocs.yml`.
+4. **Profile Hardware Completion** — GPU real implementation (nvidia-smi/AMD sysfs) + NIC tc/qdisc.
+5. **Flutter App Scaffold** — Bootstrap `mobile/` Flutter project with WebSocket client + env switch UI.
 
 ---
 
