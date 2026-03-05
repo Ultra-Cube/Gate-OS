@@ -1,4 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 260" width="240" height="260" role="img" aria-label="Gate-OS Logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300" role="img" aria-label="Gate-OS Logo">
+  <defs>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="gateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ── Background ── -->
+  <rect width="300" height="300" fill="#0a0f1e"/>
+
+  <!-- ── Outer glow ring ── -->
+  <circle cx="150" cy="138" r="106" fill="none"
+          stroke="url(#ringGrad)" stroke-width="2.5" opacity="0.9"
+          filter="url(#glow)"/>
+
+  <!-- ── Inner circle (dark fill) ── -->
+  <circle cx="150" cy="138" r="88" fill="#0d1424"/>
+
+  <!-- ── THE GATE SYMBOL ── -->
+  <!-- Left pillar -->
+  <rect x="96" y="120" width="20" height="70" rx="4" fill="url(#gateGrad)" filter="url(#glow)"/>
+  <!-- Right pillar -->
+  <rect x="184" y="120" width="20" height="70" rx="4" fill="url(#gateGrad)" filter="url(#glow)"/>
+  <!-- Arch (bold clean semicircle) -->
+  <path d="M96 130 Q96 62 150 62 Q204 62 204 130"
+        fill="none" stroke="url(#gateGrad)" stroke-width="20"
+        stroke-linecap="butt" filter="url(#glow)"/>
+
+  <!-- Arch inner cutout for hollow look -->
+  <path d="M116 130 Q116 82 150 82 Q184 82 184 130"
+        fill="none" stroke="#0d1424" stroke-width="10"
+        stroke-linecap="butt"/>
+
+  <!-- ── Accent dot at keystone ── -->
+  <circle cx="150" cy="62" r="9" fill="#00d4ff" filter="url(#softGlow)"/>
+
+  <!-- ── Horizontal ground bar ── -->
+  <rect x="88" y="188" width="124" height="6" rx="3" fill="url(#ringGrad)" opacity="0.85"/>
+
+  <!-- ── Wordmark ── -->
+  <text x="150" y="237"
+        font-family="'Segoe UI', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif"
+        font-size="32" font-weight="800" letter-spacing="8"
+        fill="#ffffff" text-anchor="middle">GATE-OS</text>
+
+  <!-- ── Tagline ── -->
+  <text x="150" y="256"
+        font-family="'Segoe UI', Arial, sans-serif"
+        font-size="9.5" font-weight="400" letter-spacing="3.5"
+        fill="#475569" text-anchor="middle">ONE OS · ALL ENVIRONMENTS</text>
+</svg>
+
   <defs>
     <!-- Background gradient -->
     <radialGradient id="bgGrad" cx="50%" cy="45%" r="55%">
