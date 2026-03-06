@@ -1,0 +1,2781 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The intelligent multi-environment OS manager for Linux">
+      
+      
+        <meta name="author" content="Fadhel-SH">
+      
+      
+        <link rel="canonical" href="https://ultra-cube.github.io/Gate-OS/plan/project-plan/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>Project plan - Gate-OS Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config",""),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gate-os-project-plan" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Gate-OS Documentation" class="md-header__button md-logo" aria-label="Gate-OS Documentation" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Gate-OS Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Project plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Ultra-Cube/Gate-OS" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Ultra-Cube/Gate-OS
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../installation/guide/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/control-api/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../security/overview/" class="md-tabs__link">
+          
+  
+  
+  Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../observability/metrics/" class="md-tabs__link">
+          
+  
+  
+  Observability
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ota/how-it-works/" class="md-tabs__link">
+          
+  
+  
+  OTA Updates
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mobile/companion-api/" class="md-tabs__link">
+          
+  
+  
+  Mobile Companion
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../diagrams/system-architecture/" class="md-tabs__link">
+          
+  
+  
+  Diagrams
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../release/v1.0.0-beta/" class="md-tabs__link">
+          
+  
+  
+  Release Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Gate-OS Documentation" class="md-nav__button md-logo" aria-label="Gate-OS Documentation" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Gate-OS Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Ultra-Cube/Gate-OS" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Ultra-Cube/Gate-OS
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--Active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--Active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/switch-engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/control-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mobile/companion-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebSocket API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/apparmor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AppArmor Profiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/signing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manifest Signing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Observability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prometheus Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/otlp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenTelemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OTA Updates
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    OTA Updates
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ota/how-it-works/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ota/schedule-apply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schedule Apply
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mobile Companion
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mobile Companion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mobile/companion-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebSocket API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/plugin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugin Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release-checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagrams
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diagrams
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/system-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/env-switch-sequence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Env Switch Sequence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/module-boundaries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/api-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release Notes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Release Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release/v1.0.0-beta/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.0.0-beta
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!-- Gate-OS Project Plan -->
+<h1 id="gate-os-project-plan">Gate-OS Project Plan<a class="headerlink" href="#gate-os-project-plan" title="Permanent link">&para;</a></h1>
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p>Single source of truth for scope, prioritized requirements, milestones, and
+progress tracking ("tracker").</p>
+<p><strong>Last Updated:</strong> March 2026 — Full audit + Ubuntu-based installable OS roadmap added. Team adoption path defined.</p>
+<hr />
+<h2 id="base-os-decision-ubuntu-lts-confirmed">Base OS Decision: Ubuntu LTS ✅ Confirmed<a class="headerlink" href="#base-os-decision-ubuntu-lts-confirmed" title="Permanent link">&para;</a></h2>
+<p><strong>Gate-OS is built on Ubuntu LTS</strong> — this is already documented in the architecture overview and is the correct choice:</p>
+<table>
+<thead>
+<tr>
+<th>Why Ubuntu LTS?</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stability</strong></td>
+<td>LTS = 5 years security support; safe foundation for production</td>
+</tr>
+<tr>
+<td><strong>Ecosystem</strong></td>
+<td>Largest app/driver compatibility; PPA support; Snap + Deb</td>
+</tr>
+<tr>
+<td><strong>Hardware Support</strong></td>
+<td>Widest hardware driver coverage out of the box</td>
+</tr>
+<tr>
+<td><strong>Container Native</strong></td>
+<td>Docker &amp; Podman run natively; systemd fully integrated</td>
+</tr>
+<tr>
+<td><strong>Custom ISO Tooling</strong></td>
+<td><code>cubic</code>, <code>live-build</code>, <code>debootstrap</code> — mature Ubuntu customization tools</td>
+</tr>
+<tr>
+<td><strong>Gaming</strong></td>
+<td>Steam officially targets Ubuntu; Proton/Wine best support</td>
+</tr>
+<tr>
+<td><strong>Enterprise</strong></td>
+<td>Canonical commercial support available when needed</td>
+</tr>
+<tr>
+<td><strong>DDE Available</strong></td>
+<td>Deepin Desktop packages exist in Ubuntu repos</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommended Base:</strong> Ubuntu 24.04 LTS "Noble Numbat" (latest LTS as of 2024, supported until 2029)</p>
+<hr />
+<h2 id="vision-summary">Vision (Summary)<a class="headerlink" href="#vision-summary" title="Permanent link">&para;</a></h2>
+<p>Deliver a universal Linux distribution enabling deterministic, low‑latency
+switching across specialized environments (gaming, dev, design, media, security)
+backed by a declarative manifest model, open governance, and enterprise-ready security.</p>
+<hr />
+<h2 id="project-health-assessment-march-2026">Project Health Assessment (March 2026)<a class="headerlink" href="#project-health-assessment-march-2026" title="Permanent link">&para;</a></h2>
+<h3 id="strengths">✅ Strengths<a class="headerlink" href="#strengths" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Architecture</td>
+<td>Solid layered design: Kernel → Core Services → Env Manager → Containers → UI</td>
+</tr>
+<tr>
+<td>Manifest Schema</td>
+<td>Well-defined JSON Schema (v0.1.0) with versioning &amp; migration hooks</td>
+</tr>
+<tr>
+<td>Security Foundation</td>
+<td>Capability allowlist enforcement, isolationLevel policy via <code>security/policy.py</code></td>
+</tr>
+<tr>
+<td>Modular Python Core</td>
+<td>Clean separation: <code>manifest/</code>, <code>switch/</code>, <code>containers/</code>, <code>api/</code>, <code>security/</code>, <code>telemetry/</code></td>
+</tr>
+<tr>
+<td>REST Control API</td>
+<td>FastAPI-based API with token auth, rate limiting, correlation IDs</td>
+</tr>
+<tr>
+<td>Telemetry Pipeline</td>
+<td>Structured JSON events, OTLP-compatible batch queue, correlation IDs</td>
+</tr>
+<tr>
+<td>Plugin System</td>
+<td>Entry-point based <code>pre_switch</code> / <code>post_switch</code> / <code>shutdown</code> hooks</td>
+</tr>
+<tr>
+<td>CI &amp; SBOM</td>
+<td>Grype + Syft security scanning baked into CI pipeline</td>
+</tr>
+<tr>
+<td>Test Coverage</td>
+<td>15+ test files covering manifest, switch, security policy, containers, telemetry</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>Comprehensive docs structure: architecture, security, roadmap, API, environments</td>
+</tr>
+</tbody>
+</table>
+<h3 id="weaknesses-gaps">⚠️ Weaknesses &amp; Gaps<a class="headerlink" href="#weaknesses-gaps" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Gap</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI Shell</td>
+<td>GTK4 UI not yet implemented — only placeholders</td>
+<td>HIGH</td>
+</tr>
+<tr>
+<td>Container Runtime</td>
+<td><code>ContainerManager</code> is in dry-run mode; no real orchestration with systemd/cgroups</td>
+<td>HIGH</td>
+</tr>
+<tr>
+<td>Environment Switching</td>
+<td>Real OS-level switch (suspend services, apply kernel params, GPU handoff) not implemented</td>
+<td>HIGH</td>
+</tr>
+<tr>
+<td>Test Environment</td>
+<td><code>pytest</code> not installed in base system; CI setup incomplete locally</td>
+<td>HIGH</td>
+</tr>
+<tr>
+<td>Schema Version</td>
+<td>Schema still at <code>v0.1.0</code> / draft; <code>apiVersion</code> pattern is not released</td>
+<td>MEDIUM</td>
+</tr>
+<tr>
+<td>Performance Tests</td>
+<td>No benchmarking harness for the &lt; 3s switch latency KPI</td>
+<td>MEDIUM</td>
+</tr>
+<tr>
+<td>Packaging</td>
+<td>No ISO builder, no GRUB/kernel customization scripts</td>
+<td>MEDIUM</td>
+</tr>
+<tr>
+<td>Mobile Companion</td>
+<td>API designed but no Flutter client prototype</td>
+<td>MEDIUM</td>
+</tr>
+<tr>
+<td>Manifest Signing</td>
+<td>Planned but not started — supply chain risk</td>
+<td>MEDIUM</td>
+</tr>
+<tr>
+<td>DDE Integration</td>
+<td>Install script present but shell adapter interface not implemented</td>
+<td>MEDIUM</td>
+</tr>
+<tr>
+<td>Network QoS</td>
+<td>Not started; important for gaming/streaming environments</td>
+<td>LOW</td>
+</tr>
+<tr>
+<td>Docs Completeness</td>
+<td>Several docs are stubs with placeholders (market analysis, vision/mission)</td>
+<td>LOW</td>
+</tr>
+<tr>
+<td>Architecture Diagrams</td>
+<td>Only ASCII placeholder; <code>.drawio</code> files not yet created</td>
+<td>LOW</td>
+</tr>
+<tr>
+<td>GPU Scheduling</td>
+<td>No GPU resource allocation per profile</td>
+<td>LOW</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="success-criteria-v1-launch">Success Criteria (v1 Launch)<a class="headerlink" href="#success-criteria-v1-launch" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>KPI</th>
+<th>Target</th>
+<th>Measurement Method</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Switch latency</td>
+<td>&lt; 3s median</td>
+<td>Instrumented telemetry event pair (start/ready)</td>
+<td>⏳ Not measured</td>
+</tr>
+<tr>
+<td>Activation reliability</td>
+<td>&gt; 99% success</td>
+<td>Switch outcomes log</td>
+<td>⏳ Dry-run only</td>
+</tr>
+<tr>
+<td>Manifest validation coverage</td>
+<td>100% schema required fields</td>
+<td>CI + test suite</td>
+<td>✅ Schema in place</td>
+</tr>
+<tr>
+<td>Critical vulnerabilities (prod build)</td>
+<td>0 High/Critical</td>
+<td>Grype scan pipeline</td>
+<td>✅ CI step exists</td>
+</tr>
+<tr>
+<td>Onboarding time (contributor)</td>
+<td>&lt; 30m</td>
+<td>Developer survey</td>
+<td>⚠️ pip not configured</td>
+</tr>
+<tr>
+<td>Test line coverage</td>
+<td>≥ 80%</td>
+<td>pytest-cov report</td>
+<td>⏳ Not measured</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="scope-v1-included">Scope (v1 Included)<a class="headerlink" href="#scope-v1-included" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Environment manifest schema + validator (Python) ✅</li>
+<li>Environment Manager (activation lifecycle, basic hooks) 🔄</li>
+<li>Two reference environments (dev, gaming) ✅ manifests exist</li>
+<li>Basic UI shell placeholder (GTK4) with environment list + switch button ❌ not implemented</li>
+<li>Telemetry stub (stdout JSON events) + structured logs ✅</li>
+<li>Security baseline: isolationLevel policy enforcement scaffold ✅</li>
+<li>CI: lint, tests, coverage, SBOM, vuln scan 🔄 partial</li>
+<li>Real container/service orchestration on switch ❌ dry-run only</li>
+<li>REST Control API (FastAPI) ✅</li>
+</ul>
+<h2 id="out-of-scope-v1">Out of Scope (v1)<a class="headerlink" href="#out-of-scope-v1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Full UI theming &amp; design system</li>
+<li>Advanced GPU scheduling</li>
+<li>Full SELinux/AppArmor policy sets (placeholders only)</li>
+<li>Network QoS prioritization</li>
+<li>Packaging for multiple distros (Ubuntu base only)</li>
+<li>ISO image builder</li>
+</ul>
+<hr />
+<h2 id="milestones-tracker-updated-march-2026">Milestones &amp; Tracker (Updated March 2026)<a class="headerlink" href="#milestones-tracker-updated-march-2026" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Milestone</th>
+<th>Description</th>
+<th>Target</th>
+<th>Status</th>
+<th>Phase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1</td>
+<td>Schema Foundation</td>
+<td>JSON Schema v0.1.0 + examples</td>
+<td>2025-09</td>
+<td>✅ Done</td>
+<td>0</td>
+</tr>
+<tr>
+<td>M2</td>
+<td>Manager Core</td>
+<td>load/validate + switch orchestration skeleton</td>
+<td>2025-10</td>
+<td>✅ Done</td>
+<td>0</td>
+</tr>
+<tr>
+<td>M3</td>
+<td>UI Shell MVP</td>
+<td>GTK4: list envs + trigger switch button</td>
+<td>2025-11</td>
+<td>✅ Done (Phase 3)</td>
+<td>3</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>Telemetry Stub</td>
+<td>Emit switch events + basic metrics</td>
+<td>2025-11</td>
+<td>✅ Done</td>
+<td>0</td>
+</tr>
+<tr>
+<td>M5</td>
+<td>Security Baseline</td>
+<td>isolationLevel enforcement hooks</td>
+<td>2025-12</td>
+<td>✅ Done</td>
+<td>0</td>
+</tr>
+<tr>
+<td>M6</td>
+<td>Coverage 87%</td>
+<td>Unit tests across all modules</td>
+<td>2025-12</td>
+<td>✅ Done (87%, v1.1.0)</td>
+<td>9</td>
+</tr>
+<tr>
+<td>M7</td>
+<td>Packaging Alpha</td>
+<td>Ubuntu ISO build + install script</td>
+<td>2026-01</td>
+<td>✅ Done (Phase 4)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>M8</td>
+<td>Security Env</td>
+<td>AppArmor/seccomp + manifest hardening</td>
+<td>2026-01</td>
+<td>✅ Done (Phase 5)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>M9</td>
+<td>DDE Integration</td>
+<td>Deepin Desktop session support</td>
+<td>2026-02</td>
+<td>🔄 Script exists; adapter pending</td>
+<td>12</td>
+</tr>
+<tr>
+<td>M10</td>
+<td>Mobile Companion Alpha</td>
+<td>WebSocket API + Flutter prototype</td>
+<td>2026-03</td>
+<td>🔄 WebSocket ✅; Flutter ❌ pending</td>
+<td>14</td>
+</tr>
+<tr>
+<td>M11</td>
+<td>Security Policy v1</td>
+<td>Capability allowlist + signing CLI</td>
+<td>2026-03</td>
+<td>✅ Done (Ed25519 signing, Phase 5)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>M12</td>
+<td>Real Switch Engine</td>
+<td>OS-level: suspend services, apply profiles, start containers</td>
+<td>2026-03</td>
+<td>✅ Done (Phase 2)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>M13</td>
+<td>Perf Test Harness</td>
+<td>Automated &lt;3s latency benchmark</td>
+<td>2026-04</td>
+<td>✅ Done (Phase 2 benchmarks)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>M14</td>
+<td>Dev Environment Setup</td>
+<td>Fix pip/pytest for contributor onboarding</td>
+<td>2026-03</td>
+<td>✅ Done (Phase 1)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>M15</td>
+<td>Manifest Signing</td>
+<td>CLI for sign / verify / gen-keypair</td>
+<td>2026-03</td>
+<td>✅ Done (Phase 5)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>M16</td>
+<td>Architecture Diagrams</td>
+<td>Mermaid: system, sequence, module boundaries</td>
+<td>Q2 2026</td>
+<td>⏳ Next (Phase 11)</td>
+<td>11</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>Beta Release</td>
+<td>v1.0.0-beta + OTA updater + 198 tests</td>
+<td>2026-03</td>
+<td>✅ Done (Phase 8)</td>
+<td>8</td>
+</tr>
+<tr>
+<td>M18</td>
+<td>Real OTLP Exporter</td>
+<td>OTLP/HTTP JSON spans + logs (no SDK dep)</td>
+<td>2026-03</td>
+<td>✅ Done (Phase 9)</td>
+<td>9</td>
+</tr>
+<tr>
+<td>M19</td>
+<td>Coverage ≥ 90%</td>
+<td>containers, services, cli modules</td>
+<td>Q2 2026</td>
+<td>⏳ Next (Phase 10)</td>
+<td>10</td>
+</tr>
+<tr>
+<td>M20</td>
+<td>Docs Site Deployed</td>
+<td>MkDocs Material on GitHub Pages</td>
+<td>Q2 2026</td>
+<td>⏳ Scaffold ready (Phase 11)</td>
+<td>11</td>
+</tr>
+<tr>
+<td>M21</td>
+<td>GPU/NIC Profiles</td>
+<td>Real nvidia-smi + tc/qdisc integration</td>
+<td>Q3 2026</td>
+<td>📋 Planned (Phase 12)</td>
+<td>12</td>
+</tr>
+<tr>
+<td>M22</td>
+<td>Security Hardening v2</td>
+<td>Token rotation, plugin sandbox, SLSA</td>
+<td>Q3 2026</td>
+<td>📋 Planned (Phase 13)</td>
+<td>13</td>
+</tr>
+<tr>
+<td>M23</td>
+<td>Flutter Mobile App</td>
+<td>Android switch UI + FCM push</td>
+<td>Q3-Q4 2026</td>
+<td>📋 Planned (Phase 14)</td>
+<td>14</td>
+</tr>
+<tr>
+<td>M24</td>
+<td>v1.0.0 Stable</td>
+<td>All phases complete, enterprise pilot</td>
+<td>Q4 2026</td>
+<td>📋 Planned (Phase 15)</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<p>Status Legend: ✅ Done / 🔄 In Progress / ⏳ Next Sprint / 📋 Future / ❌ Cancelled</p>
+<hr />
+<h2 id="immediate-action-items-q2-2026-sprint-v120">Immediate Action Items (Q2 2026 Sprint — v1.2.0)<a class="headerlink" href="#immediate-action-items-q2-2026-sprint-v120" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Coverage Sprint</strong> — Raise <code>containers/manager.py</code> (50%), <code>services/__init__.py</code> (67%), <code>cli.py</code> (73%) to 90%+.</li>
+<li><strong>Architecture Diagrams</strong> — Create Mermaid system + sequence + module-boundary diagrams in <code>docs/diagrams/</code>.</li>
+<li><strong>Deploy Docs Site</strong> — Run <code>mkdocs gh-deploy</code>; fill navigation stubs in <code>mkdocs.yml</code>.</li>
+<li><strong>Profile Hardware Completion</strong> — GPU real implementation (nvidia-smi/AMD sysfs) + NIC tc/qdisc.</li>
+<li><strong>Flutter App Scaffold</strong> — Bootstrap <code>mobile/</code> Flutter project with WebSocket client + env switch UI.</li>
+</ol>
+<hr />
+<h2 id="installable-os-roadmap-ubuntu-2404-lts-base">Installable OS Roadmap — Ubuntu 24.04 LTS Base<a class="headerlink" href="#installable-os-roadmap-ubuntu-2404-lts-base" title="Permanent link">&para;</a></h2>
+<p>This section defines the path from the current Python manager scaffold to a <strong>real installable Gate-OS system</strong> that the team can use and develop on physical hardware.</p>
+<h3 id="architecture-two-layer-approach">Architecture: Two-Layer Approach<a class="headerlink" href="#architecture-two-layer-approach" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                  Gate-OS ISO Image                       │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│                                                         │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  Layer 1: Ubuntu 24.04 LTS Base (kernel + drivers)      │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  Layer 2: Gate-OS Manager + UI + Environment Profiles   │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│                                                         │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  Install Method: Ubiquity (Ubuntu installer)             │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  or: debian-installer + preseed for unattended          │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>└─────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="phase-a-team-alpha-target-may-2026">Phase A — Team Alpha (Target: May 2026) 🎯<a class="headerlink" href="#phase-a-team-alpha-target-may-2026" title="Permanent link">&para;</a></h3>
+<p><strong>Goal:</strong> Team members can install Gate-OS on their machines and use it daily.</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Description</th>
+<th>Tool/Method</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A1</td>
+<td>Bootstrap Ubuntu 24.04 LTS base</td>
+<td>Download Ubuntu ISO</td>
+<td>DevOps</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>Build custom ISO with <code>cubic</code></td>
+<td>Add gateos-manager package to Ubuntu live image</td>
+<td>DevOps</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>Auto-install <code>gateos-manager</code> on boot</td>
+<td>Add <code>.deb</code> package or pip install via preseed/postinstall</td>
+<td>Core</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>Create <code>gate-os-installer</code> post-install script</td>
+<td>Installs Gate-OS layer on top of Ubuntu base</td>
+<td>DevOps</td>
+</tr>
+<tr>
+<td>A5</td>
+<td>Real switch engine (M12)</td>
+<td>systemd service suspend/resume + container start</td>
+<td>Core</td>
+</tr>
+<tr>
+<td>A6</td>
+<td>GTK4 UI panel (M3)</td>
+<td>Environment list + switch button visible on desktop</td>
+<td>UI</td>
+</tr>
+<tr>
+<td>A7</td>
+<td>DDE session option (M9)</td>
+<td><code>install-dde.sh</code> completed + session file</td>
+<td>UI</td>
+</tr>
+<tr>
+<td>A8</td>
+<td>Dev environment manifest working</td>
+<td><code>gateos switch dev</code> starts real toolchain containers</td>
+<td>Core</td>
+</tr>
+<tr>
+<td>A9</td>
+<td>Team onboarding doc</td>
+<td>Step-by-step: download ISO → install → first switch</td>
+<td>PM</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tools-for-building-ubuntu-custom-iso">Tools for Building Ubuntu Custom ISO<a class="headerlink" href="#tools-for-building-ubuntu-custom-iso" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Option 1: cubic (GUI-based, recommended for team ease)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>cubic
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Open Ubuntu 24.04 ISO → add gateos packages → export new ISO</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># Option 2: live-build (scriptable, CI-friendly)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>live-build
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>lb<span class="w"> </span>config<span class="w"> </span>--distribution<span class="w"> </span>noble<span class="w"> </span>--archive-areas<span class="w"> </span><span class="s2">&quot;main contrib non-free&quot;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># Copy gateos-manager into chroot → lb build</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Option 3: minimal overlay (fastest prototype)</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># Install Ubuntu 24.04 normally → run gate-os postinstall script</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://install.gateos.io/setup.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w">  </span><span class="c1"># (future)</span>
+</code></pre></div>
+<h3 id="phase-b-beta-release-target-august-2026">Phase B — Beta Release (Target: August 2026) 🚀<a class="headerlink" href="#phase-b-beta-release-target-august-2026" title="Permanent link">&para;</a></h3>
+<p><strong>Goal:</strong> Public beta: downloadable ISO, full environment switching, stable team workflows.</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B1</td>
+<td>Automated ISO build via GitHub Actions</td>
+<td>CI produces fresh ISO on each release tag</td>
+</tr>
+<tr>
+<td>B2</td>
+<td>Gaming environment working end-to-end</td>
+<td>Steam + Proton + GPU profile via manifest</td>
+</tr>
+<tr>
+<td>B3</td>
+<td>Security environment working</td>
+<td>Kali tools in isolated containers</td>
+</tr>
+<tr>
+<td>B4</td>
+<td>Performance: &lt; 3s switch latency validated</td>
+<td>Telemetry benchmark in CI</td>
+</tr>
+<tr>
+<td>B5</td>
+<td>OTA update mechanism</td>
+<td>Gate-OS manager self-updates without reinstall</td>
+</tr>
+<tr>
+<td>B6</td>
+<td>Manifest signing (M15)</td>
+<td>Signed bundles verified before activation</td>
+</tr>
+<tr>
+<td>B7</td>
+<td>Public beta waitlist + download page</td>
+<td>Marketing + community</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-c-v10-launch-target-q4-2026">Phase C — v1.0 Launch (Target: Q4 2026) 🏁<a class="headerlink" href="#phase-c-v10-launch-target-q4-2026" title="Permanent link">&para;</a></h3>
+<p><strong>Goal:</strong> Stable, versioned, production-ready release on Ubuntu 24.04 LTS.</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C1</td>
+<td>4 environments fully functional: gaming, dev, design, media</td>
+</tr>
+<tr>
+<td>C2</td>
+<td>Security environment (Kali toolkit) hardened</td>
+</tr>
+<tr>
+<td>C3</td>
+<td>Mobile companion API live (Android app alpha)</td>
+</tr>
+<tr>
+<td>C4</td>
+<td>Full security audit passed (AppArmor profiles + Grype clean)</td>
+</tr>
+<tr>
+<td>C5</td>
+<td>Community: first 25 external contributors</td>
+</tr>
+<tr>
+<td>C6</td>
+<td>Enterprise pilot: 2 organizations using Gate-OS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="team-adoption-plan-immediate">Team Adoption Plan (Immediate)<a class="headerlink" href="#team-adoption-plan-immediate" title="Permanent link">&para;</a></h2>
+<p>To start using Gate-OS for daily development <strong>right now</strong> (before ISO is ready):</p>
+<h3 id="step-1-fix-dev-environment-this-week">Step 1 — Fix Dev Environment (This Week)<a class="headerlink" href="#step-1-fix-dev-environment-this-week" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># On Ubuntu 24.04 (or any Ubuntu 22.04+):</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>python3-pip<span class="w"> </span>python3-venv<span class="w"> </span>git
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">cd</span><span class="w"> </span>/path/to/Gate-OS
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>pytest<span class="w"> </span>tests/<span class="w"> </span>-q<span class="w">   </span><span class="c1"># should show 43+ passing tests</span>
+</code></pre></div>
+<h3 id="step-2-run-gate-os-manager-locally-week-1">Step 2 — Run Gate-OS Manager Locally (Week 1)<a class="headerlink" href="#step-2-run-gate-os-manager-locally-week-1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Validate manifests</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>gateos<span class="w"> </span>validate<span class="w"> </span>examples/environments/*.yaml
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Start the Control API</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>gateos<span class="w"> </span>api<span class="w"> </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">8088</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Generate an API token</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>gateos<span class="w"> </span>gen-token<span class="w"> </span>--length<span class="w"> </span><span class="m">40</span><span class="w"> </span>&gt;<span class="w"> </span>.api.token
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="nb">export</span><span class="w"> </span><span class="nv">GATEOS_API_TOKEN</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span>.api.token<span class="k">)</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="nb">export</span><span class="w"> </span><span class="nv">GATEOS_API_TOKEN_FILE</span><span class="o">=</span>.api.token
+</code></pre></div>
+<h3 id="step-3-each-team-member-contributes-week-14">Step 3 — Each Team Member Contributes (Week 1–4)<a class="headerlink" href="#step-3-each-team-member-contributes-week-14" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>First Task</th>
+<th>Branch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core Dev</td>
+<td>Implement real <code>ContainerManager.start()</code> with podman</td>
+<td><code>feat/real-container-switch</code></td>
+</tr>
+<tr>
+<td>UI Dev</td>
+<td>Create GTK4 window with <code>Adw.ApplicationWindow</code> + env list</td>
+<td><code>feat/gtk4-ui-shell</code></td>
+</tr>
+<tr>
+<td>DevOps</td>
+<td>Build Ubuntu 24.04 + gateos overlay with cubic</td>
+<td><code>feat/ubuntu-iso-builder</code></td>
+</tr>
+<tr>
+<td>QA</td>
+<td>Add performance benchmark test (measure switch latency)</td>
+<td><code>feat/perf-test-harness</code></td>
+</tr>
+<tr>
+<td>Sec</td>
+<td>Implement AppArmor profile stub for dev environment</td>
+<td><code>feat/apparmor-dev-profile</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-4-internal-iso-for-team-month-2">Step 4 — Internal ISO for Team (Month 2)<a class="headerlink" href="#step-4-internal-iso-for-team-month-2" title="Permanent link">&para;</a></h3>
+<p>Once A2–A6 are done, DevOps builds and distributes the internal ISO:
+- Team installs on dedicated machines or VMs
+- Daily use: <code>gateos switch dev</code> for coding, <code>gateos switch gaming</code> for testing
+- Feedback loop: file issues → fix → rebuild ISO weekly</p>
+<hr />
+<h2 id="risk-register-updated">Risk Register (Updated)<a class="headerlink" href="#risk-register-updated" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Impact</th>
+<th>Likelihood</th>
+<th>Mitigation</th>
+<th>Owner</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scope creep UI</td>
+<td>Delay core</td>
+<td>M</td>
+<td>Strict v1 scope; UI is last after engine</td>
+<td>PM</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>Security gap (policies)</td>
+<td>Trust erosion</td>
+<td>M</td>
+<td>Stub policies v0 shipped; v1 allowlistRef next</td>
+<td>Sec</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>Performance regressions</td>
+<td>Latency &gt; 3s target</td>
+<td>H</td>
+<td>Add perf harness (M13) before engine work</td>
+<td>Core</td>
+<td><strong>At Risk</strong></td>
+</tr>
+<tr>
+<td>Limited contributors</td>
+<td>Slow velocity</td>
+<td>H</td>
+<td>Fix onboarding (M14); improve CONTRIBUTING.md</td>
+<td>PM</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>No real switch engine</td>
+<td>Product unusable</td>
+<td>H</td>
+<td>M12 is critical path — schedule immediately</td>
+<td>Core</td>
+<td><strong>At Risk</strong></td>
+</tr>
+<tr>
+<td>Missing diagrams</td>
+<td>Architecture misalignment</td>
+<td>L</td>
+<td>Schedule diagram sprint (M16)</td>
+<td>Arch</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>Python env setup broken</td>
+<td>No contributor can run tests</td>
+<td>H</td>
+<td>Fix pip/venv setup this sprint</td>
+<td>DevOps</td>
+<td><strong>At Risk</strong></td>
+</tr>
+<tr>
+<td>ISO build not automated</td>
+<td>Manual overhead slows releases</td>
+<td>M</td>
+<td>Add GitHub Actions ISO job in Phase B</td>
+<td>DevOps</td>
+<td>Open</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="requirement-set">Requirement Set<a class="headerlink" href="#requirement-set" title="Permanent link">&para;</a></h2>
+<p>See <code>requirements.md</code> for full details. Traceability matrix links each requirement to artifacts &amp; tests.</p>
+<h2 id="change-control">Change Control<a class="headerlink" href="#change-control" title="Permanent link">&para;</a></h2>
+<p>Material scope changes require RFC (see <code>rfcs/</code>). Update this plan via PR referencing impacted requirement IDs.</p>
+<h2 id="reporting-cadence">Reporting Cadence<a class="headerlink" href="#reporting-cadence" title="Permanent link">&para;</a></h2>
+<p>Bi-weekly progress update referencing milestones table &amp; risk changes.</p>
+<hr />
+<p><strong>Last Updated:</strong> March 2026 | <strong>By:</strong> Fadhel.SH | <strong>Company:</strong> Ultra-Cube Tech</p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 5, 2026 20:40:08 UTC">March 5, 2026</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 23, 2025 12:00:50 UTC">August 23, 2025</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025-2026 Fadhel-SH / Ultra-Cube
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Ultra-Cube/Gate-OS" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.instant", "navigation.tracking", "toc.integrate", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
