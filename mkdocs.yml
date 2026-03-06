@@ -102,5 +102,10 @@ nav:
     - Plugin Guide: plugins/plugin-guide.md
     - Release Checklist: release-checklist.md
     - Changelog: changelog.md
+  - Diagrams:
+    - System Architecture: diagrams/system-architecture.md
+    - Env Switch Sequence: diagrams/env-switch-sequence.md
+    - Module Boundaries: diagrams/module-boundaries.md
+    - API Flow: diagrams/api-flow.md
   - Release Notes:
     - v1.0.0-beta: release/v1.0.0-beta.md

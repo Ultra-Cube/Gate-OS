@@ -296,33 +296,49 @@ All items committed and tagged.
 
 ---
 
-## 📝 Phase 11 — Documentation & Diagrams (v1.2.0) ⏳ PLANNED
+## 📝 Phase 11 — Documentation & Diagrams (v1.2.0) ✅ COMPLETED
 
 **Goal:** Bring all docs stubs to production quality; add architecture diagrams; deploy docs site.  
-**Target:** Q2 2026
+**Completed:** March 2026
 
 ### 11.1 — Architecture Diagrams (docs/diagrams/)
-- ⏳ `system-architecture.md` — Mermaid C4/component diagram (Layer: Kernel → Core Services → Env Manager → Containers → UI)
-- ⏳ `env-switch-sequence.md` — Mermaid sequence diagram (User → UI → Orchestrator → ServiceManager → ContainerManager)
-- ⏳ `module-boundaries.md` — Mermaid dependency graph of all `gateos_manager/` subpackages
-- ⏳ `api-flow.md` — REST + WebSocket request/response flow diagram
+- ✅ `system-architecture.md` — Mermaid C4/component diagram (Layer: Kernel → Core Services → Env Manager → Containers → UI)
+- ✅ `env-switch-sequence.md` — Mermaid sequence diagram (User → UI → Orchestrator → ServiceManager → ContainerManager)
+- ✅ `module-boundaries.md` — Mermaid dependency graph of all `gateos_manager/` subpackages
+- ✅ `api-flow.md` — REST + WebSocket request/response flow diagram
 
 ### 11.2 — Outdated Doc Updates
-- ⏳ `docs/architecture/overview.md` — inline current tech stack + Mermaid layer diagram; remove stubs
-- ⏳ `docs/roadmap/milestones.md` — reflect all completed phases and new roadmap to v1.0.0 Stable
-- ⏳ `docs/plan/project-plan.md` — update milestone table (many ❌ now ✅)
-- ⏳ `docs/plan/requirements.md` — update traceability matrix to reflect implemented items
-- ⏳ `docs/product/features.md` — replace stub with real feature spec + MoSCoW table
-- ⏳ `docs/business/vision-mission.md` — fill in real vision/mission/value proposition text
-- ⏳ `docs/business/market-analysis.md` — real competitive landscape section
-- ⏳ `docs/security/threat-model.md` — add current controls and validate planned controls
-- ⏳ `docs/architecture/supply-chain.md` — update manifest signing status to ✅ Done
+- ✅ `docs/architecture/overview.md` — inline current tech stack + Mermaid layer diagram; remove stubs
+- ✅ `docs/roadmap/milestones.md` — reflect all completed phases and new roadmap to v1.0.0 Stable
+- ✅ `docs/plan/project-plan.md` — update milestone table (many ❌ now ✅)
+- ✅ `docs/plan/requirements.md` — update traceability matrix to reflect implemented items
+- ✅ `docs/product/features.md` — replaced stub with real feature spec + MoSCoW table
+- ✅ `docs/business/vision-mission.md` — filled in real vision/mission/value proposition text
+- ✅ `docs/business/market-analysis.md` — real competitive landscape section
+- ✅ `docs/security/threat-model.md` — added current controls v1.2.0 and planned v1.3.0
+- ✅ `docs/architecture/supply-chain.md` — updated manifest signing status to ✅ Done
 
 ### 11.3 — Documentation Site
-- ⏳ Deploy MkDocs Material site to GitHub Pages (`mkdocs gh-deploy`)
-- ⏳ Fill in all navigation stubs in `mkdocs.yml`
-- ⏳ Add getting-started tutorial covering `make setup` → `gateos validate` → `gateos api`
-- ⏳ API reference page auto-generated from FastAPI OpenAPI schema
+- ✅ Deploy MkDocs Material site to GitHub Pages (`mkdocs gh-deploy`)
+- ✅ Fill in all navigation stubs in `mkdocs.yml` (13 missing pages created)
+- ✅ Added getting-started tutorial covering `make setup` → `gateos validate` → `gateos api`
+- ⏳ API reference page auto-generated from FastAPI OpenAPI schema (v1.3.0)
+
+### 11.4 — New Pages Created (filling mkdocs.yml stubs)
+- ✅ `docs/getting-started/quickstart.md`
+- ✅ `docs/getting-started/configuration.md`
+- ✅ `docs/architecture/environments.md`
+- ✅ `docs/architecture/switch-engine.md`
+- ✅ `docs/security/overview.md`
+- ✅ `docs/security/apparmor.md`
+- ✅ `docs/security/signing.md`
+- ✅ `docs/observability/metrics.md`
+- ✅ `docs/ota/how-it-works.md`
+- ✅ `docs/ota/schedule-apply.md`
+- ✅ `docs/contributing.md`
+- ✅ `docs/plugins/plugin-guide.md`
+- ✅ `docs/release-checklist.md`
+- ✅ `docs/changelog.md`
 
 ---
 

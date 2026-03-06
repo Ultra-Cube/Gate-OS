@@ -50,24 +50,45 @@ Each requirement: REQ-<Area>-<Number>. Priority: (M)ust, (S)hould, (C)ould, (W)o
 | REQ-FUT-PLUG-API | Plugin API | Extension lifecycle API | S |
 | REQ-FUT-ANL-UX | UX Analytics | Opt-in anonymized analytics | W |
 
-## Traceability Matrix (Excerpt)
+## Traceability Matrix (v1.2.0 Complete)
 
-| Requirement | Implementation Artifact | Test | Status |
-|-------------|-------------------------|------|--------|
-| REQ-MAN-001 | loader.py | test_example_manifests_validate | Done |
-| REQ-MAN-002 | schema + loader | invalid/missing tests | Done |
-| REQ-MAN-004 | (future) switch module | test_switch_success (future) | Planned |
-| REQ-SEC-001 | (future) security module | test_isolation_parse (future) | Planned |
-| REQ-CI-001 | ci.yml | CI run | Done |
-| REQ-CI-002 | coverage tooling | coverage threshold test | Planned |
+| Requirement | Implementation Artifact | Test(s) | Status |
+|---|---|---|---|
+| REQ-MAN-001 | `manifest/loader.py` | `test_manifest_loader.py` | Done |
+| REQ-MAN-002 | `manifest/schemas/` + `loader.py` | `test_manifest_invalid_*.py` | Done |
+| REQ-MAN-003 | `cli.py:cmd_list` | `test_cli.py::test_list` | Done |
+| REQ-MAN-004 | `orchestrator.py:switch_environment` | `test_orchestrator.py` | Done |
+| REQ-MAN-005 | `plugins/registry.py:invoke` | `test_plugins.py` | Done |
+| REQ-SEC-001 | `security/policy.py:parse_isolation_level` | `test_security.py::test_isolation_parse` | Done |
+| REQ-SEC-002 | `security/policy.py` | `test_security.py::test_invalid_isolation` | Done |
+| REQ-UI-001 | `cli.py:cmd_list` | `test_cli.py::test_list_output` | Done |
+| REQ-UI-002 | `cli.py:cmd_switch` | `test_cli.py::test_switch` | Done |
+| REQ-OBS-001 | `telemetry/otlp.py` + `orchestrator.py` | `test_otlp.py` | Done |
+| REQ-OBS-002 | `telemetry/prometheus.py` | `test_prometheus.py` | Done |
+| REQ-CI-001 | `.github/workflows/ci.yml` | CI run (ruff/flake8) | Done |
+| REQ-CI-002 | `.github/workflows/ci.yml` (95% gate) | `pytest --cov` (308 tests) | Done |
+| REQ-PKG-001 | `pyproject.toml` (hatchling) | CI build step | Done |
+| REQ-SEC-TOOLS-001 | `environments/security.yaml` | `test_example_manifests_validate.py` | Done |
+| REQ-MOB-001 | `api/websocket.py` | `test_api_websocket.py` | Done |
+| REQ-SEC-CAPS-001 | `security/policy.py:enforce_capabilities` | `test_security.py::test_capabilities` | Done |
+| REQ-API-001 | `api/control_api.py` | `test_api.py` | Done |
+| REQ-FUT-PLUG-API | `plugins/registry.py` | `test_plugins.py` | Done (v1.2.0) |
+| REQ-FUT-SEC-ACL | `security/policy.py` | `test_security.py` | Done (v1.2.0) |
+| REQ-FUT-NET-QOS | `profiles/hardware.py` (NIC priority) | `test_hardware_profile.py` | Done (v1.2.0) |
 
-Status Legend: Done / In Progress / Planned.
+Status Legend: **Done** = implemented + tested | **In Progress** = partial | **Planned** = backlog
 
-## Open Questions
+## Open Questions (Resolved in v1.2.0)
 
-- Activation rollback semantics?
-- Partial hook failure strategy (continue vs abort)?
-- Telemetry persistence backend (file, socket, OpenTelemetry exporter)?
+- Activation rollback semantics: **Resolved** — rollback restores prior state atomically (see orchestrator.py)
+- Partial hook failure strategy: **Resolved** — required services abort switch; optional services log warning
+- Telemetry backend: **Resolved** — OTLP/HTTP JSON exporter; `GATEOS_OTLP_DISABLE=1` for air-gapped
+
+## Remaining Open Questions
+
+- [ ] When to enforce `--require-sig` flag for unsigned manifests?
+- [ ] Is GPU profile scope per-container or per-environment?
+- [ ] Token rotation: time-based rotation vs. explicit revoke endpoint?
 
 ## Update Process
 
@@ -76,4 +97,4 @@ Status Legend: Done / In Progress / Planned.
 3. Maintain traceability matrix row for new/changed requirements.
 
 ---
-**Date:** Aug 2025 | **By:** Fadhel.SH | **Company:** Ultra-Cube Tech
+**Date:** March 2026 | **By:** Fadhel.SH | **Company:** Ultra-Cube Tech
