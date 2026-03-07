@@ -1,0 +1,100 @@
+# Gate-OS environment manifest schema v0.2.0
+# Changes from v1.0:
+#   - containers[].allowlistRef  — named capability allowlist reference
+#   - containers[].networkNamespace  — per-container network namespace name
+#   - schemaVersion pattern updated to accept "0.2.0"
+$schema: http://json-schema.org/draft-07/schema#
+title: EnvironmentManifest
+version: 0.2.0
+type: object
+required:
+  - kind
+  - metadata
+properties:
+  kind:
+    type: string
+    enum: [Environment]
+  schemaVersion:
+    type: string
+    pattern: "^0\\.2\\.0$"
+  metadata:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      labels:
+        type: object
+        additionalProperties:
+          type: string
+  spec:
+    type: object
+    properties:
+      profile:
+        type: object
+        properties:
+          category:
+            type: string
+            enum: [development, gaming, design, media, security, custom]
+          performance:
+            type: object
+            properties:
+              cpuGovernor:
+                type: string
+                enum: [performance, powersave, ondemand, conservative, schedutil]
+              gpuMode:
+                type: string
+                enum: [performance, balanced, powersave]
+              nicPriority:
+                type: string
+                description: "Format: <interface>:<rate> e.g. eth0:100mbit"
+              powerProfile:
+                type: string
+                enum: [performance, balanced, power-saver]
+      containers:
+        type: array
+        items:
+          type: object
+          required: [name, image]
+          properties:
+            name:
+              type: string
+            image:
+              type: string
+              description: "Image reference; digest pin (image@sha256:...) recommended"
+            allowlistRef:
+              type: string
+              description: "Named capability allowlist reference (defined in security policy)"
+            networkNamespace:
+              type: string
+              description: "Linux network namespace name for per-container isolation (e.g. gateos-dev)"
+            env:
+              type: object
+              additionalProperties:
+                type: string
+            volumes:
+              type: array
+              items:
+                type: object
+                required: [host, container]
+                properties:
+                  host:
+                    type: string
+                  container:
+                    type: string
+                  readOnly:
+                    type: boolean
+      security:
+        type: object
+        properties:
+          apparmor:
+            type: string
+          seccomp:
+            type: string
+          readOnlyRootfs:
+            type: boolean
+          noNewPrivileges:
+            type: boolean

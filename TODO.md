@@ -239,7 +239,7 @@ All items committed and tagged.
 | Phase 9 — Quality & Observability | v1.1.0 | **228** | **87%** | ✅ **Complete** |
 | Phase 10 — Coverage Sprint | v1.2.0 | — | ≥90% | ⏳ Planned |
 | Phase 11 — Documentation & Diagrams | v1.2.0 | — | — | ⏳ Planned |
-| Phase 12 — Profile & System Completion | v1.3.0 | — | — | 📋 Planned |
+| Phase 12 — Profile & System Completion | v1.3.0 | 2026-03-07 | — | ✅ Complete |
 | Phase 13 — Security Hardening v2 | v1.3.0 | — | — | 📋 Planned |
 | Phase 14 — Mobile Companion App | v1.4.0 | — | — | 📋 Planned |
 | Phase 15 — v1.0.0 Stable | v1.0.0 | — | — | 📋 Planned |
@@ -342,26 +342,26 @@ All items committed and tagged.
 
 ---
 
-## ⚙️ Phase 12 — Profile & System Completion (v1.3.0) 📋 PLANNED
+## ⚙️ Phase 12 — Profile & System Completion (v1.3.0) ✅ COMPLETED
 
 **Goal:** Real hardware profile application; security schema completions.  
-**Target:** Q3 2026
+**Completed:** 2026-03-07
 
 ### 12.1 — Hardware Profiles (gateos_manager/profile/__init__.py)
-- 📋 GPU mode: real `nvidia-smi -pm 1` / AMD `/sys/class/drm/card0/device/power_dpm_state`
-- 📋 NIC priority: `tc qdisc add dev <nic> root tbf rate <limit>` per environment
-- 📋 CPU governor validation: guard against missing cpufreq sysfs with fallback log
-- 📋 Power profile: `powerprofilesctl set performance/balanced/power-saver`
+- ✅ GPU mode: real `nvidia-smi -pm 1` / AMD `/sys/class/drm/card0/device/power_dpm_state`
+- ✅ NIC priority: `tc qdisc add dev <nic> root tbf rate <limit>` per environment
+- ✅ CPU governor validation: guard against missing cpufreq sysfs with fallback log
+- ✅ Power profile: `powerprofilesctl set performance/balanced/power-saver`
 
 ### 12.2 — Manifest Schema Completions
-- 📋 `allowlistRef` field in `data/schema/environment-manifest.schema.json` (named allowlist refs)
-- 📋 Network namespace per-container: `networkNamespace` field in container spec
-- 📋 Schema version bump → v0.2.0 + migration hook in `loader.py`
+- ✅ `allowlistRef` field in `gateos_manager/manifest/schemas/environment-manifest-v0.2.0.yaml`
+- ✅ Network namespace per-container: `networkNamespace` field in container spec
+- ✅ Schema version bump → v0.2.0 + migration hook in `loader.py`
 
 ### 12.3 — DDE Integration
-- 📋 Shell adapter interface (`gateos_manager/ui/shell_adapter.py`) — abstract `on_switch()` callback
-- 📋 DDE panel plugin stub (env list widget for Deepin taskbar)
-- 📋 `scripts/install-dde.sh` update for Ubuntu 24.04 Deepin PPA
+- ✅ Shell adapter interface (`gateos_manager/ui/shell_adapter.py`) — abstract `on_switch()` callback
+- ✅ DDE panel plugin stub (env list widget for Deepin taskbar)
+- ✅ `scripts/install-dde.sh` update for Ubuntu 24.04 Deepin PPA
 
 ---
 

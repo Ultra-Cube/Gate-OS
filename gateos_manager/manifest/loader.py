@@ -1,4 +1,4 @@
-"""Environment manifest loading & validation (draft)."""
+"""Environment manifest loading & validation."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -18,7 +18,18 @@ class ManifestValidationError(Exception):
         return self.message
 
 
-SUPPORTED_SCHEMA_VERSIONS = ["1.0"]  # extend as new versions added
+SUPPORTED_SCHEMA_VERSIONS = ["1.0", "0.2.0"]  # 0.2.0 adds allowlistRef + networkNamespace
+
+
+def _migrate_v1_to_v02(data: dict[str, Any]) -> dict[str, Any]:
+    """Migrate a v1.0 manifest to v0.2.0 shape (non-destructive).
+
+    - Sets schemaVersion to "0.2.0"
+    - Preserves all existing fields unchanged
+    """
+    data = dict(data)
+    data["schemaVersion"] = "0.2.0"
+    return data
 
 
 def _resolve_schema(version: Optional[str], explicit_path: Path) -> Path:
@@ -46,12 +57,22 @@ def _resolve_schema(version: Optional[str], explicit_path: Path) -> Path:
     raise ManifestValidationError(f"Schema not found: {explicit_path}")
 
 
-def load_manifest(path: Path, schema_path: Path) -> dict[str, Any]:
+def load_manifest(
+    path: Path,
+    schema_path: Path,
+    auto_migrate: bool = False,
+) -> dict[str, Any]:
     """Load and validate a manifest against a schema (with version negotiation).
 
-    The manifest may declare `schemaVersion` at top-level or under `environment.schemaVersion`.
-    If present we attempt to map to an internal packaged schema; otherwise the provided
-    schema_path is used.
+    The manifest may declare ``schemaVersion`` at top-level or under
+    ``environment.schemaVersion``.  If present we attempt to map to an internal
+    packaged schema; otherwise ``schema_path`` is used.
+
+    Args:
+        path: Path to the manifest YAML file.
+        schema_path: Fallback schema path when version cannot be resolved.
+        auto_migrate: If True, silently migrate v1.0 manifests to v0.2.0 shape
+            before validation (adds missing allowlistRef / networkNamespace).
     """
     if not path.exists():  # noqa: SIM108 clarity
         raise ManifestValidationError(f"Manifest not found: {path}")
@@ -61,11 +82,24 @@ def load_manifest(path: Path, schema_path: Path) -> dict[str, Any]:
         data_docs = list(yaml.safe_load_all(path.read_text()))
         data = (data_docs[0] if data_docs else {}) or {}
 
-
         # Determine declared schema version (top-level or nested)
         declared_version = data.get("schemaVersion") or data.get("environment", {}).get("schemaVersion")
         if declared_version and declared_version not in SUPPORTED_SCHEMA_VERSIONS:
             raise ManifestValidationError(f"Unsupported manifest schemaVersion '{declared_version}' (supported: {SUPPORTED_SCHEMA_VERSIONS})")
+
+        # Migration: v1.0 → v0.2.0 when requested
+        if auto_migrate and declared_version == "1.0":
+            data = _migrate_v1_to_v02(data)
+            declared_version = "0.2.0"
+            # After migration use the packaged v0.2.0 schema, ignoring the
+            # caller-supplied schema_path which may point at v1.0.
+            schema_path = Path(
+                str(
+                    pkg_resources.files(__package__)
+                    .joinpath("schemas")
+                    .joinpath("environment-manifest-v0.2.0.yaml")
+                )
+            )
 
         # Resolve schema path (may raise if unsupported / missing)
         resolved_schema_path = (
