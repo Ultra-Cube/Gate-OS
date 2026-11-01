@@ -18,7 +18,15 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install build backend
-        run: pip install --upgrade build
+        run: |
+          python -m pip install --upgrade pip build pip-audit
+          python -m pip install '.[dev]'
+
+      - name: Run release test gate
+        run: pytest -q --cov=gateos_manager --cov-report=term --cov-fail-under=70
+
+      - name: Run dependency audit
+        run: pip-audit --strict
       - name: Build
         run: python -m build
       - name: Publish to PyPI

@@ -66,7 +66,8 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 - [x] AppArmor/seccomp/read-only/network runtime flags attach in enforced mode; host profile loading remains.
 - [x] OTA SHA-256 verification in secure mode; Ed25519 verification and rollback remain.
 - [x] Cryptographic plugin verification in secure mode; out-of-process hook execution remains.
-- [ ] Meaningful coverage target >=90%, measured and published.
+- [ ] Meaningful coverage target >=90%, measured and published; current local suite is 403 tests and Phase 0 coverage was 94%.
+- [x] CI dependency audit, SBOM/vulnerability evidence artifacts, and gated PyPI test/audit workflow.
 - [ ] Signed ISO, SBOM, release notes, upgrade notes, and QEMU evidence.
 - [ ] Checkpoint 6: beta release only after security and license approval.
 

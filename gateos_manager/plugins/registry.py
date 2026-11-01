@@ -102,8 +102,8 @@ def _load_plugin_isolated(ep: metadata.EntryPoint):  # pragma: no cover - subpro
     minimal environment. The subprocess is expected to exit 0. This provides
     basic process isolation: a malformed plugin cannot crash the manager process.
 
-    Returns None (side effects in subprocess only — hooks cannot be registered
-    cross-process; use this mode for probe/validation only).
+    Returns ``True`` only when the probe exits successfully. Hook registration
+    is deliberately not attempted across the process boundary.
     """
     cmd = [
         sys.executable,
@@ -125,9 +125,9 @@ def _load_plugin_isolated(ep: metadata.EntryPoint):  # pragma: no cover - subpro
             stderr=subprocess.DEVNULL,
             close_fds=True,
         )
-        return None
+        return True
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
-        return None
+        return False
 
 
 def discover_entrypoint_plugins(group: str = 'gateos.plugins') -> list:
@@ -162,7 +162,11 @@ def discover_entrypoint_plugins(group: str = 'gateos.plugins') -> list:
                     )
                     continue
                 if isolate:
-                    _load_plugin_isolated(ep)
+                    # A probe in a subprocess cannot safely register hooks in
+                    # this process. Do not load an untrusted plugin in-process.
+                    if _load_plugin_isolated(ep) is not True:
+                        continue
+                    continue
                 plugin = ep.load()  # side-effect: registration
                 plugins.append(plugin)
             except Exception:

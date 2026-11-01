@@ -8,17 +8,12 @@ Covers:
 """
 from __future__ import annotations
 
-import os
 from unittest.mock import MagicMock, patch
-
-import pytest
 
 from gateos_manager.plugins.registry import (
     _allow_unsigned,
     _verify_plugin_signature,
     discover_entrypoint_plugins,
-    list_hooks,
-    register,
 )
 
 
@@ -95,6 +90,21 @@ class TestVerifyPluginSignature:
 
 
 class TestDiscoverWithSecurityFlags:
+    def test_isolate_mode_does_not_load_plugin_in_process(self, monkeypatch):
+        monkeypatch.delenv("GATEOS_DISABLE_ENTRYPOINT_PLUGINS", raising=False)
+        monkeypatch.setenv("GATEOS_PLUGIN_ISOLATE", "1")
+        monkeypatch.setenv("GATEOS_ALLOW_UNSIGNED_PLUGINS", "true")
+        ep = MagicMock()
+        ep.name = "isolated-plugin"
+        ep.value = "isolated_plugin:entry"
+        mock_eps = MagicMock()
+        mock_eps.select.return_value = [ep]
+        with patch("gateos_manager.plugins.registry.metadata.entry_points", return_value=mock_eps), \
+             patch("gateos_manager.plugins.registry._load_plugin_isolated", return_value=True) as probe:
+            assert discover_entrypoint_plugins() == []
+        probe.assert_called_once_with(ep)
+        ep.load.assert_not_called()
+
     def test_disable_flag_returns_empty(self, monkeypatch):
         monkeypatch.setenv("GATEOS_DISABLE_ENTRYPOINT_PLUGINS", "1")
         result = discover_entrypoint_plugins()

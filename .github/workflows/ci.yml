@@ -16,12 +16,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.12'
 
       - name: Install tooling & project (dev extras)
         run: |
           python -m pip install --upgrade pip
-          pip install .[dev] yamllint
+          pip install .[dev] yamllint pip-audit
 
       - name: Ruff Lint
         run: ruff check gateos_manager
@@ -45,6 +45,9 @@ jobs:
 
       - name: Run tests with coverage
         run: pytest -q --cov=gateos_manager --cov-report=xml --cov-report=term --cov-fail-under=70
+
+      - name: Audit Python dependencies
+        run: pip-audit --strict
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
@@ -78,7 +81,18 @@ jobs:
           GRYPE_VERSION: v0.79.0
         run: |
           curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin ${GRYPE_VERSION}
+          grype dir:. -o json > grype-report.json
           grype dir:. --fail-on Critical
+
+      - name: Upload SBOM and vulnerability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: supply-chain-evidence
+          path: |
+            sbom.json
+            grype-report.json
+          if-no-files-found: warn
 
   api-tests:
     runs-on: ubuntu-latest
