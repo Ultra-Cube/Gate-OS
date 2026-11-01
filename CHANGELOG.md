@@ -13,6 +13,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 - Security hardening for OIDC/JWT, container isolation, manifest signatures, OTA verification, and plugin trust.
 - Integration specification, seven-environment design pack, and optional Ultra AI prototype.
 
+### Security hardening in progress
+- OIDC bearer validation now fails closed and requires a signed JWT verified against configured JWKS, issuer, audience, and expiry claims.
+- Token rotation now requires configured authentication; anonymous development mode cannot rotate credentials.
+- Manifest loading can reject mutable image tags with `GATEOS_REQUIRE_DIGESTS=1` or `require_digest_pins=True`.
+- Added regression tests; current local suite is 398 passing tests.
+
 ---
 
 ## [0.0.6] — 2026-03-05

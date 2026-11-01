@@ -1,13 +1,12 @@
 from pathlib import Path
+
 import pytest
-import textwrap
 import yaml
 
 from gateos_manager.manifest.loader import (
     ManifestValidationError,
     load_manifest,
 )
-
 
 SCHEMA = Path("docs/architecture/schemas/environment-manifest.schema.yaml")
 EXAMPLES = Path("examples/environments")
@@ -99,4 +98,20 @@ def test_security_capability_allowlist_valid(tmp_path: Path):
     manifest.write_text(yaml.safe_dump(doc, sort_keys=False))
     data = load_manifest(manifest, SCHEMA)
     assert data["metadata"]["name"] == "secok"
+
+
+def test_digest_pins_are_required_in_secure_mode(tmp_path: Path):
+    manifest = tmp_path / "unpinned.yaml"
+    doc = {
+        "apiVersion": "gateos.ultracube.v1alpha1",
+        "kind": "Environment",
+        "metadata": {"name": "secure-env"},
+        "spec": {
+            "profile": {"category": "dev"},
+            "containers": [{"name": "tool", "image": "example/tool:latest"}],
+        },
+    }
+    manifest.write_text(yaml.safe_dump(doc, sort_keys=False))
+    with pytest.raises(ManifestValidationError, match="digest pin required"):
+        load_manifest(manifest, SCHEMA, require_digest_pins=True)
 

@@ -1,24 +1,30 @@
 """FastAPI control API (experimental)."""
 from __future__ import annotations
 
+import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request, Response, Security
-from contextlib import asynccontextmanager
 from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
-import uuid
-import yaml
 
-from gateos_manager.manifest.loader import load_manifest, ManifestValidationError
-from gateos_manager.api.auth import verify_token, rotate_token, verify_oidc_token
-from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
-from gateos_manager.plugins.registry import discover_entrypoint_plugins
-from gateos_manager.logging.structured import info, warn
+from gateos_manager.api.auth import (
+    _load_token,
+    _oidc_enabled,
+    rotate_token,
+    verify_oidc_token,
+    verify_token,
+)
 from gateos_manager.api.rate_limit import consume as rate_consume
+from gateos_manager.api.websocket import _make_message, broadcast_sync
+from gateos_manager.api.websocket import router as ws_router
+from gateos_manager.logging.structured import info
+from gateos_manager.manifest.loader import ManifestValidationError, load_manifest
+from gateos_manager.plugins.registry import discover_entrypoint_plugins
+from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
 from gateos_manager.telemetry.prometheus import registry as _metrics_registry
-from gateos_manager.api.websocket import router as ws_router, broadcast_sync, _make_message
 
 api_key_scheme = APIKeyHeader(name="x-token", auto_error=False)
 
@@ -123,7 +129,9 @@ def get_environment(name: str) -> dict[str, Any]:  # pragma: no cover
 def rotate_token_endpoint(
     x_token: str | None = Security(api_key_scheme),
 ) -> RotateTokenResponse:
-    if not verify_token(x_token):
+    if _load_token() is None and not _oidc_enabled():
+        raise HTTPException(status_code=401, detail="Authentication must be configured")
+    if not (verify_token(x_token) or verify_oidc_token(x_token)):
         raise HTTPException(status_code=401, detail="Unauthorized")
     new_tok = rotate_token()
     info("auth.token.rotated")

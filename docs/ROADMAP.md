@@ -61,8 +61,8 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 
 ## Phase 6 — Hardening and release
 
-- [ ] Real JWT/OIDC validation and privileged-operation authentication.
-- [ ] Enforced manifest signatures and image digest policy.
+- [x] Real JWT/OIDC validation and privileged-operation authentication baseline.
+- [x] Image digest policy enforcement in secure mode; manifest signature enforcement remains.
 - [ ] AppArmor/seccomp/runtime isolation attachment.
 - [ ] OTA SHA-256/Ed25519 verification and rollback.
 - [ ] Cryptographic plugin verification and out-of-process loading.

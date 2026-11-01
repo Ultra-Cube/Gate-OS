@@ -15,6 +15,7 @@ This register is a release gate, not a claim that every item is currently bundle
 | Gate-OS manager | Core manager | FOSS-bundled | GPL-3.0-or-later; repository `LICENSE` and `pyproject.toml`. |
 | PyYAML | Manifest parsing | FOSS-bundled | Verify SPDX and notices at lock/release time. |
 | jsonschema | Manifest validation | FOSS-bundled | Verify SPDX and notices at lock/release time. |
+| python-jose with cryptography extra | JWT/JWKS validation | FOSS-bundled | Added during Phase 6; verify exact transitive licenses and notices before release. |
 | FastAPI/Uvicorn/Pydantic | Optional API stack | FOSS-bundled | Verify exact versions and transitive licenses before ISO inclusion. |
 | Podman/Docker | Container runtime | FOSS-optional | Podman preferred; Docker distribution and daemon terms require separate review. |
 | Ubuntu base packages | ISO base | FOSS-bundled subject to package licenses | Generate package-level SBOM and notices from the exact build. |

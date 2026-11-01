@@ -12,15 +12,15 @@ import os
 
 import pytest
 from fastapi.testclient import TestClient
+from starlette.websockets import WebSocketDisconnect
 
 from gateos_manager.api.auth import (
-    rotate_token,
-    verify_token,
-    verify_oidc_token,
     _oidc_enabled,
+    rotate_token,
+    verify_oidc_token,
+    verify_token,
 )
 from gateos_manager.api.server import app
-
 
 # ---------------------------------------------------------------------------
 # rotate_token() unit tests
@@ -92,12 +92,12 @@ class TestRotateTokenEndpoint:
         assert len(body["token"]) == 64
         assert body["message"] == "Token rotated successfully"
 
-    def test_rotate_endpoint_no_auth_mode(self, monkeypatch):
+    def test_rotate_endpoint_rejects_no_auth_mode(self, monkeypatch):
         monkeypatch.delenv("GATEOS_API_TOKEN", raising=False)
         monkeypatch.delenv("GATEOS_API_TOKEN_FILE", raising=False)
         client = TestClient(app)
         resp = client.post("/auth/rotate-token")
-        assert resp.status_code == 200  # dev mode — no token configured
+        assert resp.status_code == 401
 
 
 # ---------------------------------------------------------------------------
@@ -110,11 +110,10 @@ class TestOIDCStub:
         assert _oidc_enabled() is False
         assert verify_oidc_token("x" * 40) is False
 
-    def test_oidc_enabled_accepts_long_token(self, monkeypatch):
+    def test_oidc_enabled_rejects_unsigned_long_token(self, monkeypatch):
         monkeypatch.setenv("GATEOS_OIDC_ISSUER", "http://localhost:8080/realms/gateos")
-        monkeypatch.delenv("GATEOS_OIDC_VERIFY_SIG", raising=False)
         assert _oidc_enabled() is True
-        assert verify_oidc_token("x" * 20) is True
+        assert verify_oidc_token("x" * 40) is False
 
     def test_oidc_rejects_short_token(self, monkeypatch):
         monkeypatch.setenv("GATEOS_OIDC_ISSUER", "http://localhost:8080/realms/gateos")
@@ -142,12 +141,12 @@ class TestSwitchWithOIDCBearer:
         monkeypatch.delenv("GATEOS_API_TOKEN_FILE", raising=False)
         monkeypatch.delenv("GATEOS_API_RATE_LIMIT", raising=False)
         client = TestClient(app)
-        # Environment doesn't exist → 404, but should not be 401
+        # An unsigned bearer must be rejected before environment lookup.
         resp = client.post(
             "/switch/nonexistent",
             headers={"Authorization": "Bearer " + "x" * 40},
         )
-        assert resp.status_code == 404
+        assert resp.status_code == 401
 
     def test_switch_rejects_without_any_auth_when_token_configured(self, monkeypatch):
         monkeypatch.setenv("GATEOS_API_TOKEN", "tok123")
@@ -175,9 +174,8 @@ class TestWebSocketAuth:
         monkeypatch.setenv("GATEOS_API_TOKEN", "wstoken")
         monkeypatch.delenv("GATEOS_OIDC_ISSUER", raising=False)
         client = TestClient(app)
-        with pytest.raises(Exception):
-            with client.websocket_connect("/ws/status?token=wrong"):
-                pass
+        with pytest.raises(WebSocketDisconnect), client.websocket_connect("/ws/status?token=wrong"):
+            pass
 
     def test_ws_accepts_no_token_when_auth_disabled(self, monkeypatch):
         monkeypatch.delenv("GATEOS_API_TOKEN", raising=False)

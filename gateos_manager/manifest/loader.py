@@ -1,15 +1,17 @@
 """Environment manifest loading & validation."""
 from __future__ import annotations
 
+import importlib.resources as pkg_resources
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Optional
-import importlib.resources as pkg_resources
+from typing import Any
 
 import jsonschema
-from gateos_manager.security import validate_security_manifest
 import yaml
+
+from gateos_manager.security import validate_security_manifest
 
 
 @dataclass
@@ -55,7 +57,7 @@ def _migrate_v1_to_v02(data: dict[str, Any]) -> dict[str, Any]:
     return data
 
 
-def _resolve_schema(version: Optional[str], explicit_path: Path) -> Path:
+def _resolve_schema(version: str | None, explicit_path: Path) -> Path:
     """Resolve schema path by version.
 
     Order:
@@ -84,6 +86,7 @@ def load_manifest(
     path: Path,
     schema_path: Path,
     auto_migrate: bool = False,
+    require_digest_pins: bool | None = None,
 ) -> dict[str, Any]:
     """Load and validate a manifest against a schema (with version negotiation).
 
@@ -142,9 +145,13 @@ def load_manifest(
         except Exception as e:  # pragma: no cover - ensures error path caught upstream
             raise ManifestValidationError(str(e)) from e
 
-        # Phase 13.3 — digest pin enforcement (warn; not a hard error)
+        # Phase 13.3 — warn by default; secure/release mode can reject tags.
         pin_warnings = _check_digest_pins(data)
         if pin_warnings:
+            if require_digest_pins is None:
+                require_digest_pins = os.getenv("GATEOS_REQUIRE_DIGESTS") == "1"
+            if require_digest_pins:
+                raise ManifestValidationError("digest pin required: " + "; ".join(pin_warnings))
             data.setdefault("_warnings", []).extend(pin_warnings)
 
         return data

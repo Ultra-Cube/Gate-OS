@@ -15,16 +15,17 @@ OIDC integration stub:
 """
 from __future__ import annotations
 
+import json
 import os
 import secrets
-from typing import Optional
+import urllib.request
 
 
-def _load_token() -> Optional[str]:
+def _load_token() -> str | None:
     file_path = os.getenv("GATEOS_API_TOKEN_FILE")
     if file_path and os.path.exists(file_path):  # pragma: no cover - simple IO
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 token = f.readline().strip()
                 if token:
                     return token
@@ -45,7 +46,7 @@ def verify_token(presented: str | None) -> bool:
     """
     required = _load_token()
     if required is None:
-        return True
+        return not _oidc_enabled()
     return presented == required
 
 
@@ -79,7 +80,7 @@ def rotate_token(*, new_token: str | None = None) -> str:
 
 
 # ---------------------------------------------------------------------------
-# OIDC stub
+# OIDC validation
 # ---------------------------------------------------------------------------
 
 def _oidc_enabled() -> bool:
@@ -87,37 +88,37 @@ def _oidc_enabled() -> bool:
 
 
 def verify_oidc_token(bearer: str | None) -> bool:
-    """Stub OIDC bearer-token validation.
+    """Validate an OIDC JWT against the configured issuer JWKS.
 
     When GATEOS_OIDC_ISSUER is not set this always returns False (caller should
     fall back to static-token check).
 
-    In stub mode: validates that the token is a non-empty string of at least
-    20 characters (syntactic only).  Full JWT signature verification requires
-    python-jose and is gated on GATEOS_OIDC_VERIFY_SIG=1.
+    OIDC fails closed when the JWT dependency, issuer, JWKS, signature, issuer,
+    audience, or expiry cannot be verified.
     """
     if not _oidc_enabled():
         return False
-    if not bearer or len(bearer) < 20:
+    if not bearer or bearer.count(".") != 2:
         return False
-    if os.getenv("GATEOS_OIDC_VERIFY_SIG") == "1":  # pragma: no cover - optional dep
-        return _verify_jwt_signature(bearer)
-    return True
+    return _verify_jwt_signature(bearer)
 
 
-def _verify_jwt_signature(token: str) -> bool:  # pragma: no cover - requires python-jose
-    """Validate JWT signature against OIDC issuer JWKS (requires python-jose)."""
+def _verify_jwt_signature(token: str) -> bool:
+    """Validate JWT signature and claims against the issuer JWKS."""
     try:
+        from jose import jwk as _jose_jwk  # type: ignore[import]
         from jose import jwt as _jose_jwt  # type: ignore[import]
         issuer = os.getenv("GATEOS_OIDC_ISSUER", "")
         client_id = os.getenv("GATEOS_OIDC_CLIENT_ID", "")
-        _jose_jwt.decode(
-            token,
-            "",
-            options={"verify_signature": False, "verify_aud": bool(client_id)},
-            audience=client_id or None,
-            issuer=issuer or None,
-        )
+        jwks_url = os.getenv("GATEOS_OIDC_JWKS_URL", f"{issuer.rstrip('/')}/.well-known/jwks.json")
+        with urllib.request.urlopen(jwks_url, timeout=2.0) as response:  # nosec B310
+            keys = json.load(response).get("keys", [])
+        header = _jose_jwt.get_unverified_header(token)
+        key_data = next((key for key in keys if key.get("kid") == header.get("kid")), None)
+        if not key_data:
+            return False
+        key = _jose_jwk.construct(key_data)
+        _jose_jwt.decode(token, key, algorithms=[header.get("alg", "")], audience=client_id, issuer=issuer)
         return True
     except Exception:
         return False
