@@ -23,12 +23,16 @@ Environment variables:
     GATEOS_OTLP_SERVICE    Service name in resource (default: gate-os-manager)
     GATEOS_OTLP_TIMEOUT    HTTP request timeout in seconds (default: 3)
     GATEOS_OTLP_DISABLE    Set to '1' to turn off all exports silently
+    GATEOS_OTLP_TLS_CERT   Path to a CA bundle / client cert PEM file for TLS (Phase 13.4)
+    GATEOS_OTLP_PII_REDACT Comma-separated field names to redact from log attrs (Phase 13.4)
 """
 from __future__ import annotations
 
 import functools
 import json
 import os
+import re
+import ssl
 import sys
 import time
 import threading
@@ -69,6 +73,35 @@ def _make_attributes(attrs: dict[str, Any]) -> list[dict]:
     return [{"key": k, "value": _to_attr_value(v)} for k, v in attrs.items()]
 
 
+# ── PII Redaction (Phase 13.4) ────────────────────────────────────────────────
+
+#: Field names that are always redacted regardless of env config.
+_BUILTIN_PII_FIELDS: frozenset[str] = frozenset({
+    "password", "passwd", "secret", "token", "api_key", "apikey",
+    "authorization", "auth", "credential", "private_key",
+})
+
+
+def _pii_fields() -> frozenset[str]:
+    """Return the full set of field names to redact (built-in + env configured)."""
+    extra_env = os.getenv("GATEOS_OTLP_PII_REDACT", "")
+    extra = frozenset(f.strip().lower() for f in extra_env.split(",") if f.strip())
+    return _BUILTIN_PII_FIELDS | extra
+
+
+def redact_attrs(attrs: dict[str, Any]) -> dict[str, Any]:
+    """Return a copy of *attrs* with PII field values replaced by ``<redacted>``.
+
+    Field name matching is case-insensitive.  Nested dicts are not recursed —
+    only top-level keys are inspected.
+    """
+    fields = _pii_fields()
+    return {
+        k: "<redacted>" if k.lower() in fields else v
+        for k, v in attrs.items()
+    }
+
+
 def _ns_now() -> int:
     return int(time.time() * 1_000_000_000)
 
@@ -90,12 +123,21 @@ class OTLPExporter:
         self,
         endpoint: str | None = None,
         timeout: float | None = None,
+        tls_cert: str | None = None,
     ) -> None:
         base = (endpoint or os.getenv("GATEOS_OTLP_ENDPOINT", "http://localhost:4318")).rstrip("/")
         self._logs_url = base + _OTLP_LOGS_PATH
         self._traces_url = base + _OTLP_TRACES_PATH
         self._timeout = float(timeout or os.getenv("GATEOS_OTLP_TIMEOUT", "3"))
         self._lock = threading.Lock()
+
+        # Phase 13.4 — TLS cert / CA bundle
+        cert_path = tls_cert or os.getenv("GATEOS_OTLP_TLS_CERT")
+        self._ssl_ctx: ssl.SSLContext | None = None
+        if cert_path:
+            ctx = ssl.create_default_context()
+            ctx.load_verify_locations(cert_path)
+            self._ssl_ctx = ctx
 
     # ── public API ────────────────────────────────────────────────────────────
 
@@ -108,11 +150,13 @@ class OTLPExporter:
         """Send a single log record to the OTLP logs endpoint.
 
         Returns True on success, False on any error (never raises).
+        PII fields are redacted before transmission (Phase 13.4).
         """
         if os.getenv("GATEOS_OTLP_DISABLE") == "1":
             return True
 
         now = _ns_now()
+        safe_attrs = redact_attrs(attrs or {})
         payload = {
             "resourceLogs": [
                 {
@@ -126,7 +170,7 @@ class OTLPExporter:
                                     "observedTimeUnixNano": str(now),
                                     "severityText": severity,
                                     "body": {"stringValue": name},
-                                    "attributes": _make_attributes(attrs or {}),
+                                    "attributes": _make_attributes(safe_attrs),
                                     "traceId": _trace_id(),
                                     "spanId": _span_id(),
                                 }
@@ -218,7 +262,8 @@ class OTLPExporter:
         )
         try:
             with self._lock:
-                with urllib.request.urlopen(req, timeout=self._timeout) as resp:
+                with urllib.request.urlopen(req, timeout=self._timeout,
+                                            context=self._ssl_ctx) as resp:
                     resp.read()
             return True
         except (urllib.error.URLError, OSError):

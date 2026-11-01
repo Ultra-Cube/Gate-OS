@@ -1,6 +1,7 @@
 """Environment manifest loading & validation."""
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional
@@ -19,6 +20,28 @@ class ManifestValidationError(Exception):
 
 
 SUPPORTED_SCHEMA_VERSIONS = ["1.0", "0.2.0"]  # 0.2.0 adds allowlistRef + networkNamespace
+
+# Regex matching a valid image digest pin: <name>@sha256:<hex64>
+_DIGEST_RE = re.compile(r".+@sha256:[a-fA-F0-9]{64}$")
+
+
+def _check_digest_pins(data: dict[str, Any]) -> list[str]:
+    """Return a list of unpinned image warnings (Phase 13.3 supply chain).
+
+    Iterates over ``spec.containers[].image`` fields. Any image that does not
+    include an ``@sha256:<hex>`` digest is flagged as a warning.  The manifest
+    is not rejected — callers decide whether to treat warnings as errors.
+    """
+    warnings: list[str] = []
+    containers = (data.get("spec") or {}).get("containers") or []
+    for ctr in containers:
+        image = ctr.get("image", "")
+        if image and not _DIGEST_RE.match(image):
+            warnings.append(
+                f"container '{ctr.get('name', '?')}' image '{image}' "
+                f"is not digest-pinned (use image@sha256:<hex> to pin)"
+            )
+    return warnings
 
 
 def _migrate_v1_to_v02(data: dict[str, Any]) -> dict[str, Any]:
@@ -118,6 +141,11 @@ def load_manifest(
             validate_security_manifest(data)
         except Exception as e:  # pragma: no cover - ensures error path caught upstream
             raise ManifestValidationError(str(e)) from e
+
+        # Phase 13.3 — digest pin enforcement (warn; not a hard error)
+        pin_warnings = _check_digest_pins(data)
+        if pin_warnings:
+            data.setdefault("_warnings", []).extend(pin_warnings)
 
         return data
     except jsonschema.ValidationError as e:  # pragma: no cover - formatting

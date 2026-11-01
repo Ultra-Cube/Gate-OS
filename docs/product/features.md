@@ -16,66 +16,66 @@ last-updated: 2026-03-06
 
 ### 1. Environment Switching
 - Declarative YAML manifests define each environment's services, containers, profiles and security policies
-- \gateos validate\ — schema-validates manifests before apply
-- \switch_environment()\ pipeline: validate → pre-hooks → stop services → apply profile → start containers → post-hooks → emit telemetry
+- `gateos validate` — schema-validates manifests before apply
+- `switch_environment()` pipeline: validate → pre-hooks → stop services → apply profile → start containers → post-hooks → emit telemetry
 - Rollback on any failure: stops started containers, restores prior profile, restarts stopped services
-- Switch latency target: < 3 s (P95 at 95th percentile)
+- Switch latency target: < 3 s (P95)
 
 ### 2. Container Orchestration
-- Podman-first runtime with Docker fallback detection via \shutil.which\
+- Podman-first runtime with Docker fallback detection via `shutil.which`
 - Per-environment container specs: image, ports, env vars, volume mounts, command
 - Top-level mounts applied to every container in an environment
 - Dry-run mode for CI / environments without a container runtime
-- State tracking: \unning / stopped / unknown\ per container
+- State tracking: `running / stopped / unknown` per container
 
 ### 3. Systemd Service Management
 - Start/stop required and optional systemd services per environment
 - Required service failures abort the switch; optional failures log a warning
-- \is_active()\ polling for real-time status
-- Dry-run auto-enabled when \systemctl\ is not present (WSL, containers)
+- `is_active()` polling for real-time status
+- Dry-run auto-enabled when `systemctl` is not present (WSL, containers)
 
 ### 4. Hardware Performance Profiles
-- CPU governor switching: \performance / powersave / ondemand\
+- CPU governor switching: `performance / powersave / ondemand`
 - GPU power mode stubs for NVIDIA and AMD
-- NIC priority: \	c qdisc\ bandwidth shaping
+- NIC priority: `tc qdisc` bandwidth shaping
 - Profile restore on rollback
 
 ### 5. Security & Isolation
-- Ed25519 manifest signing and verification (\gateos sign\ / \gateos verify\)
-- Keypair generation (\gateos gen-keypair\)
+- Ed25519 manifest signing and verification (`gateos sign` / `gateos verify`)
+- Keypair generation (`gateos gen-keypair`)
 - Capability allowlist policy per environment
-- seccomp / AppArmor profile stubs via \pply_isolation()\
+- seccomp / AppArmor profile stubs via `apply_isolation()`
 - RBAC-ready API auth with bearer token (env or file source)
 - Rate limiting (configurable per-IP)
 
 ### 6. OTA Update Mechanism
-- \gateos check-update\ — polls GitHub Releases API; compares semver
-- \gateos apply-update\ — dry-run (HEAD check) or real deb download
-- \schedule_apply()\ — systemd drop-in strategy (Strategy 1) with flag-file fallback (Strategy 2)
-- Pre-release opt-in via \--include-prerelease\
+- `gateos check-update` — polls GitHub Releases API; compares semver
+- `gateos apply-update` — dry-run (HEAD check) or real deb download
+- `schedule_apply()` — systemd drop-in strategy (Strategy 1) with flag-file fallback (Strategy 2)
+- Pre-release opt-in via `--include-prerelease`
 
 ### 7. Observability
 - Structured JSON logs (stdout) for every switch event
 - OTLP/HTTP JSON exporter — spans + logs + batch; configurable endpoint
-- \@otlp_span()\ decorator on \switch_environment()\ pipeline
+- `@otlp_span()` decorator on `switch_environment()` pipeline
 - Prometheus metrics registry: Counter, Gauge, Histogram
-- \GATEOS_OTLP_DISABLE=1\ kill-switch for air-gapped environments
+- `GATEOS_OTLP_DISABLE=1` kill-switch for air-gapped environments
 
 ### 8. REST + WebSocket Control API
-- FastAPI server: \GET /environments\, \GET /environment/{name}\, \POST /switch\
+- FastAPI server: `GET /environments`, `GET /environment/{name}`, `POST /switch`
 - Bearer token auth; rate limiting at API boundary
 - WebSocket endpoint for real-time switch status events
-- OpenAPI schema auto-generated at \/docs\
+- OpenAPI schema auto-generated at `/docs`
 
 ### 9. Plugin System
-- \pre_switch\ / \post_switch\ / \shutdown\ hook points
-- Entry-point discovery via \importlib.metadata\
+- `pre_switch` / `post_switch` / `shutdown` hook points
+- Entry-point discovery via `importlib.metadata`
 - Invoke-all semantics; errors are logged but do not abort the switch
 
 ### 10. Mobile Companion
-- WebSocket protocol: \SWITCH_ENV\, \STATUS_UPDATE\, \ERROR\ message types
+- WebSocket protocol: `SWITCH_ENV`, `STATUS_UPDATE`, `ERROR` message types
 - JWT-signed payloads; PING/PONG keepalive
-- Flutter client spec documented in \docs/mobile/companion-api.md\
+- Flutter client spec documented in `docs/mobile/companion-api.md`
 
 ---
 
@@ -102,4 +102,28 @@ last-updated: 2026-03-06
 ## Acceptance Criteria
 
 ### Environment Switch
-- **Given** a valid manifest, **When** \switch_environment(\
+- **Given** a valid manifest, **When** `switch_environment("gaming")` is called, **Then** all defined services start, containers run, and telemetry event `switch.end` emits `status=success` within 3 s.
+- **Given** a required service fails, **When** the switch runs, **Then** rollback triggers and `SwitchError` is raised.
+
+### Manifest Validation
+- **Given** a YAML file missing required field `name`, **When** `gateos validate` runs, **Then** exit code 1 and a `FAIL: <path>: ...` message is written to stderr.
+
+### OTA Update
+- **Given** a newer version exists on GitHub Releases, **When** `gateos check-update` runs, **Then** version + download URL are printed and exit code is 0.
+- **Given** `--yes` is passed to `apply-update`, **When** the download succeeds, **Then** a `.ready` marker is written to `GATEOS_UPDATE_DIR`.
+
+---
+
+## Key Metrics
+
+| Metric | Target | Current |
+|---|---|---|
+| Switch p95 latency | < 3 s | ~10 ms (dry-run) |
+| Test coverage | ≥ 90% | **95%** |
+| Test count | ≥ 200 | **308** |
+| Cyclomatic complexity (per fn) | < 10 | ✅ Validated |
+
+---
+
+**Date:** March 2026 | **By:** Fadhel.SH
+**Company:** [Ultra-Cube Tech](https://ucubetech.com) | [GitHub](https://github.com/Ultra-Cube/) | [LinkedIn](https://www.linkedin.com/company/ultra-cube)

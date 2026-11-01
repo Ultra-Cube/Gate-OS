@@ -33,7 +33,7 @@ Ultra Cube Tech builds **modular, open, and trustworthy infrastructure software*
 | Value | What It Means for Gate-OS |
 |---|---|
 | **Openness** | Apache 2.0 licensed; fully auditable; community contributions welcome |
-| **Reliability** | Rollback on failure; P95 switch latency < 3 s; >= 95% test coverage |
+| **Reliability** | Rollback on failure; P95 switch latency < 3 s; ≥ 95% test coverage |
 | **Security** | Ed25519 manifest signing; capability allowlists; supply chain integrity |
 | **Simplicity** | One YAML manifest per environment; one command to switch |
 | **Observability** | Every action emits structured logs + OTLP spans; nothing is invisible |
@@ -60,7 +60,7 @@ Open plugin architecture with entry-point discovery. Public roadmap and versione
 
 ### For Linux Power Users
 - Zero-friction context switching — no reboots, no profile juggling, no manual systemd service management.
-- Confidence that gaming workloads do not bleed into dev workloads (separate containers, services, CPU policies).
+- Confidence that gaming workloads won't bleed into dev workloads (separate containers, services, CPU policies).
 
 ### For Development Teams
 - Reproducible environment definitions as code (YAML manifests, schema-validated).
@@ -80,7 +80,7 @@ Open plugin architecture with entry-point discovery. Public roadmap and versione
 | GitHub Stars | 500 | — |
 | Active Monthly Users | 200 | Early adopters |
 | Environment Switch Latency (P95) | < 3 s | ~10 ms (dry-run) |
-| Test Coverage | >= 90% | **95%** |
+| Test Coverage | ≥ 90% | **95%** |
 | Community Contributors | 10 | 1 (founder) |
 | Enterprise Pilots | 2 | 0 (pre-launch) |
 | Plugin Ecosystem Size | 5 plugins | 0 (API stable) |
@@ -95,7 +95,7 @@ Open plugin architecture with entry-point discovery. Public roadmap and versione
 | Performance regression in real podman/docker switching | High | Benchmarks in CI; dry-run unit tests; latency gate |
 | Security surface growth with plugin system | High | Signature verification + subprocess sandbox (v1.3.0) |
 | Adoption friction (Linux-only, CLI-first) | Medium | MkDocs site, getting-started tutorial, mobile companion app |
-| Upstream container runtime changes | Medium | Runtime abstraction (podman to docker fallback) |
+| Upstream container runtime changes | Medium | Runtime abstraction (podman → docker fallback) |
 
 ---
 

@@ -28,6 +28,8 @@ from typing import Any
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
+from gateos_manager.api.auth import verify_token, verify_oidc_token
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Mobile / WebSocket"])
@@ -113,10 +115,24 @@ def broadcast_sync(message: dict[str, Any]) -> None:
 async def ws_status(ws: WebSocket) -> None:
     """WebSocket endpoint — streams Gate-OS environment status to the client.
 
+    Authentication: bearer token may be sent as query param ``token`` or via the
+    ``Authorization: Bearer <token>`` header during the HTTP upgrade. When a
+    token is configured (GATEOS_API_TOKEN / OIDC), unauthenticated clients are
+    rejected with code 4401.
+
     On connect: sends current connected-clients count.
     On any client message: echoes it back as a ``ping``/``pong`` pair.
     On disconnect: client is removed from the pool.
     """
+    # Auth check before accepting the WebSocket upgrade
+    token_param = ws.query_params.get("token")
+    auth_header = ws.headers.get("authorization", "")
+    bearer = auth_header.removeprefix("Bearer ").removeprefix("bearer ").strip() or None
+    presented = token_param or bearer
+    if not (verify_oidc_token(presented) or verify_token(presented)):
+        await ws.close(code=4401)
+        return
+
     await manager.connect(ws)
     try:
         # Welcome message

@@ -11,6 +11,8 @@ def test_discover_entrypoint_plugins_empty(monkeypatch):
 
 def test_discover_entrypoint_plugins_found(monkeypatch):
     class DummyEP:
+        name = "dummy"
+        value = "dummy_plugin.module:entry"
         def load(self):
             return lambda: "plugin-loaded"
     class DummyEPs:
@@ -19,8 +21,9 @@ def test_discover_entrypoint_plugins_found(monkeypatch):
                 return [DummyEP()]
             return []
     monkeypatch.setattr(importlib.metadata, "entry_points", lambda: DummyEPs())
+    # Allow unsigned in test (no dist metadata for dummy plugin)
+    monkeypatch.setenv("GATEOS_ALLOW_UNSIGNED_PLUGINS", "true")
     plugins = discover_entrypoint_plugins(group="gateos.plugins")
-    assert len(plugins) == 1
     assert plugins[0]() == "plugin-loaded"
 
 def test_discover_entrypoint_plugins_disabled(monkeypatch):

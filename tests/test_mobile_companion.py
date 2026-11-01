@@ -19,7 +19,7 @@ import pytest
 # ConnectionManager unit tests (async)
 # ──────────────────────────────────────────────────────────────────────────
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_connect_adds_to_pool():
     from gateos_manager.api.websocket import ConnectionManager
     cm = ConnectionManager()
@@ -29,7 +29,7 @@ async def test_connect_adds_to_pool():
     ws.accept.assert_awaited_once()
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_disconnect_removes_from_pool():
     from gateos_manager.api.websocket import ConnectionManager
     cm = ConnectionManager()
@@ -39,7 +39,7 @@ async def test_disconnect_removes_from_pool():
     assert cm.connection_count == 0
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_broadcast_sends_to_all():
     from gateos_manager.api.websocket import ConnectionManager
     cm = ConnectionManager()
@@ -53,7 +53,7 @@ async def test_broadcast_sends_to_all():
     ws2.send_text.assert_awaited_once_with(json.dumps(msg))
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_broadcast_drops_dead_connections():
     from gateos_manager.api.websocket import ConnectionManager
     cm = ConnectionManager()
@@ -117,9 +117,13 @@ pytestmark_api = pytest.mark.skipif(not _API_AVAILABLE, reason="FastAPI not inst
 
 @pytestmark_api
 def test_ws_status_connect_sends_welcome():
+    import os
     from fastapi.testclient import TestClient
     from gateos_manager.api.server import app
 
+    os.environ.pop("GATEOS_API_TOKEN", None)
+    os.environ.pop("GATEOS_API_TOKEN_FILE", None)
+    os.environ.pop("GATEOS_OIDC_ISSUER", None)
     client = TestClient(app)
     with client.websocket_connect("/ws/status") as ws:
         data = ws.receive_json()
@@ -129,9 +133,13 @@ def test_ws_status_connect_sends_welcome():
 
 @pytestmark_api
 def test_ws_status_ping_pong():
+    import os
     from fastapi.testclient import TestClient
     from gateos_manager.api.server import app
 
+    os.environ.pop("GATEOS_API_TOKEN", None)
+    os.environ.pop("GATEOS_API_TOKEN_FILE", None)
+    os.environ.pop("GATEOS_OIDC_ISSUER", None)
     client = TestClient(app)
     with client.websocket_connect("/ws/status") as ws:
         ws.receive_json()  # welcome
@@ -143,8 +151,13 @@ def test_ws_status_ping_pong():
 
 @pytestmark_api
 def test_ws_status_non_json_message():
+    import os
     from fastapi.testclient import TestClient
     from gateos_manager.api.server import app
+
+    os.environ.pop("GATEOS_API_TOKEN", None)
+    os.environ.pop("GATEOS_API_TOKEN_FILE", None)
+    os.environ.pop("GATEOS_OIDC_ISSUER", None)
     client = TestClient(app)
     with client.websocket_connect("/ws/status") as ws:
         ws.receive_json()  # welcome

@@ -1,0 +1,4 @@
+14 /home/pc/ucube/project/Gate-OS/scripts/install-dde.sh
+#!/usr/bin/env bash
+set -euo pipefail
+

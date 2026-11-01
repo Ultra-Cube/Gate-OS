@@ -12,7 +12,7 @@ import uuid
 import yaml
 
 from gateos_manager.manifest.loader import load_manifest, ManifestValidationError
-from gateos_manager.api.auth import verify_token
+from gateos_manager.api.auth import verify_token, rotate_token, verify_oidc_token
 from gateos_manager.switch.orchestrator import switch_environment as orchestrate_switch
 from gateos_manager.plugins.registry import discover_entrypoint_plugins
 from gateos_manager.logging.structured import info, warn
@@ -76,6 +76,11 @@ class SwitchResponse(BaseModel):
     environment: str
     correlation_id: str
 
+
+class RotateTokenResponse(BaseModel):
+    token: str
+    message: str
+
 _ENV_CACHE: dict[str, dict[str, Any]] = {}
 
 
@@ -103,6 +108,28 @@ def get_environment(name: str) -> dict[str, Any]:  # pragma: no cover
     return _ENV_CACHE[name]
 
 
+@app.post(
+    "/auth/rotate-token",
+    response_model=RotateTokenResponse,
+    tags=["Auth"],
+    summary="Rotate API token (admin only)",
+    description=(
+        "Generates a new random API token and replaces the current one. "
+        "Requires the current valid token in the x-token header. "
+        "The new token is returned once and must be stored by the caller."
+    ),
+    responses={401: {"description": "Unauthorized"}},
+)
+def rotate_token_endpoint(
+    x_token: str | None = Security(api_key_scheme),
+) -> RotateTokenResponse:
+    if not verify_token(x_token):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    new_tok = rotate_token()
+    info("auth.token.rotated")
+    return RotateTokenResponse(token=new_tok, message="Token rotated successfully")
+
+
 @app.post("/switch/{name}", response_model=SwitchResponse, tags=["Switch"],
           summary="Switch to environment (token required)",
           description="Switches to the specified environment. Requires x-token header.",
@@ -114,7 +141,10 @@ def switch_environment(
     x_token: str | None = Security(api_key_scheme),
     x_client_id: str | None = None  # retained for backward compatibility (query param usage)
 ) -> SwitchResponse:
-    if not verify_token(x_token):
+    # Accept either static token or OIDC bearer token
+    bearer = request.headers.get("Authorization", "").removeprefix("Bearer ").strip() or None
+    authed = verify_oidc_token(bearer) or verify_token(x_token)
+    if not authed:
         raise HTTPException(status_code=401, detail="Unauthorized")
     # Prefer explicit function param (query), then header, else anon
     header_client_id = request.headers.get("x-client-id")

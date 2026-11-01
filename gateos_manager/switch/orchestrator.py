@@ -24,7 +24,6 @@ from gateos_manager.plugins.registry import discover_entrypoint_plugins, invoke
 from gateos_manager.profile import ProfileApplicator
 from gateos_manager.services import ServiceManager
 from gateos_manager.telemetry.emitter import emit
-from gateos_manager.telemetry.otlp import otlp_span
 
 
 class SwitchError(Exception):
@@ -42,7 +41,6 @@ class SwitchContext:
     profile_applied: dict[str, Any] = field(default_factory=dict)
 
 
-@otlp_span("switch.pipeline")
 def switch_environment(
     name: str,
     schema_path: Path,
