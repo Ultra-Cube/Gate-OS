@@ -65,7 +65,7 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 - [x] Image digest policy enforcement in secure mode; manifest signature enforcement remains.
 - [x] AppArmor/seccomp/read-only/network runtime flags attach in enforced mode; host profile loading remains.
 - [x] OTA SHA-256 verification in secure mode; Ed25519 verification and rollback remain.
-- [ ] Cryptographic plugin verification and out-of-process loading.
+- [x] Cryptographic plugin verification in secure mode; out-of-process hook execution remains.
 - [ ] Meaningful coverage target >=90%, measured and published.
 - [ ] Signed ISO, SBOM, release notes, upgrade notes, and QEMU evidence.
 - [ ] Checkpoint 6: beta release only after security and license approval.

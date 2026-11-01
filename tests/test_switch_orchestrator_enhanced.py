@@ -3,10 +3,9 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-
 import pytest
 
-from gateos_manager.switch.orchestrator import SwitchContext, SwitchError, perform_switch
+from gateos_manager.switch.orchestrator import SwitchContext, SwitchError, perform_switch, switch_environment
 
 
 def test_switch_context_defaults():
@@ -59,3 +58,17 @@ def test_switch_context_with_data():
     assert len(ctx.started_containers) == 2
     assert "docker" in ctx.started_services
     assert ctx.profile_applied["cpuGovernor"]["ok"] is True
+
+
+def test_switch_requires_manifest_signature_in_secure_mode(tmp_path, monkeypatch):
+    source = Path("examples/environments/dev.yaml")
+    manifests = tmp_path / "manifests"
+    manifests.mkdir()
+    (manifests / "dev.yaml").write_text(source.read_text())
+    monkeypatch.setenv("GATEOS_REQUIRE_MANIFEST_SIGNATURES", "1")
+    with pytest.raises(SwitchError, match="Manifest signature required"):
+        switch_environment(
+            "dev",
+            Path("docs/architecture/schemas/environment-manifest.schema.yaml"),
+            manifests_dir=manifests,
+        )

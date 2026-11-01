@@ -84,6 +84,15 @@ class TestVerifyPluginSignature:
             result = _verify_plugin_signature(ep)
         assert result is False
 
+    def test_secure_mode_rejects_signature_without_verification_artifacts(self, monkeypatch):
+        monkeypatch.setenv("GATEOS_ALLOW_UNSIGNED_PLUGINS", "false")
+        monkeypatch.setenv("GATEOS_REQUIRE_PLUGIN_SIGNATURES", "1")
+        ep = self._make_ep("signed-plugin")
+        mock_dist = MagicMock()
+        mock_dist.files = [MagicMock(__str__=lambda s: "RECORD.sig")]
+        with patch("gateos_manager.plugins.registry.metadata.distribution", return_value=mock_dist):
+            assert _verify_plugin_signature(ep) is False
+
 
 class TestDiscoverWithSecurityFlags:
     def test_disable_flag_returns_empty(self, monkeypatch):

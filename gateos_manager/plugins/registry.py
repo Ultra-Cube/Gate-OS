@@ -9,20 +9,22 @@ Security flags (Phase 13.2):
   GATEOS_ALLOW_UNSIGNED_PLUGINS=true   — allow unsigned plugins (dev/test mode)
   GATEOS_PLUGIN_ISOLATE=1              — run plugins in a restricted subprocess
 """
+
 from __future__ import annotations
 
+import base64
 import os
 import subprocess
 import sys
-from typing import Callable, Dict, List
+from collections.abc import Callable
 from importlib import metadata
 
 Hook = Callable[..., None]
 
-_hooks: Dict[str, List[Hook]] = {
-    "pre_switch": [],
-    "post_switch": [],
-    "shutdown": [],  # invoked on manager shutdown (future) or switch failure cleanup
+_hooks: dict[str, list[Hook]] = {
+    'pre_switch': [],
+    'post_switch': [],
+    'shutdown': [],  # invoked on manager shutdown (future) or switch failure cleanup
 }
 
 
@@ -48,12 +50,13 @@ def list_hooks() -> dict[str, int]:
 # Signature verification (Phase 13.2)
 # ---------------------------------------------------------------------------
 
+
 def _allow_unsigned() -> bool:
     """Return True when unsigned plugins are explicitly permitted."""
-    return os.getenv("GATEOS_ALLOW_UNSIGNED_PLUGINS", "false").lower() in ("1", "true", "yes")
+    return os.getenv('GATEOS_ALLOW_UNSIGNED_PLUGINS', 'false').lower() in ('1', 'true', 'yes')
 
 
-def _verify_plugin_signature(ep: "metadata.EntryPoint") -> bool:
+def _verify_plugin_signature(ep: metadata.EntryPoint) -> bool:
     """Return True if the plugin's distribution package has a valid manifest sig.
 
     Checks for a ``RECORD.sig`` or ``<dist>.sig`` file distributed alongside the
@@ -64,17 +67,35 @@ def _verify_plugin_signature(ep: "metadata.EntryPoint") -> bool:
     ``GATEOS_ALLOW_UNSIGNED_PLUGINS``.
     """
     try:
-        dist = metadata.distribution(ep.value.split(":")[0].split(".")[0])
+        dist = metadata.distribution(ep.value.split(':')[0].split('.')[0])
         # Look for any *.sig file in the dist metadata directory
-        sig_files = [f for f in dist.files or [] if str(f).endswith(".sig")]
+        sig_files = [f for f in dist.files or [] if str(f).endswith('.sig')]
         if sig_files:
-            return True  # signature file present (content check is out-of-scope for stub)
+            if os.getenv('GATEOS_REQUIRE_PLUGIN_SIGNATURES') != '1':
+                return True
+            record_files = [f for f in dist.files or [] if str(f).endswith('RECORD')]
+            public_key_files = [
+                f for f in dist.files or [] if str(f).endswith('gateos-signing.pub')
+            ]
+            if not record_files or not public_key_files:
+                return False
+            from cryptography.hazmat.primitives import serialization
+
+            record = dist.locate_file(record_files[0]).read_bytes()
+            signature = base64.b64decode(
+                dist.locate_file(sig_files[0]).read_text().strip(), validate=True
+            )
+            public_key = serialization.load_pem_public_key(
+                dist.locate_file(public_key_files[0]).read_bytes()
+            )
+            public_key.verify(signature, record)
+            return True
     except Exception:
         pass
     return _allow_unsigned()
 
 
-def _load_plugin_isolated(ep: "metadata.EntryPoint"):  # pragma: no cover - subprocess path
+def _load_plugin_isolated(ep: metadata.EntryPoint):  # pragma: no cover - subprocess path
     """Load a plugin entry point in a restricted subprocess.
 
     Spawns a new Python interpreter with no inherited file descriptors and a
@@ -84,14 +105,26 @@ def _load_plugin_isolated(ep: "metadata.EntryPoint"):  # pragma: no cover - subp
     Returns None (side effects in subprocess only — hooks cannot be registered
     cross-process; use this mode for probe/validation only).
     """
-    cmd = [sys.executable, "-c",
-           f"import importlib; ep = importlib.import_module('{ep.value.split(':')[0]}'); print('ok')"]
-    env = {k: v for k, v in os.environ.items()
-           if k.startswith("GATEOS_") or k in ("PATH", "HOME", "LANG")}
+    cmd = [
+        sys.executable,
+        '-c',
+        f"import importlib; ep = importlib.import_module('{ep.value.split(':')[0]}'); print('ok')",
+    ]
+    env = {
+        k: v
+        for k, v in os.environ.items()
+        if k.startswith('GATEOS_') or k in ('PATH', 'HOME', 'LANG')
+    }
     try:
-        subprocess.run(cmd, env=env, timeout=10, check=True,
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                       close_fds=True)
+        subprocess.run(
+            cmd,
+            env=env,
+            timeout=10,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            close_fds=True,
+        )
         return None
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
         return None
@@ -115,16 +148,17 @@ def discover_entrypoint_plugins(group: str = 'gateos.plugins') -> list:
     """
     if os.getenv('GATEOS_DISABLE_ENTRYPOINT_PLUGINS') == '1':  # pragma: no cover - opt out path
         return []
-    isolate = os.getenv("GATEOS_PLUGIN_ISOLATE") == "1"
+    isolate = os.getenv('GATEOS_PLUGIN_ISOLATE') == '1'
     plugins = []
     try:  # pragma: no cover - metadata scanning
         for ep in metadata.entry_points().select(group=group):
             try:
                 if not _verify_plugin_signature(ep):
                     import sys as _sys
+
                     _sys.stderr.write(
                         f"[gate-os] skipping unsigned plugin '{ep.name}' "
-                        f"(set GATEOS_ALLOW_UNSIGNED_PLUGINS=true to override)\n"
+                        f'(set GATEOS_ALLOW_UNSIGNED_PLUGINS=true to override)\n'
                     )
                     continue
                 if isolate:

@@ -18,7 +18,7 @@
 ## Evidence
 
 - Focused security/manifest tests: 29 passed before runtime/OTA additions; runtime/OTA focused tests: 15 passed.
-- Full suite: **400 passed**.
+- Full suite: **402 passed**.
 - Coverage remains measured at 94% from the previous full coverage run; a new coverage run is required before release claims.
 
 ## Remaining release blockers

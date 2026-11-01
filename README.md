@@ -14,7 +14,7 @@
 [![Dev Check](https://github.com/Ultra-Cube/Gate-OS/actions/workflows/dev-check.yml/badge.svg)](.github/workflows/dev-check.yml)
 [![Docs](https://img.shields.io/badge/docs-index-brightgreen.svg)](docs/README.md)
 [![Version](https://img.shields.io/badge/status-Steel%20Gate%20development-orange.svg)](CHANGELOG.md)
-[![Tests](https://img.shields.io/badge/tests-400%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-402%20passing-brightgreen.svg)](tests/)
 [![Roadmap](https://img.shields.io/badge/status-actively%20verified-orange.svg)](docs/ROADMAP.md)
 [![Ultra Cube Tech](https://img.shields.io/badge/by-Ultra%20Cube%20Tech-blue.svg)](https://www.ucubetech.com)
 
@@ -24,7 +24,7 @@
 
 ## Current evidence and boundaries
 
-The latest local regression run reports **400 passing tests**. Phase 0 measured **94% coverage** with `make test-cov`; coverage and compatibility figures are repository measurements, not universal support claims. The ISO builder targets Ubuntu 24.04 LTS amd64, but an installable release is not claimed until CI produces a checksum-verified ISO, SBOM, signature, BIOS/UEFI boot evidence, and a fresh VM installation.
+The latest local regression run reports **402 passing tests**. Phase 0 measured **94% coverage** with `make test-cov`; coverage and compatibility figures are repository measurements, not universal support claims. The ISO builder targets Ubuntu 24.04 LTS amd64, but an installable release is not claimed until CI produces a checksum-verified ISO, SBOM, signature, BIOS/UEFI boot evidence, and a fresh VM installation.
 
 Gate-OS is an active manager and distribution prototype. OIDC/JWKS validation, secure manifest digest enforcement, enforced container isolation flags, and secure OTA SHA-256 staging are implemented in the current development line. Manifest signature enforcement during switching, Ed25519 OTA verification, cryptographic plugin verification, real ISO installation evidence, and hardware compatibility remain open work. See [the audit](docs/AUDIT.md), [Steel Gate roadmap](docs/ROADMAP.md), [build guide](docs/BUILDING.md), and [license register](docs/LICENSES-AND-THIRD-PARTY.md).
 
@@ -273,7 +273,7 @@ High-level index for faster navigation across all knowledge domains.
 
 ## 🚀 Current Status
 
-**Steel Gate development** — 400 tests passing locally; release checkpoints remain open.
+**Steel Gate development** — 402 tests passing locally; release checkpoints remain open.
 Refer to: [`CHANGELOG.md`](CHANGELOG.md) · [`docs/ROADMAP.md`](docs/ROADMAP.md) · [`docs/AUDIT.md`](docs/AUDIT.md)
 
 | Phase | Version | Status | Tests | Notes |
@@ -286,7 +286,7 @@ Refer to: [`CHANGELOG.md`](CHANGELOG.md) · [`docs/ROADMAP.md`](docs/ROADMAP.md)
 | P5 Security Hardening | v0.3.0 | ✅ | 147 | AppArmor (5 envs), seccomp, Ed25519 signing |
 | P6 Observability | v0.4.0 | ✅ | 166 | Prometheus metrics, `/metrics` endpoint |
 | P7 Mobile Companion | v0.5.0 | ✅ | 178 | WebSocket `/ws/status`, switch broadcast |
-| Steel Gate hardening | development | 🧪 | 400 | Security, ISO, UI, and AI-native work are being verified |
+| Steel Gate hardening | development | 🧪 | 402 | Security, ISO, UI, and AI-native work are being verified |
 
 ## 🛠️ Stack
 
@@ -346,7 +346,7 @@ Benefit: frictionless creative iteration → showcase loop; no manual copying.
 | Metric | Target (v1) | Status |
 |--------|-------------|--------|
 | Switch Latency | < 3s | 🧪 Measured in dry-run |
-| Crash-Free Activation | target only | 🧪 400 tests are not a crash-free production metric |
+| Crash-Free Activation | target only | 🧪 402 tests are not a crash-free production metric |
 | Memory Overhead | < 8% over base | ⏳ Pending profiling |
 | Cold Boot to Ready | < 35s | ⏳ Pending real hardware |
 
@@ -939,7 +939,7 @@ Full detail lives in [docs/roadmap/milestones.md](docs/roadmap/milestones.md) (k
 |----------|--------|
 | Is this a full distro today? | Not yet – currently the manager + scaffolding running on Ubuntu 24.04 LTS base. |
 | Do I need Docker installed? | Not for dry‑run; real container mode auto-detects runtime if present. |
-| Is the beta stable? | No stability guarantee yet – 400 local tests pass, but ISO, hardware, security, and release evidence remain open. |
+| Is the beta stable? | No stability guarantee yet – 402 local tests pass, but ISO, hardware, security, and release evidence remain open. |
 | How stable are APIs? | The Control API and WebSocket API are stable within the 1.x line; breaking changes tracked in CHANGELOG. |
 | Is there a GUI? | Yes – GTK4 + Libadwaita shell is complete (Phase 3). Headless mode available (`GATEOS_UI_NO_DISPLAY=1`). |
 | Is there mobile control? | Yes – WebSocket API at `/ws/status` streams real-time switch events. See [docs/mobile/companion-api.md](docs/mobile/companion-api.md). |
