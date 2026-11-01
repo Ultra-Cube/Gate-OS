@@ -68,6 +68,7 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 - [x] Cryptographic plugin verification in secure mode; out-of-process hook execution remains.
 - [ ] Meaningful coverage target >=90%, measured and published; current local suite is 403 tests and Phase 0 coverage was 94%.
 - [x] CI dependency audit, SBOM/vulnerability evidence artifacts, and gated PyPI test/audit workflow.
+- [x] Operational `make docs`, `make iso`, and `make qemu-boot` targets with explicit prerequisite failures.
 - [ ] Signed ISO, SBOM, release notes, upgrade notes, and QEMU evidence.
 - [ ] Checkpoint 6: beta release only after security and license approval.
 

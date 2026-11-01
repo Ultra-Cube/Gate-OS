@@ -30,6 +30,10 @@ dev = [
   "watchdog>=4.0.0",
   "coverage-badge>=1.1.0"
 ]
+docs = [
+  "mkdocs-material>=9.5,<10",
+  "mkdocs-git-revision-date-localized-plugin>=1.2,<2"
+]
 api = [
   "fastapi>=0.111.0",
   "uvicorn>=0.30.0",

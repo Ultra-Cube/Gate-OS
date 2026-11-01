@@ -9,8 +9,10 @@ PIP      := $(VENV)/bin/pip
 PYTEST   := $(VENV)/bin/pytest
 GATEOS   := $(VENV)/bin/gateos
 RUFF     := $(VENV)/bin/ruff
+MKDOCS   := $(VENV)/bin/mkdocs
+ISO      ?= $(firstword $(wildcard dist/iso/*.iso))
 
-.PHONY: all setup test lint lint-fix validate api clean help
+.PHONY: all setup test test-cov test-v lint lint-fix validate api token docs iso qemu-boot check clean help
 
 ## Default
 all: help
@@ -20,7 +22,7 @@ setup: ## Create venv and install all dev dependencies
 	@echo "[Gate-OS] Setting up development environment..."
 	$(PYTHON) -m venv $(VENV)
 	$(PIP) install --upgrade pip
-	$(PIP) install -e ".[dev]"
+	$(PIP) install -e ".[dev,docs]"
 	@echo "[Gate-OS] Done! Activate with: source $(VENV)/bin/activate"
 
 ## ── Testing ─────────────────────────────────────────────────────────────────
@@ -52,6 +54,18 @@ api: ## Start the Gate-OS Control API locally (port 8088)
 
 token: ## Generate a new API token
 	$(GATEOS) gen-token --length 40
+
+## ── Documentation and image evidence ──────────────────────────────────────
+docs: ## Build MkDocs documentation strictly (requires docs toolchain)
+	@test -x $(MKDOCS) || (echo "MkDocs is unavailable; run make setup or install the docs toolchain" >&2; exit 2)
+	$(MKDOCS) build --strict --site-dir site
+
+iso: ## Build the Ubuntu 24.04 ISO (requires Linux VM/CI and privileges)
+	bash scripts/build-iso.sh --output dist/iso
+
+qemu-boot: ## Boot an ISO with QEMU (ISO=path/to/image.iso; optional MODE=--uefi)
+	@test -n "$(ISO)" || (echo "No ISO found; pass ISO=path/to/image.iso" >&2; exit 2)
+	bash scripts/qemu-boot-test.sh "$(ISO)" $(MODE)
 
 ## ── Dev check ────────────────────────────────────────────────────────────────
 check: lint validate test ## Run full dev-check (lint + validate + tests)
