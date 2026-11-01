@@ -10,20 +10,21 @@
 - Prevented static-token anonymous fallback when OIDC mode is enabled.
 - Required configured authentication for `/auth/rotate-token`.
 - Added secure-mode digest enforcement through `GATEOS_REQUIRE_DIGESTS=1` or the loader parameter.
+- Added runtime isolation flags for AppArmor, seccomp, no-new-privileges, read-only root, tmpfs, and strict network mode when enforcement is enabled.
+- Added secure OTA mode requiring a checksum manifest and verifying SHA-256 before creating `.ready`.
 - Added regression tests for unsigned OIDC tokens, anonymous token rotation rejection, and mutable image rejection.
 - Added `python-jose[cryptography]` as a declared runtime dependency and recorded it for license review.
 
 ## Evidence
 
-- Focused security/manifest tests: 29 passed.
-- Full suite: **398 passed**.
+- Focused security/manifest tests: 29 passed before runtime/OTA additions; runtime/OTA focused tests: 15 passed.
+- Full suite: **400 passed**.
 - Coverage remains measured at 94% from the previous full coverage run; a new coverage run is required before release claims.
 
 ## Remaining release blockers
 
 - Wire manifest signature verification into activation.
-- Attach AppArmor/seccomp, namespace, read-only-root, and network policy flags to runtime commands.
-- Verify OTA SHA-256 and Ed25519 before staging.
+- Load and validate AppArmor/seccomp profiles on the host; add Ed25519 OTA verification and rollback.
 - Replace plugin signature presence checks with cryptographic verification and isolate untrusted loading.
 - Complete ISO build, SBOM, signatures, QEMU, and fresh VM installation evidence.
 - Run MkDocs/Playwright/QEMU in CI or a Linux VM.

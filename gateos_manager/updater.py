@@ -22,6 +22,7 @@ Environment variables:
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -29,7 +30,6 @@ import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 from gateos_manager import __version__
 
@@ -77,7 +77,7 @@ def check_for_update(
     feed_url: str | None = None,
     *,
     timeout: int = 5,
-) -> Optional[ReleaseInfo]:
+) -> ReleaseInfo | None:
     """Check GitHub Releases for a newer version.
 
     Returns :class:`ReleaseInfo` if an update is available, ``None`` otherwise.
@@ -155,6 +155,10 @@ def apply_update(release: ReleaseInfo, *, dry_run: bool = False) -> None:
             raise UpdateError(f"Download URL inaccessible: {exc}") from exc
         return
 
+    require_verify = os.getenv("GATEOS_UPDATE_REQUIRE_VERIFY") == "1"
+    if require_verify and not release.sha256_url:
+        raise UpdateError("Secure update mode requires a SHA-256 manifest URL")
+
     _DEFAULT_UPDATE_DIR.mkdir(parents=True, exist_ok=True)
     dest = _DEFAULT_UPDATE_DIR / f"gateos-{release.version}.deb"
 
@@ -163,7 +167,25 @@ def apply_update(release: ReleaseInfo, *, dry_run: bool = False) -> None:
     except urllib.error.URLError as exc:
         raise UpdateError(f"Download failed: {exc}") from exc
 
-    # TODO: verify SHA-256 and Ed25519 signature before marking ready
+    if release.sha256_url:
+        try:
+            with urllib.request.urlopen(release.sha256_url, timeout=5) as response:  # nosec B310
+                checksum_text = response.read().decode("utf-8")
+            expected = next(
+                (line.split()[0] for line in checksum_text.splitlines() if line.strip()),
+                "",
+            ).lower()
+            actual = hashlib.sha256(dest.read_bytes()).hexdigest()
+            if expected != actual:
+                dest.unlink(missing_ok=True)
+                raise UpdateError("SHA-256 verification failed")
+        except urllib.error.URLError as exc:
+            dest.unlink(missing_ok=True)
+            raise UpdateError(f"Checksum manifest unavailable: {exc}") from exc
+    elif require_verify:
+        dest.unlink(missing_ok=True)
+        raise UpdateError("Secure update mode requires checksum verification")
+
     marker = dest.with_suffix(".ready")
     marker.write_text(release.version)
 
@@ -191,7 +213,6 @@ def schedule_apply() -> None:
         )
 
     ready_file = ready_files[-1]
-    version = ready_file.read_text().strip()
     deb_file = ready_file.with_suffix(".deb")
 
     if not deb_file.exists():

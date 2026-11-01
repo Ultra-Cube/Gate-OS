@@ -63,8 +63,8 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 
 - [x] Real JWT/OIDC validation and privileged-operation authentication baseline.
 - [x] Image digest policy enforcement in secure mode; manifest signature enforcement remains.
-- [ ] AppArmor/seccomp/runtime isolation attachment.
-- [ ] OTA SHA-256/Ed25519 verification and rollback.
+- [x] AppArmor/seccomp/read-only/network runtime flags attach in enforced mode; host profile loading remains.
+- [x] OTA SHA-256 verification in secure mode; Ed25519 verification and rollback remain.
 - [ ] Cryptographic plugin verification and out-of-process loading.
 - [ ] Meaningful coverage target >=90%, measured and published.
 - [ ] Signed ISO, SBOM, release notes, upgrade notes, and QEMU evidence.

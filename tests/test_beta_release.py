@@ -181,8 +181,21 @@ def test_apply_update_no_download_url_raises():
 
 def test_apply_update_download_creates_ready_marker(mock_release, tmp_path, monkeypatch):
     from gateos_manager import updater
+    import hashlib
+
     monkeypatch.setattr(updater, "_DEFAULT_UPDATE_DIR", tmp_path)
-    with patch("urllib.request.urlretrieve"):
+    payload = b"verified package"
+
+    def write_package(_url, destination):
+        destination.write_bytes(payload)
+
+    checksum_response = MagicMock()
+    checksum_response.read.return_value = (hashlib.sha256(payload).hexdigest() + "  gateos-99.0.0.deb\n").encode()
+    checksum_response.__enter__ = lambda s: s
+    checksum_response.__exit__ = MagicMock(return_value=False)
+    with patch("urllib.request.urlretrieve", side_effect=write_package), patch(
+        "urllib.request.urlopen", return_value=checksum_response
+    ):
         updater.apply_update(mock_release, dry_run=False)
     marker = tmp_path / "gateos-99.0.0.ready"
     assert marker.exists()

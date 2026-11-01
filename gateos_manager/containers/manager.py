@@ -37,16 +37,16 @@ from __future__ import annotations
 
 import os
 import shlex
-import subprocess
 import shutil
-from typing import Any, Dict, List
+import subprocess
+from typing import Any
+
+from gateos_manager.logging.structured import error, info, warn
+from gateos_manager.security.isolation import apply_isolation, isolation_args
+from gateos_manager.telemetry.emitter import emit
 
 _START_TIMEOUT = int(os.getenv('GATEOS_CONTAINER_START_TIMEOUT', '30'))
-_STOP_TIMEOUT  = int(os.getenv('GATEOS_CONTAINER_STOP_TIMEOUT',  '15'))
-
-from gateos_manager.logging.structured import info, warn, error
-from gateos_manager.telemetry.emitter import emit
-from gateos_manager.security.isolation import apply_isolation
+_STOP_TIMEOUT = int(os.getenv('GATEOS_CONTAINER_STOP_TIMEOUT', '15'))
 
 
 class ContainerManager:
@@ -57,13 +57,13 @@ class ContainerManager:
         self._runtime = (
             runtime or os.getenv('GATEOS_CONTAINER_RUNTIME') or self._detect_runtime()
         )
-        self._state: Dict[str, str] = {}
+        self._state: dict[str, str] = {}
 
     # ------------------------- public API ------------------------- #
-    def start(self, manifest: dict[str, Any], correlation_id: str | None = None) -> List[str]:
+    def start(self, manifest: dict[str, Any], correlation_id: str | None = None) -> list[str]:
         containers = manifest.get('containers') or []
-        started: List[str] = []
-        top_mounts: List[dict] = manifest.get('mounts') or []
+        started: list[str] = []
+        top_mounts: list[dict] = manifest.get('mounts') or []
         for spec in containers:
             cname = self._container_name(manifest, spec)
             if self._state.get(cname) == 'running':
@@ -73,9 +73,9 @@ class ContainerManager:
                 started.append(cname)
         return started
 
-    def stop(self, manifest: dict[str, Any], correlation_id: str | None = None) -> List[str]:
+    def stop(self, manifest: dict[str, Any], correlation_id: str | None = None) -> list[str]:
         containers = manifest.get('containers') or []
-        stopped: List[str] = []
+        stopped: list[str] = []
         for spec in containers:
             cname = self._container_name(manifest, spec)
             if self._state.get(cname) != 'running':
@@ -84,7 +84,7 @@ class ContainerManager:
                 stopped.append(cname)
         return stopped
 
-    def status(self, manifest: dict[str, Any]) -> Dict[str, str]:
+    def status(self, manifest: dict[str, Any]) -> dict[str, str]:
         containers = manifest.get('containers') or []
         return {self._container_name(manifest, c): self._state.get(self._container_name(manifest, c), 'unknown') for c in containers}
 
@@ -113,7 +113,7 @@ class ContainerManager:
         spec: dict[str, Any],
         *,
         manifest_name: str = 'env',
-        top_mounts: List[dict] | None = None,
+        top_mounts: list[dict] | None = None,
         correlation_id: str | None = None,
     ) -> bool:
         image = spec.get('image')
@@ -135,6 +135,7 @@ class ContainerManager:
                 cmd += ['-e', f'{k}={v}']
             for p in spec.get('ports', []):
                 cmd += ['-p', p]
+            cmd += isolation_args(spec)
             # top-level mounts applied to every container
             for m in (top_mounts or []):
                 flag = f"{m['source']}:{m['target']}"

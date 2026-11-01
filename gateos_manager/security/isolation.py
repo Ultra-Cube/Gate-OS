@@ -1,4 +1,4 @@
-"""Security isolation hooks (seccomp/AppArmor stubs).
+"""Security isolation flags and telemetry for container execution.
 
 This module centralizes future hardening. Currently it only emits log/telemetry
 when enforcement is requested. Real profiles will be added later.
@@ -17,13 +17,33 @@ from gateos_manager.logging.structured import info, warn
 from gateos_manager.telemetry.emitter import emit
 
 
+def isolation_args(spec: dict[str, Any]) -> list[str]:
+    """Return runtime flags for the explicitly requested isolation policy."""
+    if os.getenv('GATEOS_SECURITY_ENFORCE') != '1':
+        return []
+    security = spec.get('security') or {}
+    args: list[str] = ['--security-opt', 'no-new-privileges:true']
+    apparmor = security.get('appArmorProfile') or os.getenv('GATEOS_SECURITY_PROFILE')
+    seccomp = security.get('seccompProfile')
+    if apparmor:
+        args += ['--security-opt', f'apparmor={apparmor}']
+    if seccomp:
+        args += ['--security-opt', f'seccomp={seccomp}']
+    if os.getenv('GATEOS_SECURITY_READONLY') == '1' or spec.get('readOnlyRootfs'):
+        args += ['--read-only', '--tmpfs', '/tmp:rw,noexec,nosuid,nodev']
+    if security.get('isolationLevel') == 'strict' or security.get('networkNamespace') == 'none':
+        args += ['--network', 'none']
+    return args
+
+
 def apply_isolation(container_name: str, spec: dict[str, Any], correlation_id: str | None = None) -> None:  # pragma: no cover - trivial
     if os.getenv('GATEOS_SECURITY_ENFORCE') != '1':
         return
     profile = os.getenv('GATEOS_SECURITY_PROFILE', 'default')
     emit('security.isolation.apply', container=container_name, profile=profile, correlation_id=correlation_id)
     info('security.isolation.apply', container=container_name, profile=profile, correlation_id=correlation_id)
-    # Future: generate / attach seccomp & AppArmor profiles here.
+    flags = isolation_args(spec)
+    emit('security.isolation.flags', container=container_name, flags=flags, correlation_id=correlation_id)
     if spec.get('privileged'):
         warn('security.isolation.privileged', container=container_name, correlation_id=correlation_id)
 

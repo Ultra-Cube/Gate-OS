@@ -3,7 +3,7 @@ from pathlib import Path
 import time
 
 from gateos_manager.containers.manager import ContainerManager
-from gateos_manager.security.isolation import apply_isolation
+from gateos_manager.security.isolation import apply_isolation, isolation_args
 from gateos_manager.watch.reloader import _Handler  # type: ignore
 
 
@@ -36,6 +36,22 @@ def test_isolation_stub_enabled(monkeypatch):
     # isolation stub does not change state; just ensure running
     status = mgr.status(manifest)
     assert list(status.values()) == ['running']
+
+
+def test_isolation_args_attach_runtime_policy(monkeypatch):
+    monkeypatch.setenv('GATEOS_SECURITY_ENFORCE', '1')
+    args = isolation_args({
+        'readOnlyRootfs': True,
+        'security': {
+            'appArmorProfile': 'gateos-env-security',
+            'seccompProfile': 'gateos-security',
+            'isolationLevel': 'strict',
+        },
+    })
+    assert '--read-only' in args
+    assert 'apparmor=gateos-env-security' in args
+    assert 'seccomp=gateos-security' in args
+    assert '--network' in args and 'none' in args
 
 
 def test_watch_handler_triggers_callback(tmp_path):
