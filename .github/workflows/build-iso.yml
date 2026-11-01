@@ -2,6 +2,9 @@ name: Build Gate-OS ISO
 
 on:
   push:
+    branches:
+      - main
+      - feat/phase6-security-hardening
     tags:
       - "v*.*.*"
   workflow_dispatch:
