@@ -105,6 +105,7 @@ nav:
     - Flutter Setup: mobile/companion-api.md
   - Development:
     - Steel Gate Roadmap: ROADMAP.md
+    - Design Concepts: design/README.md
     - Contributing: contributing.md
     - Plugin Guide: plugins/plugin-guide.md
     - Release Checklist: release-checklist.md

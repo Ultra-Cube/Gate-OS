@@ -44,11 +44,11 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 
 ## Phase 4 — Concept UI
 
-- [ ] Design tokens and generated CSS/GTK/QSS.
-- [ ] Light/dark/high-contrast LTR/RTL mockups for desktop, sidebar, and seven environments.
+- [x] Design token source and CSS mockup output.
+- [ ] Light/dark/high-contrast LTR/RTL mockups for desktop, sidebar, and seven environments. Main desktop/sidebar concept is ready; remaining galleries and rendered evidence are pending.
 - [ ] AI surfaces, installer, first-run, and failure/rollback states.
 - [ ] Shell technology ADR and two proof-of-concepts.
-- [ ] Playwright-rendered gallery and accessibility review.
+- [ ] Playwright-rendered gallery and accessibility review; Playwright is not available in the current environment.
 - [ ] Checkpoint 4.
 
 ## Phase 5 — Optional AI-native layer

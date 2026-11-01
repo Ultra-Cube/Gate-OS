@@ -1,0 +1,53 @@
+:root {
+  --ink: #17202a;
+  --muted: #5d6b78;
+  --canvas: #f4f1ea;
+  --surface: #fffdf8;
+  --surface-strong: #e8e2d6;
+  --line: #d8d0c3;
+  --accent: #d9583f;
+  --accent-strong: #a9342b;
+  --focus: #1261a0;
+  --success: #277d57;
+  --warning: #a96616;
+  --danger: #b83232;
+  --font-display: Fraunces, Georgia, serif;
+  --font-body: "IBM Plex Sans", "Noto Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --motion-fast: 120ms;
+  --motion-normal: 220ms;
+}
+
+[data-theme="dark"] {
+  --ink: #f5f0e8;
+  --muted: #b8b0a4;
+  --canvas: #1b2024;
+  --surface: #252b2f;
+  --surface-strong: #30383d;
+  --line: #495259;
+  --accent: #ef8267;
+  --accent-strong: #ff9a7f;
+  --focus: #8bc7ff;
+}
+
+[data-theme="contrast"] {
+  --ink: #000;
+  --muted: #111;
+  --canvas: #fff;
+  --surface: #fff;
+  --surface-strong: #ffec00;
+  --line: #000;
+  --accent: #000;
+  --accent-strong: #000;
+  --focus: #0000ff;
+}
