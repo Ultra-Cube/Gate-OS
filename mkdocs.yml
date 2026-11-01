@@ -1,7 +1,7 @@
 site_name: Gate-OS Documentation
-site_description: The intelligent multi-environment OS manager for Linux
+site_description: Gate-OS is an Ubuntu-based open-source Linux environment manager for one adaptable workstation.
 site_author: Fadhel-SH
-site_url: https://ultra-cube.github.io/Gate-OS/
+site_url: https://gate-os.ucubetech.com/
 repo_name: Ultra-Cube/Gate-OS
 repo_url: https://github.com/Ultra-Cube/Gate-OS
 edit_uri: edit/main/docs/
@@ -76,6 +76,8 @@ nav:
   - Home: index.md
   - Getting Started:
     - Installation: installation/guide.md
+    - Install verification: INSTALL.md
+    - Building: BUILDING.md
     - Quick Start: getting-started/quickstart.md
     - Configuration: getting-started/configuration.md
   - Architecture:
@@ -89,6 +91,8 @@ nav:
     - Overview: security/overview.md
     - AppArmor Profiles: security/apparmor.md
     - Manifest Signing: security/signing.md
+    - Audit: AUDIT.md
+    - Third-party licenses: LICENSES-AND-THIRD-PARTY.md
   - Observability:
     - Prometheus Metrics: observability/metrics.md
     - OpenTelemetry: observability/otlp.md
@@ -98,6 +102,7 @@ nav:
   - Mobile Companion:
     - Flutter Setup: mobile/companion-api.md
   - Development:
+    - Steel Gate Roadmap: ROADMAP.md
     - Contributing: contributing.md
     - Plugin Guide: plugins/plugin-guide.md
     - Release Checklist: release-checklist.md

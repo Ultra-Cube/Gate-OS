@@ -27,11 +27,11 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 
 ## Phase 2 — Identity and documentation
 
-- [ ] Honest README rewrite and attribution block.
+- [x] Honest README rewrite and attribution block.
 - [ ] Metadata, issue/PR templates, governance/support docs, and topics.
-- [ ] MkDocs site links, SEO metadata, and concept labeling.
-- [ ] License matrix integrated into release review.
-- [ ] Checkpoint 2.
+- [x] MkDocs site links, SEO metadata, and concept labeling.
+- [x] License matrix started and linked from the public README.
+- [ ] Checkpoint 2: docs build and link validation on a runner with MkDocs installed.
 
 ## Phase 3 — Integration specification
 

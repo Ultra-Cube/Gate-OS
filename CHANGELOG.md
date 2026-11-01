@@ -6,14 +6,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) | Versioning: [
 
 ---
 
-## [Unreleased] — Target: 0.1.0
+## [Unreleased] — Steel Gate development
 
 ### Planned
-- GTK4 UI shell (Adw.Application) with environment list and switch panel.
-- Ubuntu 24.04 LTS ISO build script (`scripts/build-iso.sh`).
-- AppArmor profile stubs per environment.
-- seccomp profile stubs for containers.
-- Graceful shutdown via API endpoint to trigger flush & plugin shutdown.
+- Installable ISO alpha after reproducible build, checksum/signature, BIOS/UEFI boot, and VM-install evidence.
+- Security hardening for OIDC/JWT, container isolation, manifest signatures, OTA verification, and plugin trust.
+- Integration specification, seven-environment design pack, and optional Ultra AI prototype.
 
 ---
 
