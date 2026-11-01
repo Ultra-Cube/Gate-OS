@@ -5,7 +5,6 @@ import pytest
 
 from gateos_manager.ai_native import NativeShellPolicy, PolicyDenied, UiSpecSession
 
-
 ROOT = Path(__file__).parents[1]
 SCHEMA = json.loads((ROOT / "schemas/ui-spec.schema.json").read_text())
 
