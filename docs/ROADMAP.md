@@ -48,7 +48,7 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 - [ ] Light/dark/high-contrast LTR/RTL mockups for desktop, sidebar, and seven environments. Main desktop/sidebar concept is ready; remaining galleries and rendered evidence are pending.
 - [ ] AI surfaces, installer, first-run, and failure/rollback states.
 - [ ] Shell technology ADR and two proof-of-concepts.
-- [ ] Playwright-rendered gallery and accessibility review; Playwright is not available in the current environment.
+- [x] CI workflow added for Playwright-rendered gallery and accessibility evidence; local rendering remains unavailable in this WSL environment.
 - [ ] Checkpoint 4.
 
 ## Phase 5 — Optional AI-native layer

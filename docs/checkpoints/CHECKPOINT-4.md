@@ -11,12 +11,13 @@
 - Included light/dark/high-contrast token directions, RTL-safe logical properties, keyboard focus, touch-sized controls, and reduced-motion behavior.
 - Added a design README that labels all visuals as concepts and lists remaining design states.
 - Linked the concept gallery from MkDocs navigation.
+- Added `.github/workflows/docs-and-design.yml` to build MkDocs strictly and render light/dark/contrast/mobile RTL screenshots with Playwright in CI.
 
 ## Evidence
 
 - JSON token parsing and HTML structure checks are pending the local validation command.
 - Existing project tests are unaffected and remain 394 passing from the previous checkpoint.
-- Playwright screenshot rendering is not available in the current environment.
+- Playwright screenshot rendering is delegated to the CI workflow; local WSL rendering remains unavailable.
 
 ## Remaining work
 

@@ -1,0 +1,79 @@
+name: Docs and design evidence
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mkdocs:
+    name: Build documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install documentation toolchain
+        run: python -m pip install 'mkdocs-material>=9.5,<10' 'mkdocs-git-revision-date-localized-plugin>=1.2,<2'
+      - name: Build strict documentation
+        run: mkdocs build --strict --site-dir /tmp/gateos-site
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gateos-docs-site
+          path: /tmp/gateos-site
+          retention-days: 7
+
+  design-screenshots:
+    name: Render design concepts
+    runs-on: ubuntu-latest
+    needs: mkdocs
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Playwright
+        run: npm install --no-save playwright@1.49.1
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Render light, dark, contrast, and mobile concepts
+        run: |
+          python3 -m http.server 4173 --directory docs/design >/tmp/gateos-design-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID"' EXIT
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          (async () => {
+            const browser = await chromium.launch({headless: true});
+            const pages = [
+              ['light', 1440, 1000, 'ltr'],
+              ['dark', 1440, 1000, 'ltr'],
+              ['contrast', 1440, 1000, 'ltr'],
+              ['mobile-rtl', 390, 844, 'rtl'],
+            ];
+            for (const [name, width, height, dir] of pages) {
+              const page = await browser.newPage({viewport: {width, height}});
+              await page.goto(`http://127.0.0.1:4173/index.html?theme=${name}`, {waitUntil: 'networkidle'});
+              await page.evaluate(({name, dir}) => {
+                document.documentElement.dataset.theme = name === 'mobile-rtl' ? 'light' : name;
+                document.documentElement.dir = dir;
+              }, {name, dir});
+              await page.screenshot({path: `design-${name}.png`, fullPage: true});
+              await page.close();
+            }
+            await browser.close();
+          })();
+          NODE
+      - name: Upload design evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gateos-design-screenshots
+          path: design-*.png
+          retention-days: 14
