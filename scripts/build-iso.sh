@@ -34,6 +34,8 @@ ISO_STEM="gate-os-noble-amd64"
 GATEOS_VERSION="${GATEOS_VERSION:-$(python3 -c "import tomllib; d=tomllib.load(open('${REPO_ROOT}/pyproject.toml','rb')); print(d['project']['version'])" 2>/dev/null || echo "0.2.0")}"
 UBUNTU_BASE_ISO="/tmp/ubuntu-base-24.04.iso"
 UBUNTU_ISO_URL="${UBUNTU_ISO_URL:-https://releases.ubuntu.com/24.04/ubuntu-24.04.1-desktop-amd64.iso}"
+UBUNTU_SHA256_URL="${UBUNTU_SHA256_URL:-https://releases.ubuntu.com/24.04/SHA256SUMS}"
+UBUNTU_SHA256_FILE="${UBUNTU_SHA256_FILE:-/tmp/ubuntu-24.04-SHA256SUMS}"
 SKIP_DOWNLOAD=false
 DRY_RUN=false
 BUILD_DIR="/tmp/gateos-iso-build"
@@ -72,16 +74,35 @@ ISO_OUTPUT="${OUTPUT_DIR}/${ISO_STEM}-${GATEOS_VERSION}.iso"
 preflight() {
     info "Checking build prerequisites..."
     local missing=()
-    for cmd in unsquashfs mksquashfs xorriso grub-mkrescue debootstrap; do
+    for cmd in unsquashfs mksquashfs xorriso grub-mkrescue debootstrap wget sha256sum; do
         command -v "$cmd" &>/dev/null || missing+=("$cmd")
     done
     if [[ ${#missing[@]} -gt 0 ]]; then
         warn "Missing tools: ${missing[*]}"
         warn "Install with:"
-        warn "  sudo apt install squashfs-tools xorriso grub-efi-amd64-bin debootstrap"
+        warn "  sudo apt install squashfs-tools xorriso grub-efi-amd64-bin debootstrap wget"
         [[ "$DRY_RUN" == "false" ]] && die "Cannot build ISO without required tools."
     fi
     ok "Prerequisites satisfied (or dry-run mode)"
+}
+
+# ── Step 1b: Verify Ubuntu base ISO ──────────────────────────────────────────
+verify_base_iso() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        info "Would verify ${UBUNTU_BASE_ISO} against the official checksum manifest"
+        ok "Checksum verification planned (dry-run)"
+        return
+    fi
+    [[ -f "$UBUNTU_BASE_ISO" ]] || die "Base ISO not found: $UBUNTU_BASE_ISO"
+    info "Downloading Ubuntu checksum manifest..."
+    run wget -q -O "$UBUNTU_SHA256_FILE" "$UBUNTU_SHA256_URL"
+    local expected_name
+    expected_name="$(basename "$UBUNTU_ISO_URL")"
+    local checksum_line
+    checksum_line="$(grep -E "[ *]${expected_name}$" "$UBUNTU_SHA256_FILE" || true)"
+    [[ -n "$checksum_line" ]] || die "No checksum found for ${expected_name} in ${UBUNTU_SHA256_URL}"
+    (cd "$(dirname "$UBUNTU_BASE_ISO")" && printf '%s\n' "$checksum_line" | sha256sum -c -)
+    ok "Ubuntu base ISO checksum verified"
 }
 
 # ── Step 1: Download Ubuntu base ISO ─────────────────────────────────────────
@@ -262,7 +283,14 @@ main() {
     echo ""
 
     preflight
+    if [[ "$DRY_RUN" == "true" ]]; then
+        info "Dry-run: download and checksum verification would use the official Ubuntu manifest."
+        info "Dry-run: extract, customize, repack, brand, build, and checksum the ISO."
+        ok "Dry-run complete; no files, mounts, chroots, or network downloads were performed."
+        return 0
+    fi
     download_base_iso
+    verify_base_iso
     extract_iso
     customize_chroot
     repack_squashfs

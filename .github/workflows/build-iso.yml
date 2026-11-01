@@ -51,7 +51,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             squashfs-tools xorriso grub-efi-amd64-bin \
             grub-pc-bin mtools debootstrap isolinux \
-            syslinux-utils wget
+            syslinux-utils wget qemu-system-x86 ovmf
 
       - name: Cache Ubuntu base ISO
         uses: actions/cache@v4
@@ -67,10 +67,30 @@ jobs:
           chmod +x scripts/build-iso.sh
           DRY_FLAG=""
           [[ "${{ github.event.inputs.dry_run }}" == "true" ]] && DRY_FLAG="--dry-run"
-          ./scripts/build-iso.sh \
+          sudo -E bash scripts/build-iso.sh \
             --version "$GATEOS_VERSION" \
             --output dist/iso \
             $DRY_FLAG
+
+      - name: Verify ISO checksum
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: sha256sum -c dist/iso/*.iso.sha256
+
+      - name: QEMU BIOS boot smoke test
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: bash scripts/qemu-boot-test.sh "$(find dist/iso -name '*.iso' -print -quit)"
+
+      - name: QEMU UEFI boot smoke test
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: bash scripts/qemu-boot-test.sh "$(find dist/iso -name '*.iso' -print -quit)" --uefi
+
+      - name: Upload boot logs
+        if: ${{ always() && github.event.inputs.dry_run != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-os-qemu-logs-${{ steps.version.outputs.version }}
+          path: dist/qemu-boot/
+          if-no-files-found: warn
 
       - name: Upload ISO artifact
         if: ${{ github.event.inputs.dry_run != 'true' }}
