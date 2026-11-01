@@ -1,0 +1,26 @@
+{
+  "recommendations": [
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "charliermarsh.ruff",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode-remote.remote-containers",
+    "ms-vscode-remote.remote-wsl",
+    "redhat.vscode-yaml",
+    "timonwong.shellcheck",
+    "foxundermoon.shell-format",
+    "yzhang.markdown-all-in-one",
+    "DavidAnson.vscode-markdownlint",
+    "bierner.markdown-mermaid",
+    "eamodio.gitlens",
+    "tamasfe.even-better-toml",
+    "jock.svg",
+    "QtSoftware.qt-qml",
+    "ms-vscode.cmake-tools",
+    "ms-vscode.hexeditor",
+    "ms-playwright.playwright"
+  ],
+  "unwantedRecommendations": []
+}
