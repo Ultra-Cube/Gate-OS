@@ -84,6 +84,8 @@ nav:
     - Overview: architecture/overview.md
     - Environments: architecture/environments.md
     - Switch Engine: architecture/switch-engine.md
+    - Integration: architecture/INTEGRATION.md
+    - Upstream Matrix: architecture/UPSTREAM.md
   - API Reference:
     - Control API: api/control-api.md
     - WebSocket API: mobile/companion-api.md

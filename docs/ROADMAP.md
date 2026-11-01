@@ -35,12 +35,12 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 
 ## Phase 3 — Integration specification
 
-- [ ] `docs/architecture/INTEGRATION.md` layered model and failure modes.
-- [ ] Manifest v2 schema with licenses, digests, permissions, shell, hooks, and signature.
-- [ ] Switch pipeline timing targets labeled as targets.
-- [ ] Verified upstream matrix and per-environment shell strategy.
-- [ ] Resource isolation and controlled data bridge.
-- [ ] Checkpoint 3.
+- [x] `docs/architecture/INTEGRATION.md` layered model and failure modes.
+- [x] Manifest v2 target fields documented with licenses, digests, permissions, shell, hooks, and signature.
+- [x] Switch pipeline timing targets labeled as targets.
+- [x] Upstream matrix and per-environment shell strategy documented; exact versions remain release work.
+- [x] Resource isolation and controlled data bridge documented.
+- [ ] Checkpoint 3: schema implementation and security review remain before claiming integration complete.
 
 ## Phase 4 — Concept UI
 
