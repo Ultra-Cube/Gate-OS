@@ -95,6 +95,8 @@ nav:
     - Manifest Signing: security/signing.md
     - Audit: AUDIT.md
     - Third-party licenses: LICENSES-AND-THIRD-PARTY.md
+  - AI-native:
+    - Contract specification: ai-native/SPEC.md
   - Observability:
     - Prometheus Metrics: observability/metrics.md
     - OpenTelemetry: observability/otlp.md

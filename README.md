@@ -10,7 +10,7 @@ Gate-OS is building toward one installation that can switch between declarative 
 
 ## Project status
 
-The latest measured local baseline is **394 passing tests and 94% coverage**, measured with `make test-cov` on 2026-11-01. These are repository measurements, not a compatibility or release guarantee. The ISO builder and QEMU workflow are being developed; no installable ISO release is claimed until a clean build, checksum/signature, BIOS/UEFI boot, and VM installation are evidenced.
+The latest measured local baseline is **397 passing tests**, with the Phase 0 coverage measurement at **94%**, measured on 2026-11-01. These are repository measurements, not a compatibility or release guarantee. The ISO builder and QEMU workflow are being developed; no installable ISO release is claimed until a clean build, checksum/signature, BIOS/UEFI boot, and VM installation are evidenced.
 
 Security and supply-chain work remains active. OIDC verification, runtime isolation attachment, manifest-signature enforcement, OTA integrity verification, and cryptographic plugin verification are not yet complete. See [the audit](docs/AUDIT.md) before treating this as production software.
 

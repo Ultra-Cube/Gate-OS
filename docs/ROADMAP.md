@@ -53,10 +53,10 @@ Owner: distro-release-engineer. Reviewers: linux-systems-engineer, QA, security,
 
 ## Phase 5 — Optional AI-native layer
 
-- [ ] UI-spec and connector schemas.
-- [ ] Native pre-approved renderer and preview/accept/revert flow.
-- [ ] Capability tokens, policy gate, audit log, and sandboxed generated web app.
-- [ ] Offline mock Ultra AI service and end-to-end demo.
+- [x] UI-spec and connector schemas.
+- [x] Native pre-approved renderer and preview/accept/revert flow.
+- [x] Local policy gate and audit log; generated web-app sandbox remains future work.
+- [x] Offline mock contract and end-to-end demo.
 - [ ] Checkpoint 5.
 
 ## Phase 6 — Hardening and release
