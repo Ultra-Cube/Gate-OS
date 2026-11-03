@@ -104,6 +104,52 @@ multi‑boot clutter, or fragile dotfile juggling. Define an "environment" as co
 layer between a traditional Linux distro, a developer platform, and a tuned
 workstation appliance.
 
+
+## About Gate-OS
+
+Gate-OS is an open-source, completely free operating system built on Linux that rethinks what a
+distribution should be. Instead of shipping a separate edition for every purpose, and making you reboot
+to move between them, Gate-OS ships **one adaptable edition** that changes shape at runtime through
+switchable **work environments**, and uses AI to adapt the experience to the person using it.
+
+### Four pillars
+1. **Open source and free**: every part of the system is open and freely usable, modifiable and shareable.
+2. **Extensible**: built to be adapted for many different uses.
+3. **One edition**: a single adaptable system, not a family of editions.
+4. **Adaptive at runtime**: switch environments without rebooting.
+
+### Work environments
+Each environment is a complete sub-system with its own interface, tools, app menu, settings and resource
+profile: Everyday User, Gaming, Development, Design, Media, Security and Business.
+Environments are assembled from real, existing open-source projects. Gate-OS connects them to the system,
+adds a unified interface and supporting software, and runs each one isolated from the others, so every
+environment gets the resources it needs and stays separated while running. Each is also linked to the
+built-in AI layer for added flexibility.
+
+### Ultra AI and the adaptive experience
+Gate-OS is designed to move away from the "install an app for everything" model. Through
+[Ultra AI](https://github.com/Ultra-Cube/Ultra-AI), the system connects to developer libraries and APIs
+and adapts the interface to what the user needs, building and connecting personal web apps on demand
+instead of making the user search for, install and learn many applications.
+
+*Example:* a business owner who needs news, market status and stocks no longer browses many sites or
+installs many apps. Ultra AI uses unified accounts (such as Google) and APIs, and presents everything in
+a single interface shaped around that person. Generated interfaces run sandboxed with least-privilege
+access, and the user can always pin or override the layout.
+
+### Back to simple operating systems
+Early operating systems were simple, before the flood of applications that overwhelm users or turn out to
+be malicious. Gate-OS returns to that simplicity: a small, extensible core where development focuses on
+libraries, tools and APIs, and the system adapts to the sources that feed the user's needs.
+
+### Freedom for developers
+Developers who want custom builds or their own variants get an open base and the freedom to build them.
+
+### Status
+v2.0.0 "Steel Gate" is the planned release (roadmap P16 to P25, Q4 2026 to Q4 2027). See the roadmap for
+what is implemented today and what is planned.
+
+
 ### Why It Matters
 
 | Problem Today | Gate-OS Solution |
@@ -955,6 +1001,10 @@ Full detail lives in [docs/roadmap/milestones.md](docs/roadmap/milestones.md) (k
 If something you expected isn't here (no external wiki), open an issue – gaps are tracked aggressively during pre‑beta.
 
 ---
+
+---
+Built by **Ultra Cube**, part of the [Ultra Zone](https://ultra-zone.ucubetech.com/) open-source developer
+community. *Build together. Innovate freely. Open source for everyone.*
 
 ## © Copyright
 
