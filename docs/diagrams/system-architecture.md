@@ -9,50 +9,50 @@ graph TB
     end
 
     subgraph "UI Shell — GTK4 / Libadwaita"
-        APP[GateOSApp\nAdw.Application]
-        ENVL[EnvListPanel\nAdw.PreferencesGroup]
-        SWB[SwitchButton\nGtk.Spinner + badge]
-        SBAR[StatusBar\n5s auto-poll]
-        TRAY[AppIndicatorTray\nsystem tray icon]
+        APP["GateOSApp<br/>Adw.Application"]
+        ENVL["EnvListPanel<br/>Adw.PreferencesGroup"]
+        SWB["SwitchButton<br/>Gtk.Spinner + badge"]
+        SBAR["StatusBar<br/>5s auto-poll"]
+        TRAY["AppIndicatorTray<br/>system tray icon"]
     end
 
     subgraph "Gate-OS Control API — FastAPI :8088"
-        AUTH[TokenAuth\nstatic bearer token]
-        RL[RateLimiter\nIn-memory sliding window]
-        REST[REST Endpoints\n/environments /switch/{env}]
-        WS[WebSocket\n/ws/status broadcast]
-        MET[Prometheus\n/metrics text/plain]
+        AUTH["TokenAuth<br/>static bearer token"]
+        RL["RateLimiter<br/>In-memory sliding window"]
+        REST["REST Endpoints<br/>/environments /switch/{env}"]
+        WS["WebSocket<br/>/ws/status broadcast"]
+        MET["Prometheus<br/>/metrics text/plain"]
     end
 
     subgraph "Gate-OS Manager Core"
-        SO[SwitchOrchestrator\nactivation lifecycle + rollback]
-        ML[ManifestLoader\nJSON Schema v0.1.0 validation]
-        PLG[PluginRegistry\npre_switch / post_switch / shutdown]
-        UPD[OTA Updater\ncheck + schedule_apply systemd]
+        SO["SwitchOrchestrator<br/>activation lifecycle + rollback"]
+        ML["ManifestLoader<br/>JSON Schema v0.1.0 validation"]
+        PLG["PluginRegistry<br/>pre_switch / post_switch / shutdown"]
+        UPD["OTA Updater<br/>check + schedule_apply systemd"]
     end
 
     subgraph "Hardware Abstraction"
-        SM[ServiceManager\nsystemctl start/stop/status]
-        CM[ContainerManager\npodman run/stop/rm + labels]
-        PA[ProfileApplicator\ncpufreq governor + GPU⏳ + NIC⏳]
+        SM["ServiceManager<br/>systemctl start/stop/status"]
+        CM["ContainerManager<br/>podman run/stop/rm + labels"]
+        PA["ProfileApplicator<br/>cpufreq governor + GPU⏳ + NIC⏳"]
     end
 
     subgraph "Security"
-        SGN[ManifestSigning\nEd25519 sign/verify]
-        AAP[AppArmor Profiles\n5 environments enforce/complain]
-        SCP[seccomp Profiles\nOCI + strict]
+        SGN["ManifestSigning<br/>Ed25519 sign/verify"]
+        AAP["AppArmor Profiles<br/>5 environments enforce/complain"]
+        SCP["seccomp Profiles<br/>OCI + strict"]
     end
 
     subgraph "Telemetry"
-        TE[TelemetryEmitter\nstructured JSON + batch queue]
-        OTLP[OTLPExporter\nHTTP/JSON spans + logs]
-        PROM[PrometheusRegistry\nCounter/Gauge/Histogram]
+        TE["TelemetryEmitter<br/>structured JSON + batch queue"]
+        OTLP["OTLPExporter<br/>HTTP/JSON spans + logs"]
+        PROM["PrometheusRegistry<br/>Counter/Gauge/Histogram"]
     end
 
     subgraph "Storage"
-        MAN[Environment Manifests\ndata/environments/*.json]
-        SCHEMA[JSON Schema\nv0.1.0]
-        FLAGS[Update Flag Files\n/var/lib/gateos/]
+        MAN["Environment Manifests<br/>data/environments/*.json"]
+        SCHEMA["JSON Schema<br/>v0.1.0"]
+        FLAGS["Update Flag Files<br/>/var/lib/gateos/"]
     end
 
     FL -->|WebSocket ws://| WS
